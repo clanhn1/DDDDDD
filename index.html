@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ليالي العرب | لوحة النشر للديسكورد</title>
+    <title>ليالي العرب | مركز التحكم والإرسال</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -12,179 +12,265 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
 
         body {
-            background-color: #0d0d12; color: #fff; min-height: 100vh;
+            background-color: #050508; color: #fff; min-height: 100vh;
             display: flex; justify-content: center; align-items: center; padding: 2rem;
-            background-image: radial-gradient(circle at 50% 0%, #2a2010 0%, #0d0d12 70%);
+            background-image: radial-gradient(circle at 50% 0%, #2a2010 0%, #050508 80%);
         }
 
         .admin-panel {
-            background: rgba(20, 20, 25, 0.8); border: 1px solid #bf953f;
-            border-radius: 20px; padding: 2.5rem; width: 100%; max-width: 600px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(191, 149, 63, 0.15);
-            backdrop-filter: blur(20px);
+            background: rgba(15, 15, 20, 0.7); border: 1px solid #bf953f;
+            border-radius: 20px; padding: 2.5rem; width: 100%; max-width: 650px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(191, 149, 63, 0.15);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
         }
 
-        .header { text-align: center; margin-bottom: 2rem; }
-        .header h1 { color: #bf953f; font-size: 2.5rem; text-shadow: 0 0 20px rgba(191, 149, 63, 0.4); margin-bottom: 5px; }
+        .header { text-align: center; margin-bottom: 2rem; border-bottom: 1px solid rgba(191, 149, 63, 0.2); padding-bottom: 1rem; }
+        .header h1 { color: #bf953f; font-size: 2.5rem; text-shadow: 0 0 20px rgba(191, 149, 63, 0.4); margin-bottom: 5px; font-weight: 900; }
         .header p { color: #a1a1aa; font-size: 1.1rem; }
 
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
         .form-group { margin-bottom: 1.5rem; }
-        .form-group label { display: block; color: #bf953f; margin-bottom: 8px; font-weight: bold; }
+        .form-group.full-width { grid-column: span 2; }
+        
+        .form-group label { display: block; color: #e2e8f0; margin-bottom: 8px; font-weight: bold; font-size: 0.95rem; }
         
         .admin-input {
-            width: 100%; padding: 14px; background: rgba(0,0,0,0.5);
+            width: 100%; padding: 14px; background: rgba(0,0,0,0.6);
             border: 1px solid #333; color: #fff; border-radius: 12px;
             font-family: 'Cairo'; outline: none; transition: 0.3s; font-size: 1rem;
         }
-        .admin-input:focus { border-color: #bf953f; box-shadow: 0 0 15px rgba(191, 149, 63, 0.3); }
+        .admin-input:focus { border-color: #bf953f; box-shadow: 0 0 15px rgba(191, 149, 63, 0.3); background: rgba(0,0,0,0.8); }
+
+        /* تخصيص زر رفع الصورة */
+        .file-upload-wrapper { position: relative; width: 100%; height: 50px; }
+        .file-upload-input { opacity: 0; position: absolute; width: 100%; height: 100%; cursor: pointer; z-index: 2; }
+        .file-upload-btn {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(191, 149, 63, 0.1); border: 2px dashed #bf953f;
+            color: #bf953f; border-radius: 12px; display: flex; justify-content: center; align-items: center;
+            font-weight: bold; transition: 0.3s; z-index: 1; gap: 10px;
+        }
+        .file-upload-wrapper:hover .file-upload-btn { background: rgba(191, 149, 63, 0.2); }
+        .file-name-display { display: block; margin-top: 8px; font-size: 0.85rem; color: #38ef7d; text-align: center; }
+
+        /* منتقي الألوان */
+        .color-picker-wrapper { display: flex; align-items: center; gap: 10px; }
+        .color-picker {
+            -webkit-appearance: none; border: none; width: 50px; height: 50px;
+            border-radius: 10px; cursor: pointer; background: transparent; padding: 0;
+        }
+        .color-picker::-webkit-color-swatch-wrapper { padding: 0; }
+        .color-picker::-webkit-color-swatch { border: 2px solid #333; border-radius: 10px; }
 
         .send-btn {
             background: linear-gradient(45deg, #bf953f, #b38728); color: #fff;
-            width: 100%; padding: 16px; border: none; border-radius: 12px;
-            font-weight: 900; font-size: 1.3rem; cursor: pointer; transition: 0.3s;
+            width: 100%; padding: 18px; border: none; border-radius: 12px;
+            font-weight: 900; font-size: 1.4rem; cursor: pointer; transition: 0.3s;
             display: flex; justify-content: center; align-items: center; gap: 10px;
-            margin-top: 1rem;
+            margin-top: 1rem; grid-column: span 2; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
-        .send-btn:hover { box-shadow: 0 0 25px rgba(191, 149, 63, 0.6); transform: translateY(-3px); }
+        .send-btn:hover { box-shadow: 0 0 30px rgba(191, 149, 63, 0.6); transform: translateY(-3px); }
+        .send-btn:disabled { background: #555; cursor: not-allowed; box-shadow: none; transform: none; color: #aaa; }
 
-        /* معاينة شكل الرسالة */
-        .preview-box {
-            margin-top: 2rem; padding: 1rem; background: #2b2d31; border-left: 4px solid #bf953f;
-            border-radius: 4px; display: none;
-        }
-        .preview-box h3 { color: #fff; font-size: 1.1rem; margin-bottom: 10px; }
-        .preview-box p { color: #dbdee1; font-size: 0.9rem; white-space: pre-wrap; }
+        /* شاشة التحميل */
+        #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
+        .spinner { border: 5px solid rgba(255,255,255,0.1); border-top: 5px solid #bf953f; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+        <h3 style="color: #bf953f;">جاري تشفير البيانات والرفع للسيرفر...</h3>
+    </div>
+
     <div class="admin-panel">
         <div class="header">
-            <h1><i class="fa-brands fa-discord"></i> الإدارة العليا</h1>
-            <p>لوحة نشر السكربتات والبرامج في ديسكورد ليالي العرب</p>
+            <h1><i class="fa-solid fa-satellite-dish"></i> المحطة المركزية</h1>
+            <p>نظام البث المباشر لسيرفرات ديسكورد ليالي العرب</p>
         </div>
 
-        <div class="form-group">
-            <label>اسم المشروع (عنوان الرسالة):</label>
-            <input type="text" id="msg-title" class="admin-input" placeholder="مثال: سكربت طيران VIP">
-        </div>
+        <div class="form-grid">
+            <div class="form-group full-width">
+                <label>اسم المشروع (عنوان الرسالة):</label>
+                <input type="text" id="msg-title" class="admin-input" placeholder="مثال: تحديث سكربت الطيران V2">
+            </div>
 
-        <div class="form-group">
-            <label>وصف المشروع والمميزات:</label>
-            <textarea id="msg-desc" class="admin-input" rows="3" placeholder="اكتب المميزات هنا..."></textarea>
-        </div>
+            <div class="form-group full-width">
+                <label>وصف المشروع والمميزات:</label>
+                <textarea id="msg-desc" class="admin-input" rows="3" placeholder="اكتب التفاصيل والمميزات هنا..."></textarea>
+            </div>
 
-        <div class="form-group">
-            <label>نوع المنشور:</label>
-            <select id="msg-type" class="admin-input" onchange="toggleInputType()">
-                <option value="script">سكربت (نص برمجي للنسخ)</option>
-                <option value="program">برنامج (رابط تحميل خارجي)</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label>نوع النشر:</label>
+                <select id="msg-type" class="admin-input" onchange="toggleInputType()">
+                    <option value="script">سكربت (نص برمجي للنسخ)</option>
+                    <option value="program">برنامج (رابط تحميل)</option>
+                </select>
+            </div>
 
-        <div class="form-group">
-            <label id="content-label">كود السكربت:</label>
-            <textarea id="msg-content" class="admin-input" rows="4" placeholder="ضع الكود هنا..."></textarea>
-        </div>
+            <div class="form-group">
+                <label>حالة المشروع (Status):</label>
+                <input type="text" id="msg-status" class="admin-input" placeholder="مثال: ✅ آمن 100% / ⚠️ قيد التحديث">
+            </div>
 
-        <div class="form-group">
-            <label>رابط صورة الغلاف (اختياري لتزيين الرسالة):</label>
-            <input type="text" id="msg-image" class="admin-input" placeholder="https://...">
-        </div>
+            <div class="form-group full-width">
+                <label id="content-label">الكود البرمجي للسكربت:</label>
+                <textarea id="msg-content" class="admin-input" rows="4" placeholder="ضع الكود هنا..."></textarea>
+            </div>
 
-        <div class="form-group">
-            <label>منشن (اختياري):</label>
-            <select id="msg-mention" class="admin-input">
-                <option value="">بدون منشن</option>
-                <option value="@everyone">منشن للجميع (@everyone)</option>
-                <option value="@here">منشن للمتواجدين (@here)</option>
-            </select>
-        </div>
+            <div class="form-group">
+                <label>صورة الغلاف (رفع من جهازك):</label>
+                <div class="file-upload-wrapper">
+                    <input type="file" id="msg-image-file" class="file-upload-input" accept="image/png, image/jpeg, image/gif" onchange="updateFileName()">
+                    <div class="file-upload-btn">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> اختر صورة
+                    </div>
+                </div>
+                <span id="file-name" class="file-name-display">لم يتم تحديد ملف</span>
+            </div>
 
-        <button class="send-btn" onclick="sendToDiscord()">
-            <i class="fa-solid fa-paper-plane"></i> نشر الرسالة في السيرفر
-        </button>
+            <div class="form-group color-picker-wrapper">
+                <div style="flex: 1;">
+                    <label>لون الرسالة (Embed):</label>
+                    <input type="color" id="msg-color" class="color-picker" value="#bf953f" title="اختر لون الخط الجانبي للرسالة">
+                </div>
+                <div style="flex: 1;">
+                    <label>منشن:</label>
+                    <select id="msg-mention" class="admin-input">
+                        <option value="">بدون منشن</option>
+                        <option value="@everyone">@everyone</option>
+                        <option value="@here">@here</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="submit-btn" class="send-btn full-width" onclick="sendToDiscord()">
+                <i class="fa-solid fa-rocket"></i> إطلاق للسيرفر
+            </button>
+        </div>
     </div>
 
     <script>
-        // رابط الويب هوك الخاص بك (الروم الذي تريد النشر فيه)
-        const webhookUrl = "https://discord.com/api/webhooks/1488443327996235857/gJGoalSNljZf3m_g3PFeFFxKjcn985hN9x3nUC1JdBqJB2pFAfLbsIaL09SS1Q5iVcLX";
+        // رابط الويب هوك الجديد الخاص بك
+        const webhookUrl = "https://discord.com/api/webhooks/1488450280025755658/VhWQUrcszHcoCvvKITXyetiyCDUFP8uBov86vJohjx5igW_cBG6P-zbYzvb5QjXRbTfT";
 
+        // تغيير النص بناءً على اختيار سكربت أو برنامج
         function toggleInputType() {
             const type = document.getElementById('msg-type').value;
             const label = document.getElementById('content-label');
             const content = document.getElementById('msg-content');
             
             if (type === 'script') {
-                label.innerText = "كود السكربت:";
-                content.placeholder = "ضع الكود هنا ليظهر بشكل صندوق برمجي فخم في الديسكورد...";
+                label.innerText = "الكود البرمجي للسكربت:";
+                content.placeholder = "ضع الكود هنا ليظهر بشكل صندوق برمجي فخم...";
             } else {
-                label.innerText = "رابط التحميل:";
-                content.placeholder = "ضع رابط التحميل المباشر هنا...";
+                label.innerText = "رابط التحميل المباشر:";
+                content.placeholder = "ضع الرابط هنا...";
             }
         }
 
-        function sendToDiscord() {
+        // إظهار اسم الملف عند اختياره
+        function updateFileName() {
+            const input = document.getElementById('msg-image-file');
+            const display = document.getElementById('file-name');
+            if (input.files && input.files.length > 0) {
+                display.innerHTML = `<i class="fa-solid fa-check"></i> تم اختيار: ${input.files[0].name}`;
+            } else {
+                display.innerText = "لم يتم تحديد ملف";
+            }
+        }
+
+        async function sendToDiscord() {
             const title = document.getElementById('msg-title').value.trim();
             const desc = document.getElementById('msg-desc').value.trim();
             const type = document.getElementById('msg-type').value;
             const content = document.getElementById('msg-content').value.trim();
-            const image = document.getElementById('msg-image').value.trim();
+            const status = document.getElementById('msg-status').value.trim();
+            const colorHex = document.getElementById('msg-color').value.replace('#', '');
+            const colorDec = parseInt(colorHex, 16); // تحويل اللون ليقبله ديسكورد
             const mention = document.getElementById('msg-mention').value;
+            const imageFile = document.getElementById('msg-image-file').files[0];
 
             if (!title || !content) {
-                alert("يرجى ملء اسم المشروع والمحتوى على الأقل!");
+                alert("⚠️ يرجى ملء عنوان الرسالة والمحتوى (الكود/الرابط) على الأقل.");
                 return;
             }
 
-            // تجهيز طريقة عرض المحتوى داخل الديسكورد
+            document.getElementById('loading-overlay').style.display = 'flex';
+            document.getElementById('submit-btn').disabled = true;
+
+            // بناء الوصف الخاص بالرسالة
             let discordDescription = `**${desc}**\n\n`;
-            
             if (type === 'script') {
-                // وضع الكود داخل صندوق برمجي (Markdown) لسهولة النسخ
                 discordDescription += `\`\`\`lua\n${content}\n\`\`\``;
             } else {
-                // وضع رابط التحميل كزر نصي فخم
                 discordDescription += `🔗 **[اضغط هنا لتحميل البرنامج](${content})**`;
             }
 
-            // بناء هيكل رسالة الديسكورد (Embed)
-            const payload = {
-                content: mention, // المنشن إذا تم اختياره
-                username: "ليالي العرب | الإدارة", // اسم البوت المرسل
-                avatar_url: "https://i.imgur.com/your_logo_here.png", // يمكنك وضع رابط لوجو موقعك هنا
-                embeds: [
-                    {
-                        title: `👑 | ${title}`,
-                        description: discordDescription,
-                        color: 12555295, // اللون الذهبي VIP الخاص بك
-                        thumbnail: image ? { url: image } : null,
-                        footer: {
-                            text: "ليالي العرب VIP • تم النشر بواسطة الإدارة العليا"
-                        },
-                        timestamp: new Date().toISOString()
-                    }
-                ]
+            // بناء هيكل الـ Embed
+            const embed = {
+                title: `👑 | ${title}`,
+                description: discordDescription,
+                color: colorDec,
+                footer: { text: "ليالي العرب VIP • النظام المركزي" },
+                timestamp: new Date().toISOString(),
+                fields: []
             };
 
-            // إرسال الطلب للديسكورد
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            }).then(res => {
-                if (res.ok) {
-                    alert("✅ تم إرسال الرسالة الإدارية الفخمة بنجاح إلى سيرفرك!");
-                    // تنظيف الحقول بعد الإرسال
+            // إذا أضاف حالة، نضعها في حقل احترافي
+            if (status) {
+                embed.fields.push({
+                    name: "📊 حالة المشروع",
+                    value: `\`${status}\``,
+                    inline: false
+                });
+            }
+
+            // استخدام FormData لدمج البيانات مع الملف المرفوع
+            const formData = new FormData();
+
+            // إذا تم رفع صورة، نقوم بربطها بالـ Embed
+            if (imageFile) {
+                formData.append('file', imageFile, imageFile.name);
+                embed.image = { url: `attachment://${imageFile.name}` };
+            }
+
+            // تجهيز البيانات النصية مع المنشن
+            const payloadJson = {
+                content: mention, // المنشن
+                username: "ليالي العرب | الإدارة",
+                avatar_url: "https://cdn-icons-png.flaticon.com/512/3592/3592869.png", // أيقونة التاج
+                embeds: [embed]
+            };
+
+            formData.append('payload_json', JSON.stringify(payloadJson));
+
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    body: formData // إرسال الفورم المدمج بالصورة والبيانات
+                });
+
+                if (response.ok) {
+                    alert("✅ تم الإطلاق! الرسالة والصورة الآن في سيرفرك.");
+                    // تصفير الحقول
                     document.getElementById('msg-title').value = '';
                     document.getElementById('msg-desc').value = '';
                     document.getElementById('msg-content').value = '';
+                    document.getElementById('msg-status').value = '';
+                    document.getElementById('msg-image-file').value = '';
+                    updateFileName();
                 } else {
-                    alert("❌ حدث خطأ أثناء الإرسال! تأكد من رابط الويب هوك.");
+                    alert("❌ حدث خطأ من جهة الديسكورد، تأكد من صحة الويب هوك.");
                 }
-            }).catch(err => {
-                alert("❌ فشل الاتصال بالإنترنت.");
-            });
+            } catch (error) {
+                alert("❌ فشل الاتصال، تأكد من اتصالك بالإنترنت.");
+            } finally {
+                document.getElementById('loading-overlay').style.display = 'none';
+                document.getElementById('submit-btn').disabled = false;
+            }
         }
     </script>
 </body>
