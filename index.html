@@ -94,7 +94,10 @@
             border-radius: 4px; padding: 1rem; max-width: 520px; display: flex; flex-direction: column; gap: 8px;
             margin-top: 5px;
         }
-        .embed-title { color: #00a8fc; font-weight: bold; font-size: 1.1rem; text-decoration: none; }
+        .embed-author { display: flex; align-items: center; gap: 8px; color: #f2f3f5; font-weight: bold; font-size: 0.9rem; }
+        .embed-author img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
+        
+        .embed-title { color: #00a8fc; font-weight: bold; font-size: 1.1rem; text-decoration: none; margin-top: 5px;}
         .embed-desc { color: #dbdee1; font-size: 0.9rem; white-space: pre-wrap; line-height: 1.5; }
         
         .discord-code-block { background: #1e1f22; border: 1px solid #111214; border-radius: 4px; padding: 10px; font-family: monospace; color: #dbdee1; font-size: 0.85rem; margin-top: 5px; direction: ltr; text-align: left; overflow-x: auto;}
@@ -107,7 +110,7 @@
         
         .embed-footer { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
         .embed-footer img { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; }
-        .embed-footer span { color: #949ba4; font-size: 0.75rem; }
+        .embed-footer span { color: #949ba4; font-size: 0.75rem; font-weight: bold;}
 
         #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
         .spinner { border: 5px solid rgba(255,255,255,0.1); border-top: 5px solid #bf953f; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 15px; }
@@ -129,7 +132,7 @@
                 <p>تعديل ومعاينة حية للديسكورد (Live Preview)</p>
             </div>
 
-            <div class="section-title"><i class="fa-solid fa-robot"></i> هوية المرسل (البوت)</div>
+            <div class="section-title"><i class="fa-solid fa-robot"></i> هوية الكاتب (الإدارة)</div>
             
             <div style="display: flex; gap: 15px;">
                 <div class="form-group" style="flex: 1;">
@@ -137,8 +140,14 @@
                     <input type="text" id="bot-username" class="admin-input" value="اداره ليالي العرب" oninput="updatePreview()">
                 </div>
                 <div class="form-group" style="flex: 1;">
-                    <label>رابط صورة المرسل (Avatar):</label>
-                    <input type="text" id="bot-avatar" class="admin-input" placeholder="رابط صورة السيرفر..." value="https://cdn-icons-png.flaticon.com/512/3592/3592869.png" oninput="updatePreview()">
+                    <label>صورة الحساب (رفع من الجهاز):</label>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="msg-logo-file" class="file-upload-input" accept="image/png, image/jpeg, image/gif" onchange="handleLogoPreview()">
+                        <div class="file-upload-btn">
+                            <i class="fa-solid fa-user-circle"></i> رفع شعار
+                        </div>
+                    </div>
+                    <span id="logo-name" class="file-name-display">لم يتم تحديد صورة حساب</span>
                 </div>
             </div>
 
@@ -174,11 +183,11 @@
             </div>
 
             <div class="form-group">
-                <label>صورة الغلاف (تزيين للرسالة - اختياري):</label>
+                <label>صورة الغلاف (صورة العرض الكبيرة - اختياري):</label>
                 <div class="file-upload-wrapper">
                     <input type="file" id="msg-image-file" class="file-upload-input" accept="image/png, image/jpeg, image/gif" onchange="handleImagePreview()">
                     <div class="file-upload-btn">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> رفع صورة من الجهاز
+                        <i class="fa-solid fa-image"></i> رفع صورة غلاف
                     </div>
                 </div>
                 <span id="file-name" class="file-name-display">لم يتم تحديد ملف</span>
@@ -209,11 +218,11 @@
             
             <div class="discord-message">
                 <div class="discord-avatar">
-                    <img id="preview-bot-avatar" src="https://cdn-icons-png.flaticon.com/512/3592/3592869.png" alt="Bot Avatar" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+                    <img src="https://cdn-icons-png.flaticon.com/512/3592/3592869.png" alt="Bot Avatar">
                 </div>
                 <div class="discord-body">
                     <div class="discord-name-row">
-                        <span class="discord-username" id="preview-bot-name">اداره ليالي العرب</span>
+                        <span class="discord-username">ليالي العرب | الإدارة</span>
                         <span class="discord-bot-tag"><i class="fa-solid fa-check" style="font-size: 0.5rem;"></i> BOT</span>
                         <span class="discord-time">اليوم في <span id="preview-time">00:00</span></span>
                     </div>
@@ -221,6 +230,11 @@
                     <div id="preview-mention" style="color: #c9cdfb; background: rgba(88, 101, 242, 0.3); padding: 2px 4px; border-radius: 4px; font-size: 0.9rem; margin-bottom: 5px; display: inline-block; display: none;"></div>
 
                     <div class="discord-embed" id="preview-embed">
+                        <div class="embed-author">
+                            <img id="preview-author-icon" src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+                            <span id="preview-bot-name">اداره ليالي العرب</span>
+                        </div>
+
                         <div class="embed-title" id="preview-title">عنوان الرسالة سيظهر هنا</div>
                         <div class="embed-desc" id="preview-desc">الوصف سيظهر هنا...</div>
                         
@@ -236,8 +250,8 @@
                         <img id="preview-image" class="embed-image" src="" alt="preview">
 
                         <div class="embed-footer">
-                            <img id="preview-footer-icon" src="https://cdn-icons-png.flaticon.com/512/3592/3592869.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
-                            <span>خاص بنشر سكربتات روبلوكس من قبل ليالي العرب</span>
+                            <img id="preview-footer-icon" src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
+                            <span>ليالي العرب</span>
                         </div>
                     </div>
                 </div>
@@ -255,13 +269,9 @@
 
         // المعاينة الحية
         function updatePreview() {
-            // بيانات المرسل
+            // بيانات المرسل (الكاتب)
             const botName = document.getElementById('bot-username').value || "اداره ليالي العرب";
-            const botAvatar = document.getElementById('bot-avatar').value || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-            
             document.getElementById('preview-bot-name').innerText = botName;
-            document.getElementById('preview-bot-avatar').src = botAvatar;
-            document.getElementById('preview-footer-icon').src = botAvatar; // أيقونة التذييل مطابقة لصورة البوت
 
             // بيانات الرسالة
             const title = document.getElementById('msg-title').value;
@@ -303,6 +313,27 @@
             }
         }
 
+        // معاينة صورة الحساب (اللوجو)
+        function handleLogoPreview() {
+            const input = document.getElementById('msg-logo-file');
+            const display = document.getElementById('logo-name');
+            const authorIcon = document.getElementById('preview-author-icon');
+            const footerIcon = document.getElementById('preview-footer-icon');
+
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                display.innerHTML = `<i class="fa-solid fa-check"></i> ${file.name}`;
+                const fileURL = URL.createObjectURL(file);
+                authorIcon.src = fileURL;
+                footerIcon.src = fileURL;
+            } else {
+                display.innerText = "لم يتم تحديد صورة حساب";
+                authorIcon.src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+                footerIcon.src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+            }
+        }
+
+        // معاينة صورة الغلاف
         function handleImagePreview() {
             const input = document.getElementById('msg-image-file');
             const display = document.getElementById('file-name');
@@ -321,12 +352,8 @@
         }
 
         async function sendToDiscord() {
-            // بيانات البوت
             const botUsername = document.getElementById('bot-username').value.trim() || "اداره ليالي العرب";
-            let botAvatar = document.getElementById('bot-avatar').value.trim();
-            if(!botAvatar) botAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
-
-            // بيانات الرسالة
+            
             const title = document.getElementById('msg-title').value.trim();
             const desc = document.getElementById('msg-desc').value.trim();
             const type = document.getElementById('msg-type').value;
@@ -335,7 +362,9 @@
             const colorHex = document.getElementById('msg-color').value.replace('#', '');
             const colorDec = parseInt(colorHex, 16);
             const mention = document.getElementById('msg-mention').value;
+            
             const imageFile = document.getElementById('msg-image-file').files[0];
+            const logoFile = document.getElementById('msg-logo-file').files[0];
 
             if (!title || !content) { alert("⚠️ يرجى ملء العنوان والمحتوى (الكود/الرابط)."); return; }
 
@@ -350,10 +379,7 @@
                 title: `👑 | ${title}`,
                 description: discordDescription,
                 color: colorDec,
-                footer: { 
-                    text: "خاص بنشر سكربتات روبلوكس من قبل ليالي العرب",
-                    icon_url: botAvatar
-                },
+                footer: { text: "ليالي العرب" }, // التذييل المطلوب
                 timestamp: new Date().toISOString(),
                 fields: []
             };
@@ -361,15 +387,31 @@
             if (status) embed.fields.push({ name: "📊 حالة المشروع", value: `\`${status}\``, inline: false });
 
             const formData = new FormData();
+            let fileIndex = 0;
+
+            // إذا رفع صورة الحساب (اللوجو)
+            if (logoFile) {
+                const logoName = `logo_${logoFile.name}`;
+                formData.append(`file[${fileIndex}]`, logoFile, logoName);
+                embed.author = { name: botUsername, icon_url: `attachment://${logoName}` };
+                embed.footer.icon_url = `attachment://${logoName}`;
+                fileIndex++;
+            } else {
+                embed.author = { name: botUsername };
+            }
+
+            // إذا رفع صورة الغلاف الكبيرة
             if (imageFile) {
-                formData.append('file', imageFile, imageFile.name);
-                embed.image = { url: `attachment://${imageFile.name}` };
+                const coverName = `cover_${imageFile.name}`;
+                formData.append(`file[${fileIndex}]`, imageFile, coverName);
+                embed.image = { url: `attachment://${coverName}` };
+                fileIndex++;
             }
 
             const payloadJson = {
                 content: mention,
-                username: botUsername,
-                avatar_url: botAvatar,
+                // اسم البوت الخارجي سيأخذ الاسم الافتراضي للويب هوك ما لم تضع هنا اسماً (تركناه مطابق للوحة)
+                username: "ليالي العرب | الإدارة العليا", 
                 embeds: [embed]
             };
 
@@ -383,7 +425,9 @@
                     document.getElementById('msg-desc').value = '';
                     document.getElementById('msg-content').value = '';
                     document.getElementById('msg-image-file').value = '';
+                    document.getElementById('msg-logo-file').value = '';
                     handleImagePreview();
+                    handleLogoPreview();
                     updatePreview();
                 } else { alert("❌ حدث خطأ من الديسكورد."); }
             } catch (error) { alert("❌ فشل الاتصال بالإنترنت."); }
