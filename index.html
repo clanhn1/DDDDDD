@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ليالي العرب | VIP السكربتات</title>
+    <title>ليالي العرب | للسكربتات والبرامج</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
@@ -13,195 +12,217 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
 
         body {
-            background-color: #050505;
+            background-color: #05050a;
             color: #fff;
             min-height: 100vh;
             overflow-x: hidden;
-            /* شكل شريط التمرير */
-            scrollbar-width: thin;
-            scrollbar-color: #bf953f #050505;
-        }
-
-        /* 🌌 الجسيمات المتحركة 🌌 */
-        #particles-js {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;
-            background: radial-gradient(circle at center, #111 0%, #000 100%);
-        }
-
-        /* الهيدر الفخم */
-        header {
-            text-align: center;
-            padding: 5rem 2rem;
-            background: linear-gradient(180deg, rgba(15, 15, 20, 0.8) 0%, transparent 100%);
-            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
-            margin-bottom: 4rem;
             position: relative;
         }
 
-        header::after {
-            content: '';
+        /* 🌌 خلفية الإضاءات المتحركة (بدون مكاتب خارجية لضمان عملها دائماً) 🌌 */
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            background: #05050a;
+            overflow: hidden;
+        }
+
+        .glow {
             position: absolute;
-            bottom: -2px; left: 50%; transform: translateX(-50%);
-            width: 50%; height: 2px;
-            background: linear-gradient(90deg, transparent, #bf953f, transparent);
-            box-shadow: 0 0 20px #bf953f;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.5;
+            animation: float 12s infinite alternate ease-in-out;
+        }
+
+        .glow-1 { width: 400px; height: 400px; background: #4facfe; top: -10%; left: -10%; }
+        .glow-2 { width: 500px; height: 500px; background: #00f2fe; bottom: -20%; right: -10%; animation-delay: -4s; }
+        .glow-3 { width: 300px; height: 300px; background: #11998e; top: 40%; left: 50%; animation-delay: -8s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.2); }
+        }
+
+        /* الهيدر */
+        header {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         header h1 {
-            font-size: 4rem;
+            font-size: 3.5rem;
             font-weight: 900;
-            background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fcf6ba);
+            background: linear-gradient(to left, #00f2fe, #4facfe, #38ef7d);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 40px rgba(255, 215, 0, 0.4);
-            letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+            margin-bottom: 10px;
         }
+
+        header p { color: #a0aec0; font-size: 1.2rem; }
 
         /* حاوية الكروت */
         .container {
-            max-width: 1250px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem 5rem;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 3rem;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
         }
 
-        /* تصميم الكرت (إضاءة متحركة) */
+        /* تصميم الكرت - زجاجي عصري */
         .card {
-            background: rgba(20, 20, 25, 0.6);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            border-radius: 25px;
+            background: rgba(25, 25, 35, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
             padding: 1.5rem;
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            transition: 0.5s;
-            position: relative;
+            backdrop-filter: blur(15px);
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            position: relative;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
 
-        .card::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: 0.5s; z-index: 1; pointer-events: none;
-        }
-
-        .card:hover::before { left: 100%; }
         .card:hover {
-            transform: translateY(-15px);
-            border-color: #d4af37;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.9), 0 0 30px rgba(212, 175, 55, 0.3);
+            transform: translateY(-8px);
+            border-color: rgba(0, 242, 254, 0.5);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 242, 254, 0.2);
+            background: rgba(35, 35, 45, 0.6);
         }
 
         .card img {
-            width: 100%; height: 200px; object-fit: cover;
-            border-radius: 15px; margin-bottom: 1.5rem;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            width: 100%; height: 180px; object-fit: cover;
+            border-radius: 12px; margin-bottom: 1.5rem;
             border: 1px solid rgba(255,255,255,0.05);
         }
 
-        .card h3 { color: #fff; font-size: 1.6rem; margin-bottom: 0.5rem; }
-        .card p { color: #aaa; font-size: 1rem; margin-bottom: 2rem; flex-grow: 1; }
+        .card h3 { color: #fff; font-size: 1.4rem; margin-bottom: 0.5rem; }
+        .card p { color: #94a3b8; font-size: 0.95rem; margin-bottom: 1.5rem; flex-grow: 1; line-height: 1.6; }
 
         /* الأزرار */
-        .btn-group { display: flex; gap: 15px; margin-top: auto; z-index: 2; position: relative; }
+        .btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
+        
         .action-btn {
-            flex: 1; padding: 12px; border: none; border-radius: 12px;
-            font-weight: 900; font-size: 1.1rem; cursor: pointer;
+            width: 100%; padding: 12px; border: none; border-radius: 10px;
+            font-weight: 700; font-size: 1rem; cursor: pointer;
             transition: 0.3s; text-decoration: none; text-align: center;
             display: flex; align-items: center; justify-content: center; gap: 8px;
         }
 
         .copy-btn {
-            background: linear-gradient(45deg, #b38728, #fcf6ba); color: #000;
+            background: rgba(0, 242, 254, 0.1);
+            color: #00f2fe;
+            border: 1px solid #00f2fe;
         }
-        .copy-btn:hover { background: linear-gradient(45deg, #fcf6ba, #b38728); transform: scale(1.05); }
+        .copy-btn:hover { background: #00f2fe; color: #000; box-shadow: 0 0 15px #00f2fe; }
 
         .download-btn {
-            background: linear-gradient(45deg, #0f2027, #203a43, #2c5364); color: #fff;
-            border: 1px solid #4facfe;
+            background: rgba(56, 239, 125, 0.1);
+            color: #38ef7d;
+            border: 1px solid #38ef7d;
         }
-        .download-btn:hover { border-color: #00f2fe; box-shadow: 0 0 20px rgba(0, 242, 254, 0.4); transform: scale(1.05); }
+        .download-btn:hover { background: #38ef7d; color: #000; box-shadow: 0 0 15px #38ef7d; }
 
-        /* 🛠️ لوحة التحكم السرية 🛠️ */
+        .admin-edit-btn {
+            background: transparent; color: #ffbc00; border: 1px dashed #ffbc00; margin-top: 5px;
+        }
+        .admin-edit-btn:hover { background: rgba(255, 188, 0, 0.1); }
+
+        /* زر الإدارة السري */
+        #secret-admin-trigger {
+            position: fixed; bottom: 20px; left: 20px;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.2);
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; z-index: 100; transition: 0.3s;
+        }
+        #secret-admin-trigger:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+        /* لوحة التحكم */
         #admin-panel {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: rgba(10, 10, 10, 0.95); border: 2px solid #bf953f; border-radius: 20px;
-            padding: 2rem; z-index: 1000; width: 90%; max-width: 500px; backdrop-filter: blur(20px);
+            background: #111827; border: 1px solid #374151; border-radius: 20px;
+            padding: 2rem; z-index: 1000; width: 90%; max-width: 500px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
         }
-        #admin-panel h2 { color: #bf953f; margin-bottom: 1rem; text-align: center; }
+        #admin-panel h2 { color: #fff; margin-bottom: 1.5rem; text-align: center; font-size: 1.5rem; }
         .admin-input {
-            width: 100%; padding: 10px; margin-bottom: 15px; background: #111;
-            border: 1px solid #333; color: #fff; border-radius: 8px; font-family: 'Cairo';
+            width: 100%; padding: 12px; margin-bottom: 15px; background: #1f2937;
+            border: 1px solid #4b5563; color: #fff; border-radius: 10px; font-family: 'Cairo'; outline: none;
         }
+        .admin-input:focus { border-color: #00f2fe; }
         .admin-btns { display: flex; gap: 10px; }
-        .save-btn { background: #28a745; color: #fff; padding: 10px; border: none; border-radius: 8px; cursor: pointer; flex: 1; }
-        .close-btn { background: #dc3545; color: #fff; padding: 10px; border: none; border-radius: 8px; cursor: pointer; flex: 1; }
-
-        /* غطاء أسود عند فتح اللوحة */
-        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.7); z-index: 999; }
+        .save-btn { background: #10b981; color: #fff; padding: 12px; border: none; border-radius: 10px; cursor: pointer; flex: 1; font-weight: bold; }
+        .close-btn { background: #ef4444; color: #fff; padding: 12px; border: none; border-radius: 10px; cursor: pointer; flex: 1; font-weight: bold; }
+        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 999; }
     </style>
 </head>
 <body>
 
-    <div id="particles-js"></div>
+    <div class="bg-animation">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+        <div class="glow glow-3"></div>
+    </div>
+
+    <div id="secret-admin-trigger" onclick="toggleAdminMode()" title="دخول الإدارة">
+        <i class="fa-solid fa-gear"></i>
+    </div>
 
     <header>
         <h1>ليالي العرب</h1>
-        <p style="color: #bf953f; font-weight: bold;">أساطير البرمجة والسكربتات | VIP</p>
+        <p>حياكم الله بسكربتات وبرامج ليالي العرب | الجودة والاحترافية</p>
     </header>
 
     <div class="container" id="projects-container"></div>
 
     <div id="overlay"></div>
     <div id="admin-panel">
-        <h2>تعديل الكرت رقم: <span id="edit-id"></span></h2>
+        <h2>تعديل المشروع</h2>
         <input type="text" id="edit-title" class="admin-input" placeholder="اسم المشروع">
-        <textarea id="edit-desc" class="admin-input" rows="3" placeholder="وصف المشروع"></textarea>
-        <input type="text" id="edit-image" class="admin-input" placeholder="رابط الصورة">
+        <textarea id="edit-desc" class="admin-input" rows="3" placeholder="وصف المشروع (مثال: سكربت احترافي...)"></textarea>
+        <input type="text" id="edit-image" class="admin-input" placeholder="رابط الصورة (URL)">
         <select id="edit-type" class="admin-input" onchange="toggleInputs()">
-            <option value="script">سكربت (نسخ)</option>
-            <option value="program">برنامج (رابط تحميل)</option>
+            <option value="script">سكربت (زر للنسخ المباشر)</option>
+            <option value="program">برنامج (رابط توجيه للتحميل)</option>
         </select>
         <textarea id="edit-content" class="admin-input" rows="4" placeholder="كود السكربت أو رابط التحميل"></textarea>
         
         <div class="admin-btns">
             <button class="save-btn" onclick="saveEdits()"><i class="fa-solid fa-save"></i> حفظ التعديلات</button>
-            <button class="close-btn" onclick="closeAdmin()"><i class="fa-solid fa-times"></i> إغلاق</button>
+            <button class="close-btn" onclick="closeAdmin()"><i class="fa-solid fa-times"></i> إلغاء</button>
         </div>
     </div>
 
     <script>
-        // إعدادات الجسيمات
-        particlesJS("particles-js", {
-            "particles": {
-                "number": { "value": 50 },
-                "color": { "value": ["#d4af37", "#ffffff"] },
-                "shape": { "type": "circle" },
-                "opacity": { "value": 0.5, "random": true },
-                "size": { "value": 3 },
-                "line_linked": { "enable": true, "distance": 150, "color": "#d4af37", "opacity": 0.2, "width": 1 },
-                "move": { "enable": true, "speed": 1 }
-            },
-            "interactivity": {
-                "events": { "onhover": { "enable": true, "mode": "grab" } }
-            }
-        });
-
-        // 🛠️ البيانات الأساسية (سيتم تحميلها من متصفحك إذا قمت بتعديلها) 🛠️
+        // المشاريع الافتراضية
         const defaultProjects = [
-            { title: "سكربت الطيران VIP", description: "سكربت حصري ليالي العرب، أداء عالي بدون باند.", image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500", isScript: true, content: `print("ليالي العرب VIP")\n-- كود الطيران هنا` },
-            { title: "برنامج التنظيف الشامل", description: "أداة قوية لتسريع الجهاز وحذف الملفات المؤقتة.", image: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=500", isScript: false, content: "https://example.com/download" },
-            { title: "أيمبوت أسطوري", description: "تصويب تلقائي للمحترفين، متوافق مع جميع الألعاب.", image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500", isScript: true, content: `-- Aimbot V2\nlocal aim = true;` }
+            { title: "سكربت الطيران الأسطوري", description: "سكربت طيران حصري مع واجهة تحكم، آمن من الباند.", image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=500", isScript: true, content: `print("حياكم الله في ليالي العرب")\n-- كود السكربت يوضع هنا` },
+            { title: "أداة تنظيف الويندوز", description: "برنامج خفيف لتسريع حاسوبك وحذف الملفات المؤقتة بنقرة.", image: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=500", isScript: false, content: "https://example.com/download" },
+            { title: "سكربت الأيمبوت المدفوع", description: "تتبع تلقائي عالي الدقة، مخصص للمحترفين.", image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500", isScript: true, content: `-- Aimbot V3\nlocal aim = true;` }
         ];
 
-        // جلب البيانات من حاسبتك (LocalStorage) أو استخدام الأساسية
-        let myProjects = JSON.parse(localStorage.getItem('layaliArabProjects')) || defaultProjects;
+        let myProjects = [];
+        let isAdminMode = false;
         let currentEditingIndex = null;
 
+        // محاولة جلب البيانات المحفوظة، وإذا فشلت نستخدم الافتراضية
+        try {
+            myProjects = JSON.parse(localStorage.getItem('layaliDataNew')) || defaultProjects;
+        } catch (e) {
+            myProjects = defaultProjects;
+        }
+
+        // دالة عرض الكروت
         function renderCards() {
             const container = document.getElementById('projects-container');
             container.innerHTML = '';
@@ -210,18 +231,19 @@
                 const card = document.createElement('div');
                 card.className = 'card';
                 
+                // تحديد شكل الزر حسب نوع المشروع
                 let buttonsHTML = project.isScript 
                     ? `<button class="action-btn copy-btn" onclick="copyScript(this, ${index})"><i class="fa-solid fa-copy"></i> نسخ السكربت</button>`
                     : `<a href="${project.content}" target="_blank" class="action-btn download-btn"><i class="fa-solid fa-download"></i> تحميل البرنامج</a>`;
 
-                // زر تعديل مخفي للمدير
-                const adminBtn = `<button style="margin-top:10px; background:transparent; color:#bf953f; border:1px solid #bf953f;" class="action-btn admin-only" onclick="openAdmin(${index})"><i class="fa-solid fa-pen"></i> تعديل (أنت فقط)</button>`;
+                // زر التعديل يظهر فقط إذا كنت في وضع الإدارة
+                const adminBtn = `<button class="action-btn admin-edit-btn" onclick="openAdmin(${index})"><i class="fa-solid fa-pen"></i> تعديل</button>`;
 
                 card.innerHTML = `
-                    <img src="${project.image}" alt="صورة">
+                    <img src="${project.image}" alt="صورة المشروع">
                     <h3>${project.title}</h3>
                     <p>${project.description}</p>
-                    <div class="btn-group" style="flex-direction: column;">
+                    <div class="btn-group">
                         ${buttonsHTML}
                         ${isAdminMode ? adminBtn : ''}
                     </div>
@@ -230,43 +252,52 @@
             });
         }
 
-        // دالة النسخ
+        // دالة نسخ السكربت
         function copyScript(btn, index) {
-            navigator.clipboard.writeText(myProjects[index].content);
-            const oldHtml = btn.innerHTML;
-            btn.innerHTML = `<i class="fa-solid fa-check"></i> تم النسخ!`;
-            setTimeout(() => btn.innerHTML = oldHtml, 2000);
+            const code = myProjects[index].content;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = btn.innerHTML;
+                btn.innerHTML = `<i class="fa-solid fa-check"></i> تم النسخ!`;
+                btn.style.background = "#00f2fe";
+                btn.style.color = "#000";
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = "rgba(0, 242, 254, 0.1)";
+                    btn.style.color = "#00f2fe";
+                }, 2000);
+            });
         }
 
-        // --------------------------------------------------------
-        // 🚨 نظام الإدارة المخفي (خاص بحاسبتك فقط) 🚨
-        // --------------------------------------------------------
-        let isAdminMode = false;
-
-        // اضغط Alt + Q لتفعيل وضع التعديل
-        document.addEventListener('keydown', function(e) {
-            if (e.altKey && e.key.toLowerCase() === 'q') {
-                let password = prompt("أدخل كلمة المرور السرية لتفعيل وضع التعديل (اكتب: 1234):");
-                if(password === "1234") {
-                    isAdminMode = !isAdminMode;
-                    alert(isAdminMode ? "تم تفعيل وضع التعديل بنجاح!" : "تم إغلاق وضع التعديل.");
-                    renderCards(); // إعادة رسم الكروت لإظهار أزرار التعديل
-                } else {
-                    alert("كلمة المرور خاطئة!");
+        // ------------------------------------
+        // نظام إدارة المحتوى (المحفوظ محلياً)
+        // ------------------------------------
+        function toggleAdminMode() {
+            if (!isAdminMode) {
+                const password = prompt("أدخل الرقم السري لفتح الإدارة (الرمز: 1234):");
+                if (password === "1234") {
+                    isAdminMode = true;
+                    alert("تم تفعيل وضع التعديل! ستظهر الآن أزرار التعديل أسفل كل كرت.");
+                    renderCards();
+                } else if (password !== null) {
+                    alert("الرمز السري خاطئ.");
                 }
+            } else {
+                isAdminMode = false;
+                alert("تم إغلاق وضع التعديل.");
+                renderCards();
             }
-        });
+        }
 
         function openAdmin(index) {
             currentEditingIndex = index;
             const proj = myProjects[index];
-            document.getElementById('edit-id').innerText = index + 1;
             document.getElementById('edit-title').value = proj.title;
             document.getElementById('edit-desc').value = proj.description;
             document.getElementById('edit-image').value = proj.image;
             document.getElementById('edit-type').value = proj.isScript ? 'script' : 'program';
             document.getElementById('edit-content').value = proj.content;
             
+            toggleInputs(); // تحديث النص الإرشادي
             document.getElementById('admin-panel').style.display = 'block';
             document.getElementById('overlay').style.display = 'block';
         }
@@ -274,6 +305,7 @@
         function closeAdmin() {
             document.getElementById('admin-panel').style.display = 'none';
             document.getElementById('overlay').style.display = 'none';
+            currentEditingIndex = null;
         }
 
         function saveEdits() {
@@ -286,22 +318,21 @@
                     content: document.getElementById('edit-content').value
                 };
                 
-                // حفظ التعديلات في متصفح حاسبتك للأبد
-                localStorage.setItem('layaliArabProjects', JSON.stringify(myProjects));
+                // حفظ البيانات في المتصفح الخاص بك
+                localStorage.setItem('layaliDataNew', JSON.stringify(myProjects));
                 closeAdmin();
                 renderCards();
-                alert("تم الحفظ بنجاح! هذه التعديلات محفوظة في حاسبتك الآن.");
             }
         }
 
         function toggleInputs() {
             const type = document.getElementById('edit-type').value;
             const contentBox = document.getElementById('edit-content');
-            contentBox.placeholder = type === 'script' ? "ضع كود السكربت هنا..." : "ضع رابط تحميل البرنامج هنا...";
+            contentBox.placeholder = type === 'script' ? "ضع كود السكربت هنا بالكامل..." : "ضع رابط توجيه التحميل هنا (مثال: https://...)...";
         }
 
         // تشغيل الموقع لأول مرة
-        renderCards();
+        document.addEventListener('DOMContentLoaded', renderCards);
     </script>
 </body>
 </html>
