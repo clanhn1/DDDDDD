@@ -17,7 +17,6 @@
             background-image: radial-gradient(circle at 50% 0%, #1a150b 0%, #050508 80%);
         }
 
-        /* الحاوية الرئيسية (قسمين: تحكم + معاينة) */
         .dashboard-container {
             display: flex; gap: 2rem; width: 100%; max-width: 1400px;
             flex-wrap: wrap; align-items: flex-start;
@@ -33,7 +32,7 @@
 
         /* شاشة المعاينة (اليسار) */
         .preview-panel {
-            background: #313338; /* لون خلفية الديسكورد الحقيقي */
+            background: #313338; 
             border-radius: 15px; padding: 2rem; flex: 1; min-width: 400px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.8); position: sticky; top: 2rem;
         }
@@ -41,6 +40,8 @@
         .header { text-align: center; margin-bottom: 2rem; border-bottom: 1px solid rgba(191, 149, 63, 0.2); padding-bottom: 1rem; }
         .header h1 { color: #bf953f; font-size: 2.2rem; text-shadow: 0 0 20px rgba(191, 149, 63, 0.4); margin-bottom: 5px; font-weight: 900; }
         .header p { color: #a1a1aa; font-size: 1rem; }
+
+        .section-title { color: #bf953f; font-size: 1.1rem; border-bottom: 1px dashed #bf953f; padding-bottom: 5px; margin-bottom: 15px; margin-top: 20px; font-weight: bold;}
 
         .form-group { margin-bottom: 1.2rem; }
         .form-group label { display: block; color: #e2e8f0; margin-bottom: 8px; font-weight: bold; font-size: 0.9rem; }
@@ -75,40 +76,38 @@
         }
         .send-btn:hover { box-shadow: 0 0 25px rgba(191, 149, 63, 0.5); transform: translateY(-3px); }
 
-        /* --------------------------------- */
         /* ستايل معاينة الديسكورد (اليسار) */
-        /* --------------------------------- */
         .preview-header-title { color: #a3a6aa; font-size: 0.9rem; margin-bottom: 15px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
         
         .discord-message { display: flex; gap: 15px; font-family: sans-serif; text-align: right; direction: rtl; }
-        .discord-avatar { width: 40px; height: 40px; border-radius: 50%; background: #5865F2; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
+        .discord-avatar { width: 45px; height: 45px; border-radius: 50%; background: #2b2d31; display: flex; justify-content: center; align-items: center; flex-shrink: 0; overflow: hidden; border: 1px solid #1e1f22;}
         .discord-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
         
         .discord-body { display: flex; flex-direction: column; width: 100%; }
         .discord-name-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 5px; }
-        .discord-username { color: #f2f3f5; font-weight: 600; font-size: 1rem; }
-        .discord-bot-tag { background: #5865F2; color: #fff; font-size: 0.65rem; padding: 2px 4px; border-radius: 3px; font-weight: bold; }
+        .discord-username { color: #f2f3f5; font-weight: 600; font-size: 1.05rem; }
+        .discord-bot-tag { background: #5865F2; color: #fff; font-size: 0.65rem; padding: 2px 5px; border-radius: 4px; font-weight: bold; display: flex; align-items: center; gap: 3px;}
         .discord-time { color: #949ba4; font-size: 0.75rem; }
         
-        /* الـ Embed */
         .discord-embed {
-            background: #2b2d31; border-right: 4px solid #bf953f; /* الخط الملون */
+            background: #2b2d31; border-right: 4px solid #bf953f;
             border-radius: 4px; padding: 1rem; max-width: 520px; display: flex; flex-direction: column; gap: 8px;
             margin-top: 5px;
         }
-        .embed-author { color: #f2f3f5; font-size: 0.85rem; font-weight: bold; display: flex; align-items: center; gap: 8px;}
-        .embed-title { color: #00a8fc; font-weight: bold; font-size: 1rem; text-decoration: none; }
-        .embed-desc { color: #dbdee1; font-size: 0.85rem; white-space: pre-wrap; line-height: 1.4; }
+        .embed-title { color: #00a8fc; font-weight: bold; font-size: 1.1rem; text-decoration: none; }
+        .embed-desc { color: #dbdee1; font-size: 0.9rem; white-space: pre-wrap; line-height: 1.5; }
         
-        /* كود الديسكورد */
-        .discord-code-block { background: #1e1f22; border: 1px solid #111214; border-radius: 4px; padding: 8px; font-family: monospace; color: #dbdee1; font-size: 0.8rem; margin-top: 5px; direction: ltr; text-align: left; }
+        .discord-code-block { background: #1e1f22; border: 1px solid #111214; border-radius: 4px; padding: 10px; font-family: monospace; color: #dbdee1; font-size: 0.85rem; margin-top: 5px; direction: ltr; text-align: left; overflow-x: auto;}
         
         .embed-fields { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
         .embed-field-name { color: #f2f3f5; font-size: 0.85rem; font-weight: bold; margin-bottom: 2px;}
         .embed-field-value { color: #dbdee1; font-size: 0.85rem; }
         
         .embed-image { max-width: 100%; border-radius: 8px; margin-top: 10px; display: none; }
-        .embed-footer { display: flex; align-items: center; gap: 8px; color: #949ba4; font-size: 0.7rem; margin-top: 10px; }
+        
+        .embed-footer { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+        .embed-footer img { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; }
+        .embed-footer span { color: #949ba4; font-size: 0.75rem; }
 
         #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
         .spinner { border: 5px solid rgba(255,255,255,0.1); border-top: 5px solid #bf953f; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 15px; }
@@ -119,7 +118,7 @@
 
     <div id="loading-overlay">
         <div class="spinner"></div>
-        <h3 style="color: #bf953f;">جاري تشفير البيانات والرفع للسيرفر...</h3>
+        <h3 style="color: #bf953f;">جاري تشفير البيانات والرفع للديسكورد...</h3>
     </div>
 
     <div class="dashboard-container">
@@ -130,10 +129,20 @@
                 <p>تعديل ومعاينة حية للديسكورد (Live Preview)</p>
             </div>
 
-            <div class="form-group">
-                <label>اسم الكاتب (Author):</label>
-                <input type="text" id="msg-author" class="admin-input" placeholder="مثال: الإدارة العليا" oninput="updatePreview()">
+            <div class="section-title"><i class="fa-solid fa-robot"></i> هوية المرسل (البوت)</div>
+            
+            <div style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>اسم الحساب المرسل:</label>
+                    <input type="text" id="bot-username" class="admin-input" value="اداره ليالي العرب" oninput="updatePreview()">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>رابط صورة المرسل (Avatar):</label>
+                    <input type="text" id="bot-avatar" class="admin-input" placeholder="رابط صورة السيرفر..." value="https://cdn-icons-png.flaticon.com/512/3592/3592869.png" oninput="updatePreview()">
+                </div>
             </div>
+
+            <div class="section-title"><i class="fa-solid fa-pen-nib"></i> محتوى الرسالة</div>
 
             <div class="form-group">
                 <label>اسم المشروع (عنوان الرسالة):</label>
@@ -141,7 +150,7 @@
             </div>
 
             <div class="form-group">
-                <label>الوصف العام:</label>
+                <label>الوصف العام للمشروع:</label>
                 <textarea id="msg-desc" class="admin-input" rows="2" placeholder="اكتب المميزات هنا..." oninput="updatePreview()"></textarea>
             </div>
 
@@ -149,27 +158,27 @@
                 <div class="form-group" style="flex: 1;">
                     <label>نوع النشر:</label>
                     <select id="msg-type" class="admin-input" onchange="updatePreview()">
-                        <option value="script">سكربت (نص برمجي)</option>
-                        <option value="program">برنامج (رابط)</option>
+                        <option value="script">سكربت (نص للنسخ)</option>
+                        <option value="program">برنامج (رابط تحميل)</option>
                     </select>
                 </div>
                 <div class="form-group" style="flex: 1;">
                     <label>حالة المشروع (Status):</label>
-                    <input type="text" id="msg-status" class="admin-input" placeholder="مثال: ✅ آمن" oninput="updatePreview()">
+                    <input type="text" id="msg-status" class="admin-input" placeholder="مثال: ✅ يعمل بدون مشاكل" oninput="updatePreview()">
                 </div>
             </div>
 
             <div class="form-group">
                 <label id="content-label">الكود البرمجي / الرابط:</label>
-                <textarea id="msg-content" class="admin-input" rows="3" placeholder="ضع الكود هنا..." oninput="updatePreview()"></textarea>
+                <textarea id="msg-content" class="admin-input" rows="3" placeholder="ضع الكود أو الرابط هنا..." oninput="updatePreview()"></textarea>
             </div>
 
             <div class="form-group">
-                <label>صورة الغلاف (ترفع للسيرفر):</label>
+                <label>صورة الغلاف (تزيين للرسالة - اختياري):</label>
                 <div class="file-upload-wrapper">
                     <input type="file" id="msg-image-file" class="file-upload-input" accept="image/png, image/jpeg, image/gif" onchange="handleImagePreview()">
                     <div class="file-upload-btn">
-                        <i class="fa-solid fa-cloud-arrow-up"></i> اختر صورة
+                        <i class="fa-solid fa-cloud-arrow-up"></i> رفع صورة من الجهاز
                     </div>
                 </div>
                 <span id="file-name" class="file-name-display">لم يتم تحديد ملف</span>
@@ -191,28 +200,27 @@
             </div>
 
             <button id="submit-btn" class="send-btn" onclick="sendToDiscord()">
-                <i class="fa-solid fa-rocket"></i> إطلاق للسيرفر
+                <i class="fa-solid fa-rocket"></i> إطلاق للديسكورد
             </button>
         </div>
 
         <div class="preview-panel">
-            <div class="preview-header-title">معاينة الديسكورد المباشرة</div>
+            <div class="preview-header-title">معاينة الرسالة قبل الإرسال</div>
             
             <div class="discord-message">
                 <div class="discord-avatar">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3592/3592869.png" alt="Bot">
+                    <img id="preview-bot-avatar" src="https://cdn-icons-png.flaticon.com/512/3592/3592869.png" alt="Bot Avatar" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
                 </div>
                 <div class="discord-body">
                     <div class="discord-name-row">
-                        <span class="discord-username">ليالي العرب | الإدارة</span>
-                        <span class="discord-bot-tag">BOT</span>
+                        <span class="discord-username" id="preview-bot-name">اداره ليالي العرب</span>
+                        <span class="discord-bot-tag"><i class="fa-solid fa-check" style="font-size: 0.5rem;"></i> BOT</span>
                         <span class="discord-time">اليوم في <span id="preview-time">00:00</span></span>
                     </div>
                     
-                    <div id="preview-mention" style="color: #7289da; font-size: 0.9rem; margin-bottom: 5px; display: none;"></div>
+                    <div id="preview-mention" style="color: #c9cdfb; background: rgba(88, 101, 242, 0.3); padding: 2px 4px; border-radius: 4px; font-size: 0.9rem; margin-bottom: 5px; display: inline-block; display: none;"></div>
 
                     <div class="discord-embed" id="preview-embed">
-                        <div class="embed-author" id="preview-author" style="display: none;"></div>
                         <div class="embed-title" id="preview-title">عنوان الرسالة سيظهر هنا</div>
                         <div class="embed-desc" id="preview-desc">الوصف سيظهر هنا...</div>
                         
@@ -228,7 +236,8 @@
                         <img id="preview-image" class="embed-image" src="" alt="preview">
 
                         <div class="embed-footer">
-                            <span>ليالي العرب VIP • النظام المركزي</span>
+                            <img id="preview-footer-icon" src="https://cdn-icons-png.flaticon.com/512/3592/3592869.png" onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+                            <span>خاص بنشر سكربتات روبلوكس من قبل ليالي العرب</span>
                         </div>
                     </div>
                 </div>
@@ -240,13 +249,21 @@
     <script>
         const webhookUrl = "https://discord.com/api/webhooks/1488450280025755658/VhWQUrcszHcoCvvKITXyetiyCDUFP8uBov86vJohjx5igW_cBG6P-zbYzvb5QjXRbTfT";
         
-        // تحديث وقت المعاينة
+        // تحديث الوقت في المعاينة
         const now = new Date();
         document.getElementById('preview-time').innerText = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
 
-        // دالة المعاينة الحية
+        // المعاينة الحية
         function updatePreview() {
-            const author = document.getElementById('msg-author').value;
+            // بيانات المرسل
+            const botName = document.getElementById('bot-username').value || "اداره ليالي العرب";
+            const botAvatar = document.getElementById('bot-avatar').value || "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+            
+            document.getElementById('preview-bot-name').innerText = botName;
+            document.getElementById('preview-bot-avatar').src = botAvatar;
+            document.getElementById('preview-footer-icon').src = botAvatar; // أيقونة التذييل مطابقة لصورة البوت
+
+            // بيانات الرسالة
             const title = document.getElementById('msg-title').value;
             const desc = document.getElementById('msg-desc').value;
             const type = document.getElementById('msg-type').value;
@@ -255,30 +272,20 @@
             const color = document.getElementById('msg-color').value;
             const mention = document.getElementById('msg-mention').value;
 
-            // تغيير لون الـ Embed
             document.getElementById('preview-embed').style.borderRightColor = color;
 
-            // تحديث المنشن
             const previewMention = document.getElementById('preview-mention');
-            if(mention) { previewMention.innerText = mention; previewMention.style.display = 'block'; }
+            if(mention) { previewMention.innerText = mention; previewMention.style.display = 'inline-block'; }
             else { previewMention.style.display = 'none'; }
 
-            // الكاتب
-            const previewAuthor = document.getElementById('preview-author');
-            if(author) { previewAuthor.innerText = author; previewAuthor.style.display = 'block'; }
-            else { previewAuthor.style.display = 'none'; }
-
-            // العنوان
             document.getElementById('preview-title').innerText = title || "عنوان الرسالة";
             
-            // الوصف
-            let displayDesc = desc || "الوصف...";
+            let displayDesc = desc || "وصف المشروع والمميزات...";
             if(type === 'program' && content) {
                 displayDesc += `\n\n🔗 **[اضغط هنا لتحميل البرنامج](${content})**`;
             }
             document.getElementById('preview-desc').innerHTML = displayDesc.replace(/\n/g, '<br>');
 
-            // الكود (السكربت)
             const codeBlock = document.getElementById('preview-code-block');
             if(type === 'script' && content) {
                 codeBlock.innerText = content;
@@ -287,7 +294,6 @@
                 codeBlock.style.display = 'none';
             }
 
-            // الحالة (Fields)
             const fieldsDiv = document.getElementById('preview-fields');
             if(status) {
                 document.getElementById('preview-status').innerText = `\`${status}\``;
@@ -297,7 +303,6 @@
             }
         }
 
-        // معاينة الصورة المرفوعة فورياً
         function handleImagePreview() {
             const input = document.getElementById('msg-image-file');
             const display = document.getElementById('file-name');
@@ -306,8 +311,6 @@
             if (input.files && input.files[0]) {
                 const file = input.files[0];
                 display.innerHTML = `<i class="fa-solid fa-check"></i> ${file.name}`;
-                
-                // تحويل الصورة لعرضها محلياً قبل الرفع
                 previewImg.src = URL.createObjectURL(file);
                 previewImg.style.display = 'block';
             } else {
@@ -318,7 +321,12 @@
         }
 
         async function sendToDiscord() {
-            const author = document.getElementById('msg-author').value.trim();
+            // بيانات البوت
+            const botUsername = document.getElementById('bot-username').value.trim() || "اداره ليالي العرب";
+            let botAvatar = document.getElementById('bot-avatar').value.trim();
+            if(!botAvatar) botAvatar = "https://cdn-icons-png.flaticon.com/512/149/149071.png";
+
+            // بيانات الرسالة
             const title = document.getElementById('msg-title').value.trim();
             const desc = document.getElementById('msg-desc').value.trim();
             const type = document.getElementById('msg-type').value;
@@ -342,12 +350,14 @@
                 title: `👑 | ${title}`,
                 description: discordDescription,
                 color: colorDec,
-                footer: { text: "ليالي العرب VIP • النظام المركزي" },
+                footer: { 
+                    text: "خاص بنشر سكربتات روبلوكس من قبل ليالي العرب",
+                    icon_url: botAvatar
+                },
                 timestamp: new Date().toISOString(),
                 fields: []
             };
 
-            if (author) embed.author = { name: author };
             if (status) embed.fields.push({ name: "📊 حالة المشروع", value: `\`${status}\``, inline: false });
 
             const formData = new FormData();
@@ -358,8 +368,8 @@
 
             const payloadJson = {
                 content: mention,
-                username: "ليالي العرب | الإدارة",
-                avatar_url: "https://cdn-icons-png.flaticon.com/512/3592/3592869.png",
+                username: botUsername,
+                avatar_url: botAvatar,
                 embeds: [embed]
             };
 
@@ -368,8 +378,7 @@
             try {
                 const response = await fetch(webhookUrl, { method: 'POST', body: formData });
                 if (response.ok) {
-                    alert("✅ تم الإطلاق! الرسالة في الديسكورد الآن.");
-                    // تصفير بعض الحقول للعملية القادمة
+                    alert("✅ تم الإرسال بنجاح! تفقد سيرفر الديسكورد الخاص بك.");
                     document.getElementById('msg-title').value = '';
                     document.getElementById('msg-desc').value = '';
                     document.getElementById('msg-content').value = '';
