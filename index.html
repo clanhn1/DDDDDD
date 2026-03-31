@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة حسن | للسكربتات والبرامج</title>
+    <title>ليالي العرب | للسكربتات والبرامج</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
     <style>
         /* إعدادات عامة والخطوط */
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
@@ -16,69 +19,55 @@
         }
 
         body {
-            background-color: #050505; /* لون خلفية داكن تحسباً لتأخر تحميل الفيديو */
+            background-color: #0b0c10; /* لون خلفية داكن فخم */
             color: #fff;
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
         }
 
-        /* 🎬 حاوية فيديو اليوتيوب في الخلفية 🎬 */
-        .video-background {
+        /* 🌌 خلفية الجسيمات المتحركة 🌌 */
+        #particles-js {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            z-index: -1; /* ليكون في الخلفية دائماً */
-            overflow: hidden;
-            pointer-events: none; /* لمنع المستخدم من التفاعل مع الفيديو (ايقاف/تشغيل) */
+            z-index: -1;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #0b0c10 100%);
         }
 
-        .video-background iframe {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100vw;
-            height: 56.25vw; /* نسبة أبعاد 16:9 لفيديوهات اليوتيوب */
-            min-height: 100vh;
-            min-width: 177.77vh; /* لضمان تغطية الشاشة بالكامل */
-            transform: translate(-50%, -50%);
-            opacity: 0.15; /* يمكنك تعديل هذا الرقم لزيادة أو تقليل شفافية الفيديو (مثلاً 0.3 أغمق) */
-            filter: contrast(1.2) brightness(0.8); /* تحسين لون الفيديو ليلائم الستايل الزجاجي */
-        }
-
-        /* -------------------------------------- */
-
-        /* الهيدر فخم وزجاجي (Glassmorphism) */
+        /* الهيدر الفخم (Glassmorphism) */
         header {
             position: relative;
             z-index: 10;
             text-align: center;
             padding: 4rem 2rem;
-            background: rgba(255, 255, 255, 0.05); /* شفافية أقوى ليبرز الفيديو في الخلف */
+            background: rgba(15, 15, 20, 0.4);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 215, 0, 0.2); /* لمسة ذهبية */
             margin-bottom: 3rem;
             animation: fadeInDown 1s ease-out;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); /* إضافة ظل لزيادة العمق */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
         }
 
         header h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 900;
-            background: linear-gradient(to left, #00f2fe, #4facfe);
+            /* تدرج لوني ذهبي فخم */
+            background: linear-gradient(to left, #bf953f, #fcf6ba, #b38728, #fbf5b7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
-            text-shadow: 0 0 20px rgba(0, 242, 254, 0.5); /* توهج للنص */
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            letter-spacing: 2px;
         }
 
         header p {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: #e2e8f0;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8); /* تحديد النص لتسهيل قراءته فوق الفيديو */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
         /* حاوية الكروت */
@@ -89,14 +78,14 @@
             margin: 0 auto;
             padding: 0 2rem 4rem;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2.5rem;
         }
 
-        /* تصميم الكرت (Glassmorphism) */
+        /* تصميم الكرت (Glassmorphism + الفخامة) */
         .card {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 215, 0, 0.15); /* حدود ذهبية خفيفة */
             border-radius: 20px;
             padding: 1.5rem;
             backdrop-filter: blur(20px);
@@ -106,34 +95,34 @@
             overflow: hidden;
             opacity: 0;
             animation: fadeInUp 0.8s ease-out forwards;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* تأثير زجاجي 3D */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: rgba(79, 172, 254, 0.8);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(79, 172, 254, 0.4);
-            background: rgba(255, 255, 255, 0.08); /* إضاءة خفيفة عند التأشير */
+            transform: translateY(-10px);
+            border-color: rgba(255, 215, 0, 0.6);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 215, 0, 0.2);
+            background: rgba(255, 255, 255, 0.06);
         }
 
-        /* صورة المشروع */
         .card img {
             width: 100%;
-            height: 180px;
+            height: 190px;
             object-fit: cover;
             border-radius: 12px;
             margin-bottom: 1.5rem;
             transition: transform 0.5s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
         }
 
         .card:hover img {
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
 
-        /* نصوص الكرت */
         .card h3 {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             margin-bottom: 0.5rem;
             color: #f8fafc;
             text-shadow: 0 2px 4px rgba(0,0,0,0.8);
@@ -141,36 +130,70 @@
 
         .card p {
             color: #cbd5e1;
-            font-size: 0.95rem;
+            font-size: 1rem;
             margin-bottom: 1.5rem;
             line-height: 1.6;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+            flex-grow: 1; /* لجعل الأزرار في الأسفل دائماً */
         }
 
-        /* زر التحميل/النسخ */
-        .download-btn {
-            display: inline-block;
-            width: 100%;
+        /* الأزرار */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .action-btn {
+            flex: 1;
             padding: 12px;
             text-align: center;
-            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            border: none;
+            outline: none;
+            cursor: pointer;
             color: #000;
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 900;
             border-radius: 10px;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* زر النسخ (ذهبي) */
+        .copy-btn {
+            background: linear-gradient(45deg, #bf953f, #fcf6ba);
+            box-shadow: 0 4px 15px rgba(191, 149, 63, 0.3);
+        }
+
+        .copy-btn:hover {
+            background: linear-gradient(45deg, #fcf6ba, #bf953f);
+            box-shadow: 0 0 20px rgba(252, 246, 186, 0.6);
+            transform: scale(1.05);
+        }
+
+        /* زر التحميل (أزرق فخم) */
+        .download-btn {
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
             box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
         }
 
         .download-btn:hover {
-            box-shadow: 0 0 20px #00f2fe;
-            color: #fff;
             background: linear-gradient(45deg, #4facfe, #00f2fe);
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
+            transform: scale(1.05);
         }
 
-        /* تأثيرات الحركة (Animations) */
+        /* رسالة النسخ الناجح */
+        .copied-success {
+            background: linear-gradient(45deg, #11998e, #38ef7d) !important;
+            color: #fff !important;
+            box-shadow: 0 0 20px rgba(56, 239, 125, 0.6) !important;
+        }
+
+        /* تأثيرات الحركة */
         @keyframes fadeInDown {
             from { opacity: 0; transform: translateY(-30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -184,62 +207,132 @@
 </head>
 <body>
 
-    <div class="video-background">
-        <iframe 
-            src="https://www.youtube.com/embed/b_K1NLOUoqI?autoplay=1&mute=1&loop=1&playlist=b_K1NLOUoqI&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3" 
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
-        </iframe>
-    </div>
+    <div id="particles-js"></div>
 
     <header>
-        <h1>مستودع السكربتات والبرامج</h1>
-        <p>مكتبة مخصصة لنشر أحدث وأقوى أدوات التطوير حصرياً</p>
+        <h1>ليالي العرب</h1>
+        <p>حياكم الله بسكربتات ليالي العرب - مكتبة النخبة</p>
     </header>
 
     <div class="container" id="projects-container">
         </div>
 
     <script>
-        // 🛠️ منطقة التحكم 🛠️
+        // 🛠️ إعدادات الجسيمات المتحركة (الفخامة) 🛠️
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": ["#fcf6ba", "#00f2fe"] }, // ألوان الجسيمات ذهبي وأزرق
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.5, "random": true },
+                "size": { "value": 3, "random": true },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 150,
+                    "color": "#bf953f", // خطوط ذهبية خافتة
+                    "opacity": 0.2,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 1.5,
+                    "direction": "none",
+                    "random": true,
+                    "out_mode": "out"
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": { "enable": true, "mode": "grab" },
+                    "onclick": { "enable": true, "mode": "push" }
+                },
+                "modes": {
+                    "grab": { "distance": 140, "line_linked": { "opacity": 0.5 } }
+                }
+            },
+            "retina_detect": true
+        });
+
+        // 🛠️ منطقة التحكم بالسكربتات والبرامج 🛠️
+        // يمكنك هنا وضع السكربت كنص، أو رابط تحميل
         const myProjects = [
             {
-                title: "سكربت روبلوكس المتطور",
-                description: "سكربت احترافي يدعم واجهات المستخدم التفاعلية (GUI) بدون التأثير على الأداء.",
+                title: "سكربت السرعة الخارق",
+                description: "سكربت احترافي يدعم واجهات المستخدم التفاعلية، حصري لموقع ليالي العرب.",
                 image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                link: "https://github.com/YourUsername/RepoName/releases/download/v1.0/script.lua"
+                isScript: true, // true يعني أنه كود قابل للنسخ
+                scriptContent: `print("حياكم الله في ليالي العرب")\n_G.Speed = 200\nloadstring(game:HttpGet("https://example.com/script.lua"))()`,
+                link: "" // اتركه فارغاً إذا كان مجرد سكربت للنسخ
             },
             {
                 title: "برنامج تحسين النظام",
-                description: "أداة صيانة قوية للويندوز وتخفيف استهلاك موارد الجهاز.",
+                description: "أداة صيانة قوية للويندوز وتخفيف استهلاك موارد الجهاز للألعاب.",
                 image: "https://images.unsplash.com/photo-1629654297299-c8506221ca97?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                isScript: false, // false يعني أنه برنامج برابط تحميل
+                scriptContent: "",
                 link: "https://link-to-your-program.com/download"
             },
             {
-                title: "نظام الشخصية الذكية (Mimic)",
-                description: "نظام تتبع ذكي للمجسمات في ألعاب روبلوكس مع تفاعلات واقعية.",
+                title: "سكربت الأيمبوت VIP",
+                description: "نظام تتبع ذكي للمجسمات مع تفاعلات واقعية، آمن ومستقر 100%.",
                 image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-                link: "https://pastebin.com/your-script-link"
+                isScript: true,
+                scriptContent: `-- سكربت ليالي العرب\nlocal Aimbot = true\nprint("تم التفعيل بنجاح")`,
+                link: ""
             }
         ];
 
         const container = document.getElementById('projects-container');
 
+        // بناء الكروت بناءً على البيانات
         myProjects.forEach((project, index) => {
             const card = document.createElement('div');
             card.className = 'card';
             card.style.animationDelay = `${index * 0.15}s`;
             
+            // تحديد نوع الأزرار المعروضة (نسخ أو تحميل)
+            let buttonsHTML = '';
+            if (project.isScript) {
+                // إذا كان سكربت، نعرض زر النسخ
+                buttonsHTML = `<button class="action-btn copy-btn" onclick="copyScript(this, ${index})"><i class="fa-solid fa-copy"></i> نسخ السكربت</button>`;
+            } else {
+                // إذا كان برنامج، نعرض زر التحميل
+                buttonsHTML = `<a href="${project.link}" target="_blank" class="action-btn download-btn"><i class="fa-solid fa-download"></i> تحميل البرنامج</a>`;
+            }
+
             card.innerHTML = `
                 <img src="${project.image}" alt="${project.title}">
                 <h3>${project.title}</h3>
                 <p>${project.description}</p>
-                <a href="${project.link}" target="_blank" class="download-btn">تحميل / عرض</a>
+                <div class="btn-group">
+                    ${buttonsHTML}
+                </div>
             `;
             
             container.appendChild(card);
         });
+
+        // دالة نسخ السكربت عند الضغط على الزر
+        function copyScript(btnElement, projectIndex) {
+            const scriptToCopy = myProjects[projectIndex].scriptContent;
+            
+            navigator.clipboard.writeText(scriptToCopy).then(() => {
+                // تغيير شكل الزر لإعطاء تأكيد للمستخدم
+                const originalText = btnElement.innerHTML;
+                btnElement.innerHTML = `<i class="fa-solid fa-check"></i> تم النسخ!`;
+                btnElement.classList.add('copied-success');
+                
+                // إعادة الزر لشكله الطبيعي بعد ثانيتين
+                setTimeout(() => {
+                    btnElement.innerHTML = originalText;
+                    btnElement.classList.remove('copied-success');
+                }, 2000);
+            }).catch(err => {
+                console.error('حدث خطأ أثناء النسخ: ', err);
+                alert("تعذر نسخ السكربت، يرجى المحاولة لاحقاً.");
+            });
+        }
     </script>
 
 </body>
