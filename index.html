@@ -16,25 +16,53 @@
         }
 
         body {
-            background-color: #0d0d12;
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.15), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(14, 165, 233, 0.15), transparent 25%);
+            background-color: #050505; /* لون خلفية داكن تحسباً لتأخر تحميل الفيديو */
             color: #fff;
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* الهيدر فخم وزجاجي */
+        /* 🎬 حاوية فيديو اليوتيوب في الخلفية 🎬 */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1; /* ليكون في الخلفية دائماً */
+            overflow: hidden;
+            pointer-events: none; /* لمنع المستخدم من التفاعل مع الفيديو (ايقاف/تشغيل) */
+        }
+
+        .video-background iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 56.25vw; /* نسبة أبعاد 16:9 لفيديوهات اليوتيوب */
+            min-height: 100vh;
+            min-width: 177.77vh; /* لضمان تغطية الشاشة بالكامل */
+            transform: translate(-50%, -50%);
+            opacity: 0.15; /* يمكنك تعديل هذا الرقم لزيادة أو تقليل شفافية الفيديو (مثلاً 0.3 أغمق) */
+            filter: contrast(1.2) brightness(0.8); /* تحسين لون الفيديو ليلائم الستايل الزجاجي */
+        }
+
+        /* -------------------------------------- */
+
+        /* الهيدر فخم وزجاجي (Glassmorphism) */
         header {
+            position: relative;
+            z-index: 10;
             text-align: center;
             padding: 4rem 2rem;
-            background: rgba(255, 255, 255, 0.02);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.05); /* شفافية أقوى ليبرز الفيديو في الخلف */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             margin-bottom: 3rem;
             animation: fadeInDown 1s ease-out;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); /* إضافة ظل لزيادة العمق */
         }
 
         header h1 {
@@ -44,15 +72,19 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.5); /* توهج للنص */
         }
 
         header p {
             font-size: 1.2rem;
-            color: #a0aec0;
+            color: #e2e8f0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8); /* تحديد النص لتسهيل قراءته فوق الفيديو */
         }
 
         /* حاوية الكروت */
         .container {
+            position: relative;
+            z-index: 10;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem 4rem;
@@ -63,23 +95,25 @@
 
         /* تصميم الكرت (Glassmorphism) */
         .card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             padding: 1.5rem;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
             overflow: hidden;
             opacity: 0;
             animation: fadeInUp 0.8s ease-out forwards;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); /* تأثير زجاجي 3D */
         }
 
         .card:hover {
             transform: translateY(-10px) scale(1.02);
-            border-color: rgba(79, 172, 254, 0.5);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(79, 172, 254, 0.2);
+            border-color: rgba(79, 172, 254, 0.8);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7), 0 0 20px rgba(79, 172, 254, 0.4);
+            background: rgba(255, 255, 255, 0.08); /* إضاءة خفيفة عند التأشير */
         }
 
         /* صورة المشروع */
@@ -90,6 +124,7 @@
             border-radius: 12px;
             margin-bottom: 1.5rem;
             transition: transform 0.5s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
         .card:hover img {
@@ -100,14 +135,16 @@
         .card h3 {
             font-size: 1.4rem;
             margin-bottom: 0.5rem;
-            color: #e2e8f0;
+            color: #f8fafc;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
         .card p {
-            color: #94a3b8;
+            color: #cbd5e1;
             font-size: 0.95rem;
             margin-bottom: 1.5rem;
             line-height: 1.6;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
         }
 
         /* زر التحميل/النسخ */
@@ -124,11 +161,13 @@
             transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3);
         }
 
         .download-btn:hover {
-            box-shadow: 0 0 15px #00f2fe;
+            box-shadow: 0 0 20px #00f2fe;
             color: #fff;
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
         }
 
         /* تأثيرات الحركة (Animations) */
@@ -145,6 +184,15 @@
 </head>
 <body>
 
+    <div class="video-background">
+        <iframe 
+            src="https://www.youtube.com/embed/b_K1NLOUoqI?autoplay=1&mute=1&loop=1&playlist=b_K1NLOUoqI&controls=0&showinfo=0&rel=0&modestbranding=1&iv_load_policy=3" 
+            frameborder="0" 
+            allow="autoplay; encrypted-media" 
+            allowfullscreen>
+        </iframe>
+    </div>
+
     <header>
         <h1>مستودع السكربتات والبرامج</h1>
         <p>مكتبة مخصصة لنشر أحدث وأقوى أدوات التطوير حصرياً</p>
@@ -154,9 +202,7 @@
         </div>
 
     <script>
-        // 🛠️ منطقة التحكم (أنت فقط من يعدل هنا) 🛠️
-        // لإضافة سكربت أو برنامج جديد، انسخ أحد الأقواس وأضفه للقائمة مع تغيير بياناته
-        
+        // 🛠️ منطقة التحكم 🛠️
         const myProjects = [
             {
                 title: "سكربت روبلوكس المتطور",
@@ -178,13 +224,12 @@
             }
         ];
 
-        // كود تشغيل وعرض المحتوى (لا تحتاج لتعديله)
         const container = document.getElementById('projects-container');
 
         myProjects.forEach((project, index) => {
             const card = document.createElement('div');
             card.className = 'card';
-            card.style.animationDelay = `${index * 0.15}s`; // لتأخير الحركة بين الكروت لجمالية الأنميشن
+            card.style.animationDelay = `${index * 0.15}s`;
             
             card.innerHTML = `
                 <img src="${project.image}" alt="${project.title}">
