@@ -3,10 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ليالي العرب | للسكربتات والبرامج VIP</title>
+    <title>ليالي العرب | لوحة النشر للديسكورد</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <script src="https://www.youtube.com/iframe_api"></script>
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
@@ -14,415 +12,180 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
 
         body {
-            background-color: #020203; color: #fff; min-height: 100vh; overflow-x: hidden;
-            cursor: crosshair;
+            background-color: #0d0d12; color: #fff; min-height: 100vh;
+            display: flex; justify-content: center; align-items: center; padding: 2rem;
+            background-image: radial-gradient(circle at 50% 0%, #2a2010 0%, #0d0d12 70%);
         }
 
-        /* 🎬 شاشة الدخول السينمائية (لحل مشكلة الصوت التلقائي) 🎬 */
-        #welcome-screen {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(2, 2, 3, 0.95); z-index: 9999; display: flex;
-            flex-direction: column; justify-content: center; align-items: center;
-            backdrop-filter: blur(20px); transition: opacity 1s ease, visibility 1s ease;
+        .admin-panel {
+            background: rgba(20, 20, 25, 0.8); border: 1px solid #bf953f;
+            border-radius: 20px; padding: 2.5rem; width: 100%; max-width: 600px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(191, 149, 63, 0.15);
+            backdrop-filter: blur(20px);
         }
-        .enter-btn {
-            background: transparent; color: #bf953f; border: 2px solid #bf953f;
-            padding: 15px 40px; font-size: 1.8rem; font-weight: 900; border-radius: 15px;
-            cursor: pointer; transition: 0.4s; letter-spacing: 2px;
-            box-shadow: 0 0 20px rgba(191, 149, 63, 0.2); position: relative; overflow: hidden;
+
+        .header { text-align: center; margin-bottom: 2rem; }
+        .header h1 { color: #bf953f; font-size: 2.5rem; text-shadow: 0 0 20px rgba(191, 149, 63, 0.4); margin-bottom: 5px; }
+        .header p { color: #a1a1aa; font-size: 1.1rem; }
+
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; color: #bf953f; margin-bottom: 8px; font-weight: bold; }
+        
+        .admin-input {
+            width: 100%; padding: 14px; background: rgba(0,0,0,0.5);
+            border: 1px solid #333; color: #fff; border-radius: 12px;
+            font-family: 'Cairo'; outline: none; transition: 0.3s; font-size: 1rem;
         }
-        .enter-btn:hover { background: #bf953f; color: #000; box-shadow: 0 0 40px rgba(191, 149, 63, 0.8), 0 0 80px rgba(191, 149, 63, 0.4); transform: scale(1.05); }
-
-        /* 🌌 الإضاءات والجسيمات 🌌 */
-        .bg-animation { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; overflow: hidden; }
-        .glow { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.35; animation: float 12s infinite alternate ease-in-out; }
-        .glow-1 { width: 500px; height: 500px; background: #bf953f; top: -10%; left: -10%; }
-        .glow-2 { width: 600px; height: 600px; background: #00f2fe; bottom: -20%; right: -10%; animation-delay: -4s; }
-        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(60px, 60px) scale(1.2); } }
-        #particles-js { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
-
-        /* الهيدر */
-        header {
-            text-align: center; padding: 6rem 2rem 4rem;
-            background: linear-gradient(180deg, rgba(10, 10, 15, 0.9) 0%, transparent 100%);
-            border-bottom: 1px solid rgba(191, 149, 63, 0.15); margin-bottom: 3rem;
-            animation: fadeInDown 1.5s ease-out;
-        }
-        header h1 {
-            font-size: 5rem; font-weight: 900;
-            background: linear-gradient(to left, #bf953f, #fcf6ba, #b38728, #fff);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 50px rgba(191, 149, 63, 0.6); margin-bottom: 10px;
-        }
-        header p { color: #a1a1aa; font-size: 1.4rem; max-width: 800px; margin: 0 auto; line-height: 1.6; }
-
-        /* الكروت الزجاجية VIP */
-        .container { max-width: 1250px; margin: 0 auto; padding: 0 2rem 5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2.5rem; }
-        .card {
-            background: rgba(15, 15, 20, 0.5); border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 20px; padding: 1.5rem; backdrop-filter: blur(25px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); position: relative; overflow: hidden;
-        }
-        .card::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-            transition: 0.6s; pointer-events: none;
-        }
-        .card:hover::before { left: 100%; }
-        .card:hover { transform: translateY(-12px) scale(1.02); border-color: rgba(191, 149, 63, 0.7); box-shadow: 0 20px 50px rgba(0,0,0,0.9), 0 0 30px rgba(191, 149, 63, 0.3); background: rgba(20, 20, 25, 0.8); }
-        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; }
-        .card:hover img { filter: brightness(1.15); }
-        .card h3 { color: #fff; font-size: 1.5rem; margin-bottom: 0.5rem; }
-        .card p { color: #94a3b8; font-size: 1rem; margin-bottom: 1.5rem; flex-grow: 1; line-height: 1.6; }
-
-        /* الأزرار */
-        .btn-group { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
-        .action-btn { width: 100%; padding: 12px; border: none; border-radius: 10px; font-weight: 800; font-size: 1rem; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
-        .copy-btn { background: linear-gradient(45deg, #11998e, #38ef7d); color: #fff; box-shadow: 0 4px 15px rgba(56, 239, 125, 0.3); }
-        .copy-btn:hover { box-shadow: 0 0 25px rgba(56, 239, 125, 0.6); transform: scale(1.03); }
-        .download-btn { background: linear-gradient(45deg, #00f2fe, #4facfe); color: #fff; box-shadow: 0 4px 15px rgba(0, 242, 254, 0.3); }
-        .download-btn:hover { box-shadow: 0 0 25px rgba(0, 242, 254, 0.6); transform: scale(1.03); }
-
-        /* أزرار الإدارة داخل الكروت */
-        .admin-controls { display: flex; gap: 10px; margin-top: 10px; }
-        .edit-btn { background: rgba(191, 149, 63, 0.1); color: #bf953f; border: 1px dashed #bf953f; flex: 1; padding: 8px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: bold;}
-        .edit-btn:hover { background: #bf953f; color: #fff; }
-        .delete-btn { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px dashed #ef4444; flex: 1; padding: 8px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-weight: bold;}
-        .delete-btn:hover { background: #ef4444; color: #fff; }
-        .add-new-card { border: 2px dashed rgba(191, 149, 63, 0.4); background: transparent; display: flex; justify-content: center; align-items: center; cursor: pointer; min-height: 400px; transition: 0.3s; color: rgba(191, 149, 63, 0.6); font-size: 1.5rem; font-weight: bold; }
-        .add-new-card:hover { background: rgba(191, 149, 63, 0.05); color: #bf953f; border-color: #bf953f; transform: translateY(-5px); }
-
-        /* 🎵 زر التحكم بيوتيوب 🎵 */
-        #music-toggle-btn {
-            position: fixed; bottom: 80px; left: 20px; width: 55px; height: 55px; border-radius: 50%;
-            background: rgba(15, 15, 20, 0.8); color: #fff; display: flex; justify-content: center; align-items: center;
-            cursor: pointer; z-index: 100; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1); font-size: 1.5rem;
-            backdrop-filter: blur(10px); box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-        #music-toggle-btn:hover { background: rgba(0, 242, 254, 0.2); border-color: #00f2fe; color: #00f2fe; box-shadow: 0 0 25px rgba(0, 242, 254, 0.5); transform: scale(1.1); }
-        .music-playing { animation: pulseMusic 2s infinite; color: #38ef7d !important; border-color: #38ef7d !important; }
-        @keyframes pulseMusic { 0% { box-shadow: 0 0 0 0 rgba(56, 239, 125, 0.5); } 70% { box-shadow: 0 0 0 15px rgba(56, 239, 125, 0); } 100% { box-shadow: 0 0 0 0 rgba(56, 239, 125, 0); } }
-
-        /* زر الإدارة السري والإعدادات */
-        #secret-admin-trigger { position: fixed; bottom: 20px; left: 20px; width: 55px; height: 55px; border-radius: 50%; background: rgba(15, 15, 20, 0.8); color: rgba(255,255,255,0.4); display: flex; justify-content: center; align-items: center; cursor: pointer; z-index: 100; transition: 0.3s; border: 1px solid transparent; font-size: 1.5rem; backdrop-filter: blur(10px); }
-        #secret-admin-trigger:hover { background: rgba(191, 149, 63, 0.2); color: #bf953f; border-color: #bf953f; box-shadow: 0 0 25px rgba(191, 149, 63, 0.5); transform: scale(1.1); }
-        #site-settings-btn { display: none; position: fixed; top: 20px; left: 20px; padding: 12px 25px; background: rgba(191, 149, 63, 0.15); color: #bf953f; border: 1px solid #bf953f; border-radius: 12px; cursor: pointer; z-index: 100; font-weight: bold; backdrop-filter: blur(15px); transition: 0.3s; font-size: 1.1rem; }
-        #site-settings-btn:hover { background: #bf953f; color: #000; box-shadow: 0 0 20px rgba(191, 149, 63, 0.6); }
-
-        /* النوافذ المنبثقة */
-        .modal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(10, 10, 15, 0.98); border: 1px solid #bf953f; border-radius: 20px; padding: 2.5rem; z-index: 1000; width: 90%; max-width: 550px; box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(191, 149, 63, 0.15); backdrop-filter: blur(30px); }
-        .modal h2 { color: #bf953f; margin-bottom: 1.5rem; text-align: center; font-size: 1.8rem; }
-        .admin-input { width: 100%; padding: 14px 15px; margin-bottom: 15px; background: rgba(0,0,0,0.6); border: 1px solid #333; color: #fff; border-radius: 12px; font-family: 'Cairo'; outline: none; transition: 0.3s; }
         .admin-input:focus { border-color: #bf953f; box-shadow: 0 0 15px rgba(191, 149, 63, 0.3); }
-        .modal-btns { display: flex; gap: 10px; margin-top: 15px; }
-        .primary-btn { background: linear-gradient(45deg, #bf953f, #b38728); color: #fff; padding: 14px; border: none; border-radius: 12px; cursor: pointer; flex: 1; font-weight: bold; transition: 0.3s; font-size: 1.1rem;}
-        .primary-btn:hover { box-shadow: 0 0 20px rgba(191, 149, 63, 0.6); transform: translateY(-3px); }
-        .danger-btn { background: #ef4444; color: #fff; padding: 14px; border: none; border-radius: 12px; cursor: pointer; flex: 1; font-weight: bold; transition: 0.3s; font-size: 1.1rem;}
-        .danger-btn:hover { box-shadow: 0 0 20px rgba(239, 68, 68, 0.6); transform: translateY(-3px); }
-        #overlay { display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 999; }
-        .discord-btn { background: #5865F2; color: #fff; width: 100%; padding: 14px; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; margin-bottom: 20px; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 1.1rem;}
-        .discord-btn:hover { background: #4752C4; box-shadow: 0 0 20px rgba(88, 101, 242, 0.6); }
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-40px); } to { opacity: 1; transform: translateY(0); } }
+
+        .send-btn {
+            background: linear-gradient(45deg, #bf953f, #b38728); color: #fff;
+            width: 100%; padding: 16px; border: none; border-radius: 12px;
+            font-weight: 900; font-size: 1.3rem; cursor: pointer; transition: 0.3s;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
+            margin-top: 1rem;
+        }
+        .send-btn:hover { box-shadow: 0 0 25px rgba(191, 149, 63, 0.6); transform: translateY(-3px); }
+
+        /* معاينة شكل الرسالة */
+        .preview-box {
+            margin-top: 2rem; padding: 1rem; background: #2b2d31; border-left: 4px solid #bf953f;
+            border-radius: 4px; display: none;
+        }
+        .preview-box h3 { color: #fff; font-size: 1.1rem; margin-bottom: 10px; }
+        .preview-box p { color: #dbdee1; font-size: 0.9rem; white-space: pre-wrap; }
     </style>
 </head>
 <body>
 
-    <div id="welcome-screen">
-        <h1 style="font-size: 4rem; color: #bf953f; text-shadow: 0 0 30px #bf953f; margin-bottom: 30px;">ليالي العرب VIP</h1>
-        <button class="enter-btn" onclick="enterSite()">دخول للموقع</button>
-    </div>
+    <div class="admin-panel">
+        <div class="header">
+            <h1><i class="fa-brands fa-discord"></i> الإدارة العليا</h1>
+            <p>لوحة نشر السكربتات والبرامج في ديسكورد ليالي العرب</p>
+        </div>
 
-    <div class="bg-animation">
-        <div class="glow glow-1"></div>
-        <div class="glow glow-2"></div>
-    </div>
-    <div id="particles-js"></div>
+        <div class="form-group">
+            <label>اسم المشروع (عنوان الرسالة):</label>
+            <input type="text" id="msg-title" class="admin-input" placeholder="مثال: سكربت طيران VIP">
+        </div>
 
-    <div id="youtube-player" style="display: none; position: absolute;"></div>
+        <div class="form-group">
+            <label>وصف المشروع والمميزات:</label>
+            <textarea id="msg-desc" class="admin-input" rows="3" placeholder="اكتب المميزات هنا..."></textarea>
+        </div>
 
-    <div id="music-toggle-btn" onclick="toggleYouTubeMusic()" title="تشغيل/كتم اليوتيوب">
-        <i class="fa-solid fa-volume-xmark" id="music-icon"></i>
-    </div>
+        <div class="form-group">
+            <label>نوع المنشور:</label>
+            <select id="msg-type" class="admin-input" onchange="toggleInputType()">
+                <option value="script">سكربت (نص برمجي للنسخ)</option>
+                <option value="program">برنامج (رابط تحميل خارجي)</option>
+            </select>
+        </div>
 
-    <div id="secret-admin-trigger" onclick="openAuthModal()" title="إدارة ليالي العرب">
-        <i class="fa-solid fa-shield-halved"></i>
-    </div>
-    <button id="site-settings-btn" onclick="openSiteSettings()"><i class="fa-solid fa-gear"></i> الإعدادات العامة</button>
+        <div class="form-group">
+            <label id="content-label">كود السكربت:</label>
+            <textarea id="msg-content" class="admin-input" rows="4" placeholder="ضع الكود هنا..."></textarea>
+        </div>
 
-    <header>
-        <h1 id="display-title">ليالي العرب</h1>
-        <p id="display-subtitle">حياكم الله بسكربتات وبرامج ليالي العرب | مستودع النخبة</p>
-    </header>
+        <div class="form-group">
+            <label>رابط صورة الغلاف (اختياري لتزيين الرسالة):</label>
+            <input type="text" id="msg-image" class="admin-input" placeholder="https://...">
+        </div>
 
-    <div class="container" id="projects-container"></div>
-    <div id="overlay"></div>
+        <div class="form-group">
+            <label>منشن (اختياري):</label>
+            <select id="msg-mention" class="admin-input">
+                <option value="">بدون منشن</option>
+                <option value="@everyone">منشن للجميع (@everyone)</option>
+                <option value="@here">منشن للمتواجدين (@here)</option>
+            </select>
+        </div>
 
-    <div id="auth-modal" class="modal">
-        <h2><i class="fa-brands fa-discord"></i> حماية ليالي العرب</h2>
-        <p style="text-align: center; color: #aaa; margin-bottom: 20px;">سيتم إرسال الرمز وموقع الزائر إلى المالك.</p>
-        <button class="discord-btn" onclick="requestDiscordCode()">
-            <i class="fa-solid fa-paper-plane"></i> إرسال رمز جديد للمالك
+        <button class="send-btn" onclick="sendToDiscord()">
+            <i class="fa-solid fa-paper-plane"></i> نشر الرسالة في السيرفر
         </button>
-        <input type="text" id="auth-code-input" class="admin-input" placeholder="أدخل الرمز هنا..." style="text-align: center; letter-spacing: 2px;">
-        <div class="modal-btns">
-            <button class="primary-btn" onclick="verifyCode()"><i class="fa-solid fa-unlock-keyhole"></i> دخول</button>
-            <button class="danger-btn" onclick="closeModals()"><i class="fa-solid fa-times"></i> إلغاء</button>
-        </div>
-    </div>
-
-    <div id="settings-modal" class="modal">
-        <h2>إعدادات الموقع العامة</h2>
-        <label style="color: #bf953f;">اسم الموقع:</label>
-        <input type="text" id="setting-title" class="admin-input">
-        <label style="color: #bf953f;">الوصف أسفل الاسم:</label>
-        <textarea id="setting-subtitle" class="admin-input" rows="2"></textarea>
-        <label style="color: #bf953f;">رابط أغنية يوتيوب (Background Music):</label>
-        <input type="text" id="setting-youtube" class="admin-input" placeholder="مثال: https://www.youtube.com/watch?v=...">
-        <div class="modal-btns">
-            <button class="primary-btn" onclick="saveSiteSettings()"><i class="fa-solid fa-save"></i> حفظ</button>
-            <button class="danger-btn" onclick="closeModals()"><i class="fa-solid fa-times"></i> إلغاء</button>
-        </div>
-    </div>
-
-    <div id="editor-modal" class="modal">
-        <h2 id="editor-title">إضافة مشروع</h2>
-        <input type="text" id="edit-title" class="admin-input" placeholder="اسم المشروع">
-        <textarea id="edit-desc" class="admin-input" rows="2" placeholder="وصف المشروع"></textarea>
-        <input type="text" id="edit-image" class="admin-input" placeholder="رابط صورة الغلاف">
-        <select id="edit-type" class="admin-input" onchange="toggleInputs()">
-            <option value="script">سكربت (نص للنسخ)</option>
-            <option value="program">برنامج (رابط تحميل)</option>
-        </select>
-        <textarea id="edit-content" class="admin-input" rows="4" placeholder="كود السكربت أو رابط التحميل"></textarea>
-        <div class="modal-btns">
-            <button class="primary-btn" onclick="saveProject()"><i class="fa-solid fa-save"></i> حفظ</button>
-            <button class="danger-btn" onclick="closeModals()"><i class="fa-solid fa-times"></i> إلغاء</button>
-        </div>
     </div>
 
     <script>
-        // --- 1. إعدادات الموقع واليوتيوب ---
-        let siteConfig = JSON.parse(localStorage.getItem('layaliSiteConfigVIP')) || {
-            title: "ليالي العرب",
-            subtitle: "حياكم الله بسكربتات وبرامج ليالي العرب | مستودع النخبة",
-            youtubeUrl: "https://www.youtube.com/watch?v=5qap5aO4i9A" // يمكنك تغييره من الإدارة
-        };
-
-        let player;
-        let ytPlaying = false;
-
-        // استخراج ID اليوتيوب من الرابط
-        function extractVideoID(url) {
-            let match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
-            return (match && match[1]) ? match[1] : null;
-        }
-
-        // استدعاء API اليوتيوب
-        function onYouTubeIframeAPIReady() {
-            let vidId = extractVideoID(siteConfig.youtubeUrl) || "5qap5aO4i9A";
-            player = new YT.Player('youtube-player', {
-                height: '0', width: '0', videoId: vidId,
-                playerVars: { 'autoplay': 0, 'controls': 0, 'loop': 1, 'playlist': vidId },
-                events: {
-                    'onReady': onPlayerReady,
-                    'onStateChange': onPlayerStateChange
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            player.setVolume(15); // صوت ناصي
-        }
-
-        function onPlayerStateChange(event) {
-            if (event.data === YT.PlayerState.ENDED) player.playVideo(); // إعادة التشغيل تلقائياً
-        }
-
-        // دخول الموقع (زر الترحيب لتشغيل الصوت)
-        function enterSite() {
-            document.getElementById('welcome-screen').style.opacity = '0';
-            setTimeout(() => { document.getElementById('welcome-screen').style.visibility = 'hidden'; }, 1000);
-            
-            if(player && player.playVideo) {
-                player.playVideo();
-                ytPlaying = true;
-                updateMusicIcon();
-            }
-            // تشغيل الجسيمات بعد الدخول
-            particlesJS("particles-js", { "particles": { "number": { "value": 70 }, "color": { "value": ["#bf953f", "#ffffff"] }, "shape": { "type": "circle" }, "opacity": { "value": 0.5 }, "size": { "value": 3 }, "line_linked": { "enable": true, "distance": 130, "color": "#bf953f", "opacity": 0.3, "width": 1 }, "move": { "enable": true, "speed": 1.2 } }, "interactivity": { "events": { "onhover": { "enable": true, "mode": "grab" } }, "modes": { "grab": { "distance": 180, "line_linked": { "opacity": 0.6 } } } } });
-        }
-
-        function toggleYouTubeMusic() {
-            if(!player) return;
-            if (ytPlaying) { player.pauseVideo(); ytPlaying = false; }
-            else { player.playVideo(); ytPlaying = true; }
-            updateMusicIcon();
-        }
-
-        function updateMusicIcon() {
-            const icon = document.getElementById('music-icon');
-            const btn = document.getElementById('music-toggle-btn');
-            if(ytPlaying) {
-                icon.className = "fa-solid fa-volume-high";
-                btn.classList.add('music-playing');
-            } else {
-                icon.className = "fa-solid fa-volume-xmark";
-                btn.classList.remove('music-playing');
-            }
-        }
-
-        // --- 2. نظام الديسكورد (منشن + IP Location) ---
+        // رابط الويب هوك الخاص بك (الروم الذي تريد النشر فيه)
         const webhookUrl = "https://discord.com/api/webhooks/1488443327996235857/gJGoalSNljZf3m_g3PFeFFxKjcn985hN9x3nUC1JdBqJB2pFAfLbsIaL09SS1Q5iVcLX";
-        let generatedCode = null;
-        let isAdminMode = false;
 
-        async function requestDiscordCode() {
-            // جلب دولة ومدينه الزائر
-            let locationInfo = "منطقة غير معروفة";
-            try {
-                let res = await fetch('https://ipapi.co/json/');
-                let data = await res.json();
-                locationInfo = `**${data.city}, ${data.country_name}**\nIP: \`${data.ip}\``;
-            } catch(e) {}
-
-            generatedCode = Array.from(crypto.getRandomValues(new Uint8Array(16)))
-                .map(b => b.toString(16).padStart(2, '0')).join('');
+        function toggleInputType() {
+            const type = document.getElementById('msg-type').value;
+            const label = document.getElementById('content-label');
+            const content = document.getElementById('msg-content');
             
+            if (type === 'script') {
+                label.innerText = "كود السكربت:";
+                content.placeholder = "ضع الكود هنا ليظهر بشكل صندوق برمجي فخم في الديسكورد...";
+            } else {
+                label.innerText = "رابط التحميل:";
+                content.placeholder = "ضع رابط التحميل المباشر هنا...";
+            }
+        }
+
+        function sendToDiscord() {
+            const title = document.getElementById('msg-title').value.trim();
+            const desc = document.getElementById('msg-desc').value.trim();
+            const type = document.getElementById('msg-type').value;
+            const content = document.getElementById('msg-content').value.trim();
+            const image = document.getElementById('msg-image').value.trim();
+            const mention = document.getElementById('msg-mention').value;
+
+            if (!title || !content) {
+                alert("يرجى ملء اسم المشروع والمحتوى على الأقل!");
+                return;
+            }
+
+            // تجهيز طريقة عرض المحتوى داخل الديسكورد
+            let discordDescription = `**${desc}**\n\n`;
+            
+            if (type === 'script') {
+                // وضع الكود داخل صندوق برمجي (Markdown) لسهولة النسخ
+                discordDescription += `\`\`\`lua\n${content}\n\`\`\``;
+            } else {
+                // وضع رابط التحميل كزر نصي فخم
+                discordDescription += `🔗 **[اضغط هنا لتحميل البرنامج](${content})**`;
+            }
+
+            // بناء هيكل رسالة الديسكورد (Embed)
             const payload = {
-                content: "<@452800723646677002> 🚨 **هنالك شخص طلب رمز الدخول للإدارة!**", // منشن لحسابك
-                embeds: [{
-                    title: "محاولة تسجيل دخول للموقع",
-                    description: `📍 **موقع الزائر:**\n${locationInfo}\n\n🔑 **الرمز السري الجديد:**\n\`\`\`${generatedCode}\`\`\``,
-                    color: 12555295,
-                    footer: { text: "ليالي العرب VIP" },
-                    timestamp: new Date().toISOString()
-                }]
+                content: mention, // المنشن إذا تم اختياره
+                username: "ليالي العرب | الإدارة", // اسم البوت المرسل
+                avatar_url: "https://i.imgur.com/your_logo_here.png", // يمكنك وضع رابط لوجو موقعك هنا
+                embeds: [
+                    {
+                        title: `👑 | ${title}`,
+                        description: discordDescription,
+                        color: 12555295, // اللون الذهبي VIP الخاص بك
+                        thumbnail: image ? { url: image } : null,
+                        footer: {
+                            text: "ليالي العرب VIP • تم النشر بواسطة الإدارة العليا"
+                        },
+                        timestamp: new Date().toISOString()
+                    }
+                ]
             };
 
+            // إرسال الطلب للديسكورد
             fetch(webhookUrl, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             }).then(res => {
-                if(res.ok) alert("تم إرسال الرمز للديسكورد (بنجاح).");
-                else alert("خطأ في إرسال الويب هوك.");
-            }).catch(() => alert("فشل الاتصال بالإنترنت."));
-        }
-
-        function verifyCode() {
-            const input = document.getElementById('auth-code-input').value.trim();
-            if(input === generatedCode && generatedCode !== null) {
-                alert("مرحباً بك يا زعيم في لوحة الإدارة!");
-                isAdminMode = true;
-                generatedCode = null;
-                document.getElementById('site-settings-btn').style.display = 'block';
-                closeModals();
-                renderCards();
-            } else alert("الرمز خاطئ!");
-        }
-
-        // --- 3. نظام الإدارة والمشاريع ---
-        let myProjects = JSON.parse(localStorage.getItem('layaliProjectsVIP')) || [
-            { title: "سكربت أيمبوت الطائر", description: "سكربت VIP قوي جداً.", image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600", isScript: true, content: `print("ليالي العرب")` }
-        ];
-        let editingIndex = -1;
-
-        function applySiteConfig() {
-            document.getElementById('display-title').innerText = siteConfig.title;
-            document.getElementById('display-subtitle').innerText = siteConfig.subtitle;
-            // إذا تغير اليوتيوب، نقوم بتحميله
-            if(player && player.loadVideoById) {
-                let vidId = extractVideoID(siteConfig.youtubeUrl);
-                if(vidId) player.loadVideoById({videoId: vidId});
-            }
-        }
-
-        function openSiteSettings() {
-            document.getElementById('setting-title').value = siteConfig.title;
-            document.getElementById('setting-subtitle').value = siteConfig.subtitle;
-            document.getElementById('setting-youtube').value = siteConfig.youtubeUrl;
-            document.getElementById('settings-modal').style.display = 'block';
-            document.getElementById('overlay').style.display = 'block';
-        }
-
-        function saveSiteSettings() {
-            siteConfig.title = document.getElementById('setting-title').value;
-            siteConfig.subtitle = document.getElementById('setting-subtitle').value;
-            siteConfig.youtubeUrl = document.getElementById('setting-youtube').value;
-            localStorage.setItem('layaliSiteConfigVIP', JSON.stringify(siteConfig));
-            applySiteConfig();
-            closeModals();
-        }
-
-        function renderCards() {
-            const container = document.getElementById('projects-container');
-            container.innerHTML = '';
-            
-            myProjects.forEach((p, i) => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                let btns = p.isScript 
-                    ? `<button class="action-btn copy-btn" onclick="copyScript(this, ${i})"><i class="fa-solid fa-copy"></i> نسخ السكربت</button>`
-                    : `<a href="${p.content}" target="_blank" class="action-btn download-btn"><i class="fa-solid fa-download"></i> تحميل البرنامج</a>`;
-                let adminBtns = isAdminMode ? `<div class="admin-controls"><button class="edit-btn" onclick="openEditor(${i})"><i class="fa-solid fa-pen"></i></button><button class="delete-btn" onclick="deleteProject(${i})"><i class="fa-solid fa-trash"></i></button></div>` : '';
-                
-                card.innerHTML = `<img src="${p.image}" onerror="this.src='https://images.unsplash.com/photo-1629654297299-c8506221ca97?w=600'">
-                    <h3>${p.title}</h3><p>${p.description}</p><div class="btn-group">${btns}${adminBtns}</div>`;
-                container.appendChild(card);
-            });
-
-            if(isAdminMode) {
-                const addCard = document.createElement('div');
-                addCard.className = 'card add-new-card';
-                addCard.innerHTML = `<i class="fa-solid fa-plus fa-2x"></i><br>إضافة جديد`;
-                addCard.onclick = () => openEditor(-1);
-                container.appendChild(addCard);
-            }
-        }
-
-        function copyScript(btn, i) {
-            navigator.clipboard.writeText(myProjects[i].content).then(() => {
-                const old = btn.innerHTML;
-                btn.innerHTML = `<i class="fa-solid fa-check"></i> تم النسخ!`;
-                setTimeout(() => btn.innerHTML = old, 2000);
+                if (res.ok) {
+                    alert("✅ تم إرسال الرسالة الإدارية الفخمة بنجاح إلى سيرفرك!");
+                    // تنظيف الحقول بعد الإرسال
+                    document.getElementById('msg-title').value = '';
+                    document.getElementById('msg-desc').value = '';
+                    document.getElementById('msg-content').value = '';
+                } else {
+                    alert("❌ حدث خطأ أثناء الإرسال! تأكد من رابط الويب هوك.");
+                }
+            }).catch(err => {
+                alert("❌ فشل الاتصال بالإنترنت.");
             });
         }
-
-        function openAuthModal() {
-            if(isAdminMode) {
-                if(confirm("خروج من الإدارة؟")) { isAdminMode = false; document.getElementById('site-settings-btn').style.display = 'none'; renderCards(); }
-                return;
-            }
-            document.getElementById('auth-modal').style.display = 'block'; document.getElementById('overlay').style.display = 'block';
-        }
-
-        function openEditor(i) {
-            editingIndex = i;
-            if(i === -1) {
-                document.getElementById('editor-title').innerText = "إضافة مشروع";
-                document.getElementById('edit-title').value = ""; document.getElementById('edit-desc').value = ""; document.getElementById('edit-image').value = ""; document.getElementById('edit-type').value = "script"; document.getElementById('edit-content').value = "";
-            } else {
-                const p = myProjects[i];
-                document.getElementById('editor-title').innerText = "تعديل";
-                document.getElementById('edit-title').value = p.title; document.getElementById('edit-desc').value = p.description; document.getElementById('edit-image').value = p.image; document.getElementById('edit-type').value = p.isScript ? "script" : "program"; document.getElementById('edit-content').value = p.content;
-            }
-            toggleInputs();
-            document.getElementById('editor-modal').style.display = 'block'; document.getElementById('overlay').style.display = 'block';
-        }
-
-        function saveProject() {
-            const proj = { title: document.getElementById('edit-title').value, description: document.getElementById('edit-desc').value, image: document.getElementById('edit-image').value || "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=600", isScript: document.getElementById('edit-type').value === 'script', content: document.getElementById('edit-content').value };
-            if(editingIndex === -1) myProjects.push(proj); else myProjects[editingIndex] = proj;
-            localStorage.setItem('layaliProjectsVIP', JSON.stringify(myProjects));
-            closeModals(); renderCards();
-        }
-
-        function deleteProject(i) { if(confirm("حذف؟")) { myProjects.splice(i, 1); localStorage.setItem('layaliProjectsVIP', JSON.stringify(myProjects)); renderCards(); } }
-        function toggleInputs() { document.getElementById('edit-content').placeholder = document.getElementById('edit-type').value === 'script' ? "الكود..." : "رابط التحميل..."; }
-        function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); document.getElementById('overlay').style.display = 'none'; }
-
-        document.addEventListener('DOMContentLoaded', () => { applySiteConfig(); renderCards(); });
     </script>
 </body>
 </html>
