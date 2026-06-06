@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ليالي العرب | المحطة المركزية للديسكورد</title>
+    <title>خزانة المنتجات | إدارة مخزون الساعات</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -13,28 +13,21 @@
 
         body {
             background-color: #050508; color: #fff; min-height: 100vh;
-            display: flex; justify-content: center; align-items: center; padding: 2rem;
+            padding: 2rem;
             background-image: radial-gradient(circle at 50% 0%, #1a150b 0%, #050508 80%);
         }
 
         .dashboard-container {
             display: flex; gap: 2rem; width: 100%; max-width: 1400px;
-            flex-wrap: wrap; align-items: flex-start;
+            margin: 0 auto; flex-wrap: wrap; align-items: flex-start;
         }
 
-        /* لوحة التحكم (اليمين) */
-        .admin-panel {
+        /* اللوحات الجانبية */
+        .admin-panel, .preview-panel {
             background: rgba(15, 15, 20, 0.7); border: 1px solid #bf953f;
             border-radius: 20px; padding: 2rem; flex: 1; min-width: 400px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(191, 149, 63, 0.15);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-        }
-
-        /* شاشة المعاينة (اليسار) */
-        .preview-panel {
-            background: #313338; 
-            border-radius: 15px; padding: 2rem; flex: 1; min-width: 400px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8); position: sticky; top: 2rem;
         }
 
         .header { text-align: center; margin-bottom: 2rem; border-bottom: 1px solid rgba(191, 149, 63, 0.2); padding-bottom: 1rem; }
@@ -64,381 +57,301 @@
         .file-upload-wrapper:hover .file-upload-btn { background: rgba(191, 149, 63, 0.2); }
         .file-name-display { display: block; margin-top: 5px; font-size: 0.8rem; color: #38ef7d; text-align: center; }
 
-        .color-picker { -webkit-appearance: none; border: none; width: 100%; height: 45px; border-radius: 10px; cursor: pointer; background: transparent; padding: 0; }
-        .color-picker::-webkit-color-swatch-wrapper { padding: 0; }
-        .color-picker::-webkit-color-swatch { border: 1px solid #333; border-radius: 10px; }
-
         .send-btn {
             background: linear-gradient(45deg, #bf953f, #b38728); color: #fff;
-            width: 100%; padding: 16px; border: none; border-radius: 12px;
-            font-weight: 900; font-size: 1.2rem; cursor: pointer; transition: 0.3s;
+            width: 100%; padding: 14px; border: none; border-radius: 12px;
+            font-weight: 900; font-size: 1.1rem; cursor: pointer; transition: 0.3s;
             display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 1rem;
         }
         .send-btn:hover { box-shadow: 0 0 25px rgba(191, 149, 63, 0.5); transform: translateY(-3px); }
 
-        /* ستايل معاينة الديسكورد (اليسار) */
-        .preview-header-title { color: #a3a6aa; font-size: 0.9rem; margin-bottom: 15px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
-        
-        .discord-message { display: flex; gap: 15px; font-family: sans-serif; text-align: right; direction: rtl; }
-        .discord-avatar { width: 45px; height: 45px; border-radius: 50%; background: #2b2d31; display: flex; justify-content: center; align-items: center; flex-shrink: 0; overflow: hidden; border: 1px solid #1e1f22;}
-        .discord-avatar img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-        
-        .discord-body { display: flex; flex-direction: column; width: 100%; }
-        .discord-name-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 5px; }
-        .discord-username { color: #f2f3f5; font-weight: 600; font-size: 1.05rem; }
-        .discord-bot-tag { background: #5865F2; color: #fff; font-size: 0.65rem; padding: 2px 5px; border-radius: 4px; font-weight: bold; display: flex; align-items: center; gap: 3px;}
-        .discord-time { color: #949ba4; font-size: 0.75rem; }
-        
-        .discord-embed {
-            background: #2b2d31; border-right: 4px solid #bf953f;
-            border-radius: 4px; padding: 1rem; max-width: 520px; display: flex; flex-direction: column; gap: 8px;
-            margin-top: 5px;
+        /* كروت المنتجات المنتجة */
+        .products-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-top: 1rem; }
+        .product-card {
+            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(191, 149, 63, 0.2);
+            border-radius: 15px; padding: 1rem; display: flex; gap: 15px; align-items: center;
+            position: relative; transition: 0.3s;
         }
-        .embed-author { display: flex; align-items: center; gap: 8px; color: #f2f3f5; font-weight: bold; font-size: 0.9rem; }
-        .embed-author img { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; }
+        .product-card:hover { border-color: #bf953f; background: rgba(255, 255, 255, 0.05); }
+        .product-img { width: 90px; height: 90px; border-radius: 10px; object-fit: cover; border: 1px solid #333; }
+        .product-info { flex: 1; }
+        .product-title { color: #bf953f; font-weight: bold; font-size: 1.2rem; }
+        .product-desc { color: #a1a1aa; font-size: 0.85rem; margin-bottom: 5px; }
         
-        .embed-title { color: #00a8fc; font-weight: bold; font-size: 1.1rem; text-decoration: none; margin-top: 5px;}
-        .embed-desc { color: #dbdee1; font-size: 0.9rem; white-space: pre-wrap; line-height: 1.5; }
-        
-        .discord-code-block { background: #1e1f22; border: 1px solid #111214; border-radius: 4px; padding: 10px; font-family: monospace; color: #dbdee1; font-size: 0.85rem; margin-top: 5px; direction: ltr; text-align: left; overflow-x: auto;}
-        
-        .embed-fields { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
-        .embed-field-name { color: #f2f3f5; font-size: 0.85rem; font-weight: bold; margin-bottom: 2px;}
-        .embed-field-value { color: #dbdee1; font-size: 0.85rem; }
-        
-        .embed-image { max-width: 100%; border-radius: 8px; margin-top: 10px; display: none; }
-        
-        .embed-footer { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
-        .embed-footer img { width: 20px; height: 20px; border-radius: 50%; object-fit: cover; }
-        .embed-footer span { color: #949ba4; font-size: 0.75rem; font-weight: bold;}
+        /* شارات التوفر */
+        .status-badge { display: inline-block; padding: 2px 8px; border-radius: 5px; font-size: 0.8rem; font-weight: bold; }
+        .status-instock { background: rgba(56, 239, 125, 0.2); color: #38ef7d; }
+        .status-outofstock { background: rgba(239, 83, 80, 0.2); color: #ef5350; }
 
-        #loading-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
-        .spinner { border: 5px solid rgba(255,255,255,0.1); border-top: 5px solid #bf953f; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin-bottom: 15px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* التحكم بالكمية والبيع */
+        .qty-controls { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+        .qty-btn { background: #1a150b; border: 1px solid #bf953f; color: #bf953f; width: 28px; height: 28px; border-radius: 5px; cursor: pointer; display: flex; justify-content: center; align-items: center; font-weight: bold; }
+        .qty-btn:hover { background: #bf953f; color: #000; }
+        .qty-val { font-weight: bold; font-size: 1rem; min-width: 20px; text-align: center; }
+
+        .sell-btn { background: #bf953f; color: #050508; border: none; padding: 6px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.85rem; margin-right: auto; transition: 0.2s;}
+        .sell-btn:hover { background: #fff; box-shadow: 0 0 10px #fff; }
+        .delete-product-btn { position: absolute; top: 10px; left: 10px; color: #ef5350; cursor: pointer; background: transparent; border: none; font-size: 0.9rem; }
+
+        /* جدول الطلبات */
+        .orders-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
+        .orders-table th, .orders-table td { padding: 10px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .orders-table th { color: #bf953f; font-weight: bold; }
+        .orders-table tr:hover { background: rgba(191, 149, 63, 0.03); }
     </style>
 </head>
 <body>
-
-    <div id="loading-overlay">
-        <div class="spinner"></div>
-        <h3 style="color: #bf953f;">جاري تشفير البيانات والرفع للديسكورد...</h3>
-    </div>
 
     <div class="dashboard-container">
         
         <div class="admin-panel">
             <div class="header">
-                <h1><i class="fa-solid fa-satellite-dish"></i> المحطة المركزية</h1>
-                <p>تعديل ومعاينة حية للديسكورد (Live Preview)</p>
+                <h1><i class="fa-solid fa-box-archive"></i> خزانة المنتجات</h1>
+                <p>إدارة مخزون الساعات والمبيعات الذكية</p>
             </div>
 
-            <div class="section-title"><i class="fa-solid fa-robot"></i> هوية الكاتب (الإدارة)</div>
+            <div class="section-title"><i class="fa-solid fa-plus"></i> إضافة عنصر جديد للمخزن</div>
             
+            <div class="form-group">
+                <label>اسم الساعة / المنتج:</label>
+                <input type="text" id="prod-title" class="admin-input" placeholder="مثال: ساعة رولكس كلاسيك ذهبية">
+            </div>
+
+            <div class="form-group">
+                <label>الوصف والمواصفات:</label>
+                <textarea id="prod-desc" class="admin-input" rows="2" placeholder="اكتب وصفاً مختصراً هنا..."></textarea>
+            </div>
+
             <div style="display: flex; gap: 15px;">
                 <div class="form-group" style="flex: 1;">
-                    <label>اسم الحساب المرسل:</label>
-                    <input type="text" id="bot-username" class="admin-input" value="اداره ليالي العرب" oninput="updatePreview()">
+                    <label>الكمية المتوفرة حالياً:</label>
+                    <input type="number" id="prod-qty" class="admin-input" value="5" min="0">
                 </div>
                 <div class="form-group" style="flex: 1;">
-                    <label>صورة الحساب (رفع من الجهاز):</label>
+                    <label>صورة الساعة:</label>
                     <div class="file-upload-wrapper">
-                        <input type="file" id="msg-logo-file" class="file-upload-input" accept="image/png, image/jpeg, image/gif" onchange="handleLogoPreview()">
+                        <input type="file" id="prod-img-file" class="file-upload-input" accept="image/*" onchange="handleFileLabel()">
                         <div class="file-upload-btn">
-                            <i class="fa-solid fa-user-circle"></i> رفع شعار
+                            <i class="fa-solid fa-image"></i> اختر صورة
                         </div>
                     </div>
-                    <span id="logo-name" class="file-name-display">لم يتم تحديد صورة حساب</span>
+                    <span id="file-name" class="file-name-display">لم يتم تحديد صورة</span>
                 </div>
             </div>
 
-            <div class="section-title"><i class="fa-solid fa-pen-nib"></i> محتوى الرسالة</div>
-
-            <div class="form-group">
-                <label>اسم المشروع (عنوان الرسالة):</label>
-                <input type="text" id="msg-title" class="admin-input" placeholder="مثال: تحديث السكربت V2" oninput="updatePreview()">
-            </div>
-
-            <div class="form-group">
-                <label>الوصف العام للمشروع:</label>
-                <textarea id="msg-desc" class="admin-input" rows="2" placeholder="اكتب المميزات هنا..." oninput="updatePreview()"></textarea>
-            </div>
-
-            <div style="display: flex; gap: 15px;">
-                <div class="form-group" style="flex: 1;">
-                    <label>نوع النشر:</label>
-                    <select id="msg-type" class="admin-input" onchange="updatePreview()">
-                        <option value="script">سكربت (نص للنسخ)</option>
-                        <option value="program">برنامج (رابط تحميل)</option>
-                    </select>
-                </div>
-                <div class="form-group" style="flex: 1;">
-                    <label>حالة المشروع (Status):</label>
-                    <input type="text" id="msg-status" class="admin-input" placeholder="مثال: ✅ يعمل بدون مشاكل" oninput="updatePreview()">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label id="content-label">الكود البرمجي / الرابط:</label>
-                <textarea id="msg-content" class="admin-input" rows="3" placeholder="ضع الكود أو الرابط هنا..." oninput="updatePreview()"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label>صورة الغلاف (صورة العرض الكبيرة - اختياري):</label>
-                <div class="file-upload-wrapper">
-                    <input type="file" id="msg-image-file" class="file-upload-input" accept="image/png, image/jpeg, image/gif" onchange="handleImagePreview()">
-                    <div class="file-upload-btn">
-                        <i class="fa-solid fa-image"></i> رفع صورة غلاف
-                    </div>
-                </div>
-                <span id="file-name" class="file-name-display">لم يتم تحديد ملف</span>
-            </div>
-
-            <div style="display: flex; gap: 15px;">
-                <div class="form-group" style="flex: 1;">
-                    <label>لون الخط الجانبي:</label>
-                    <input type="color" id="msg-color" class="color-picker" value="#bf953f" oninput="updatePreview()">
-                </div>
-                <div class="form-group" style="flex: 1;">
-                    <label>منشن:</label>
-                    <select id="msg-mention" class="admin-input" onchange="updatePreview()">
-                        <option value="">بدون منشن</option>
-                        <option value="@everyone">@everyone</option>
-                        <option value="@here">@here</option>
-                    </select>
-                </div>
-            </div>
-
-            <button id="submit-btn" class="send-btn" onclick="sendToDiscord()">
-                <i class="fa-solid fa-rocket"></i> إطلاق للديسكورد
+            <button class="send-btn" onclick="addNewProduct()">
+                <i class="fa-solid fa-square-plus"></i> إضافة الساعة إلى الخزانة
             </button>
         </div>
 
         <div class="preview-panel">
-            <div class="preview-header-title">معاينة الرسالة قبل الإرسال</div>
+            <div class="section-title" style="margin-top: 0;"><i class="fa-solid fa-layer-group"></i> غرف العرض والمخزون الحالي</div>
             
-            <div class="discord-message">
-                <div class="discord-avatar">
-                    <img src="https://cdn-icons-png.flaticon.com/512/3592/3592869.png" alt="Bot Avatar">
+            <div class="products-grid" id="products-list">
                 </div>
-                <div class="discord-body">
-                    <div class="discord-name-row">
-                        <span class="discord-username">ليالي العرب | الإدارة</span>
-                        <span class="discord-bot-tag"><i class="fa-solid fa-check" style="font-size: 0.5rem;"></i> BOT</span>
-                        <span class="discord-time">اليوم في <span id="preview-time">00:00</span></span>
-                    </div>
-                    
-                    <div id="preview-mention" style="color: #c9cdfb; background: rgba(88, 101, 242, 0.3); padding: 2px 4px; border-radius: 4px; font-size: 0.9rem; margin-bottom: 5px; display: inline-block; display: none;"></div>
 
-                    <div class="discord-embed" id="preview-embed">
-                        <div class="embed-author">
-                            <img id="preview-author-icon" src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
-                            <span id="preview-bot-name">اداره ليالي العرب</span>
-                        </div>
-
-                        <div class="embed-title" id="preview-title">عنوان الرسالة سيظهر هنا</div>
-                        <div class="embed-desc" id="preview-desc">الوصف سيظهر هنا...</div>
-                        
-                        <div id="preview-code-block" class="discord-code-block" style="display: none;"></div>
-                        
-                        <div class="embed-fields" id="preview-fields" style="display: none;">
-                            <div>
-                                <div class="embed-field-name">📊 حالة المشروع</div>
-                                <div class="embed-field-value" id="preview-status"></div>
-                            </div>
-                        </div>
-
-                        <img id="preview-image" class="embed-image" src="" alt="preview">
-
-                        <div class="embed-footer">
-                            <img id="preview-footer-icon" src="https://cdn-icons-png.flaticon.com/512/149/149071.png">
-                            <span>ليالي العرب</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="section-title" style="margin-top: 30px;"><i class="fa-solid fa-receipt"></i> قائمة الطلبات والمبيعات المُحولة</div>
+            
+            <div style="overflow-x: auto; max-height: 250px;">
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>المشتري</th>
+                            <th>المنتج</th>
+                            <th>سعر البيع</th>
+                            <th>التوقيت</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orders-list">
+                        </tbody>
+                </table>
             </div>
         </div>
 
     </div>
 
     <script>
-        const webhookUrl = "https://discord.com/api/webhooks/1488450280025755658/VhWQUrcszHcoCvvKITXyetiyCDUFP8uBov86vJohjx5igW_cBG6P-zbYzvb5QjXRbTfT";
-        
-        // تحديث الوقت في المعاينة
-        const now = new Date();
-        document.getElementById('preview-time').innerText = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+        // مصفوفات حفظ البيانات محلياً
+        let products = JSON.parse(localStorage.getItem('my_inventory_products')) || [];
+        let orders = JSON.parse(localStorage.getItem('my_inventory_orders')) || [];
 
-        // المعاينة الحية
-        function updatePreview() {
-            // بيانات المرسل (الكاتب)
-            const botName = document.getElementById('bot-username').value || "اداره ليالي العرب";
-            document.getElementById('preview-bot-name').innerText = botName;
-
-            // بيانات الرسالة
-            const title = document.getElementById('msg-title').value;
-            const desc = document.getElementById('msg-desc').value;
-            const type = document.getElementById('msg-type').value;
-            const status = document.getElementById('msg-status').value;
-            const content = document.getElementById('msg-content').value;
-            const color = document.getElementById('msg-color').value;
-            const mention = document.getElementById('msg-mention').value;
-
-            document.getElementById('preview-embed').style.borderRightColor = color;
-
-            const previewMention = document.getElementById('preview-mention');
-            if(mention) { previewMention.innerText = mention; previewMention.style.display = 'inline-block'; }
-            else { previewMention.style.display = 'none'; }
-
-            document.getElementById('preview-title').innerText = title || "عنوان الرسالة";
-            
-            let displayDesc = desc || "وصف المشروع والمميزات...";
-            if(type === 'program' && content) {
-                displayDesc += `\n\n🔗 **[اضغط هنا لتحميل البرنامج](${content})**`;
-            }
-            document.getElementById('preview-desc').innerHTML = displayDesc.replace(/\n/g, '<br>');
-
-            const codeBlock = document.getElementById('preview-code-block');
-            if(type === 'script' && content) {
-                codeBlock.innerText = content;
-                codeBlock.style.display = 'block';
-            } else {
-                codeBlock.style.display = 'none';
-            }
-
-            const fieldsDiv = document.getElementById('preview-fields');
-            if(status) {
-                document.getElementById('preview-status').innerText = `\`${status}\``;
-                fieldsDiv.style.display = 'flex';
-            } else {
-                fieldsDiv.style.display = 'none';
-            }
-        }
-
-        // معاينة صورة الحساب (اللوجو)
-        function handleLogoPreview() {
-            const input = document.getElementById('msg-logo-file');
-            const display = document.getElementById('logo-name');
-            const authorIcon = document.getElementById('preview-author-icon');
-            const footerIcon = document.getElementById('preview-footer-icon');
-
-            if (input.files && input.files[0]) {
-                const file = input.files[0];
-                display.innerHTML = `<i class="fa-solid fa-check"></i> ${file.name}`;
-                const fileURL = URL.createObjectURL(file);
-                authorIcon.src = fileURL;
-                footerIcon.src = fileURL;
-            } else {
-                display.innerText = "لم يتم تحديد صورة حساب";
-                authorIcon.src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
-                footerIcon.src = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
-            }
-        }
-
-        // معاينة صورة الغلاف
-        function handleImagePreview() {
-            const input = document.getElementById('msg-image-file');
+        // لتحديث اسم الملف المرفوع في الواجهة
+        function handleFileLabel() {
+            const input = document.getElementById('prod-img-file');
             const display = document.getElementById('file-name');
-            const previewImg = document.getElementById('preview-image');
-
-            if (input.files && input.files[0]) {
-                const file = input.files[0];
-                display.innerHTML = `<i class="fa-solid fa-check"></i> ${file.name}`;
-                previewImg.src = URL.createObjectURL(file);
-                previewImg.style.display = 'block';
+            if(input.files && input.files[0]) {
+                display.innerHTML = `<i class="fa-solid fa-check"></i> ${input.files[0].name}`;
             } else {
-                display.innerText = "لم يتم تحديد ملف";
-                previewImg.style.display = 'none';
-                previewImg.src = '';
+                display.innerText = "لم يتم تحديد صورة";
             }
         }
 
-        async function sendToDiscord() {
-            const botUsername = document.getElementById('bot-username').value.trim() || "اداره ليالي العرب";
-            
-            const title = document.getElementById('msg-title').value.trim();
-            const desc = document.getElementById('msg-desc').value.trim();
-            const type = document.getElementById('msg-type').value;
-            const content = document.getElementById('msg-content').value.trim();
-            const status = document.getElementById('msg-status').value.trim();
-            const colorHex = document.getElementById('msg-color').value.replace('#', '');
-            const colorDec = parseInt(colorHex, 16);
-            const mention = document.getElementById('msg-mention').value;
-            
-            const imageFile = document.getElementById('msg-image-file').files[0];
-            const logoFile = document.getElementById('msg-logo-file').files[0];
+        // إضافة منتج جديد
+        function addNewProduct() {
+            const title = document.getElementById('prod-title').value.trim();
+            const desc = document.getElementById('prod-desc').value.trim();
+            const qty = parseInt(document.getElementById('prod-qty').value) || 0;
+            const imgInput = document.getElementById('prod-img-file');
 
-            if (!title || !content) { alert("⚠️ يرجى ملء العنوان والمحتوى (الكود/الرابط)."); return; }
+            if(!title || !desc) {
+                alert("⚠️ يرجى ملء اسم الساعة والوصف أولاً!");
+                return;
+            }
 
-            document.getElementById('loading-overlay').style.display = 'flex';
-            document.getElementById('submit-btn').disabled = true;
+            let imgUrl = "https://cdn-icons-png.flaticon.com/512/3592/3592869.png"; // صورة افتراضية
 
-            let discordDescription = desc ? `**${desc}**\n\n` : "";
-            if (type === 'script') { discordDescription += `\`\`\`lua\n${content}\n\`\`\``; }
-            else { discordDescription += `🔗 **[اضغط هنا لتحميل البرنامج](${content})**`; }
-
-            const embed = {
-                title: `👑 | ${title}`,
-                description: discordDescription,
-                color: colorDec,
-                footer: { text: "ليالي العرب" }, // التذييل المطلوب
-                timestamp: new Date().toISOString(),
-                fields: []
-            };
-
-            if (status) embed.fields.push({ name: "📊 حالة المشروع", value: `\`${status}\``, inline: false });
-
-            const formData = new FormData();
-            let fileIndex = 0;
-
-            // إذا رفع صورة الحساب (اللوجو)
-            if (logoFile) {
-                const logoName = `logo_${logoFile.name}`;
-                formData.append(`file[${fileIndex}]`, logoFile, logoName);
-                embed.author = { name: botUsername, icon_url: `attachment://${logoName}` };
-                embed.footer.icon_url = `attachment://${logoName}`;
-                fileIndex++;
+            if(imgInput.files && imgInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imgUrl = e.target.result;
+                    saveProductToArray(title, desc, qty, imgUrl);
+                }
+                reader.readAsDataURL(imgInput.files[0]);
             } else {
-                embed.author = { name: botUsername };
-            }
-
-            // إذا رفع صورة الغلاف الكبيرة
-            if (imageFile) {
-                const coverName = `cover_${imageFile.name}`;
-                formData.append(`file[${fileIndex}]`, imageFile, coverName);
-                embed.image = { url: `attachment://${coverName}` };
-                fileIndex++;
-            }
-
-            const payloadJson = {
-                content: mention,
-                // اسم البوت الخارجي سيأخذ الاسم الافتراضي للويب هوك ما لم تضع هنا اسماً (تركناه مطابق للوحة)
-                username: "ليالي العرب | الإدارة العليا", 
-                embeds: [embed]
-            };
-
-            formData.append('payload_json', JSON.stringify(payloadJson));
-
-            try {
-                const response = await fetch(webhookUrl, { method: 'POST', body: formData });
-                if (response.ok) {
-                    alert("✅ تم الإرسال بنجاح! تفقد سيرفر الديسكورد الخاص بك.");
-                    document.getElementById('msg-title').value = '';
-                    document.getElementById('msg-desc').value = '';
-                    document.getElementById('msg-content').value = '';
-                    document.getElementById('msg-image-file').value = '';
-                    document.getElementById('msg-logo-file').value = '';
-                    handleImagePreview();
-                    handleLogoPreview();
-                    updatePreview();
-                } else { alert("❌ حدث خطأ من الديسكورد."); }
-            } catch (error) { alert("❌ فشل الاتصال بالإنترنت."); }
-            finally {
-                document.getElementById('loading-overlay').style.display = 'none';
-                document.getElementById('submit-btn').disabled = false;
+                saveProductToArray(title, desc, qty, imgUrl);
             }
         }
 
-        // تشغيل المعاينة لأول مرة
-        updatePreview();
+        function saveProductToArray(title, desc, qty, imgUrl) {
+            const newProduct = {
+                id: Date.now(),
+                title: title,
+                desc: desc,
+                qty: qty,
+                image: imgUrl
+            };
+
+            products.push(newProduct);
+            updateLocalStorage();
+            renderDashboard();
+
+            // تنظيف المدخلات بعد الإضافة نجاح
+            document.getElementById('prod-title').value = '';
+            document.getElementById('prod-desc').value = '';
+            document.getElementById('prod-qty').value = '5';
+            document.getElementById('prod-img-file').value = '';
+            document.getElementById('file-name').innerText = "لم يتم تحديد صورة";
+        }
+
+        // التحكم بالكمية (+ و -) زري الإضافة السريعة
+        function changeQty(id, amount) {
+            const prod = products.find(p => p.id === id);
+            if(prod) {
+                prod.qty = Math.max(0, prod.qty + amount);
+                updateLocalStorage();
+                renderDashboard();
+            }
+        }
+
+        // تحويل الساعة إلى قائمة الطلبات (بيع قطعة واحدة)
+        function sellOneUnit(id) {
+            const prod = products.find(p => p.id === id);
+            if(!prod) return;
+
+            if(prod.qty <= 0) {
+                alert("⚠️ هذا المنتج نفذ من المخزن! أضف كمية أولاً لتتمكن من البيع.");
+                return;
+            }
+
+            const buyerName = prompt("أدخل اسم المشتري المحترم:");
+            if(!buyerName) return; // تم الإلغاء
+
+            const sellPrice = prompt("أدخل السعر المتفق عليه للبيع:", "0$");
+            if(!sellPrice) return; // تم الإلغاء
+
+            // خصم قطعة واحدة تلقائياً من الخزانة
+            prod.qty -= 1;
+
+            // إضافة الفاتورة لجدول المبيعات والطلبات
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+
+            const newOrder = {
+                buyer: buyerName,
+                productTitle: prod.title,
+                price: sellPrice,
+                time: timeStr
+            };
+
+            orders.unshift(newOrder); // إضافة لقمة الجدول
+            updateLocalStorage();
+            renderDashboard();
+        }
+
+        // حذف منتج بالكامل
+        function deleteProduct(id) {
+            if(confirm("هل أنت متأكد من حذف هذا المنتج نهائياً من خزانتك؟")) {
+                products = products.filter(p => p.id !== id);
+                updateLocalStorage();
+                renderDashboard();
+            }
+        }
+
+        // حفظ البيانات في جهازك الحالي
+        function updateLocalStorage() {
+            localStorage.setItem('my_inventory_products', JSON.stringify(products));
+            localStorage.setItem('my_inventory_orders', JSON.stringify(orders));
+        }
+
+        // بناء وعرض القوائم مجدداً في الصفحة
+        function renderDashboard() {
+            const productsList = document.getElementById('products-list');
+            const ordersList = document.getElementById('orders-list');
+
+            // 1. عرض المنتجات في المخزن
+            productsList.innerHTML = '';
+            if(products.length === 0) {
+                productsList.innerHTML = `<p style="color: #a1a1aa; font-size: 0.9rem; text-align: center; padding: 2rem;">الخزانة فارغة حالياً.. أضف ساعاتك لتبدأ المتابعة!</p>`;
+            }
+
+            products.forEach(prod => {
+                const isAvailable = prod.qty > 0;
+                const badgeClass = isAvailable ? 'status-instock' : 'status-outofstock';
+                const badgeText = isAvailable ? `متوفر (${prod.qty} قطعة) ✅` : 'غير متوفر ❌';
+
+                productsList.innerHTML += `
+                    <div class="product-card">
+                        <button class="delete-product-btn" onclick="deleteProduct(${prod.id})"><i class="fa-solid fa-trash"></i></button>
+                        <img src="${prod.image}" class="product-img" alt="product">
+                        <div class="product-info">
+                            <div class="product-title">${prod.title}</div>
+                            <div class="product-desc">${prod.desc}</div>
+                            <span class="status-badge ${badgeClass}">${badgeText}</span>
+                            
+                            <div class="qty-controls">
+                                <span style="font-size: 0.8rem; color: #a1a1aa;">تعديل الكمية:</span>
+                                <button class="qty-btn" onclick="changeQty(${prod.id}, 1)">+</button>
+                                <span class="qty-val">${prod.qty}</span>
+                                <button class="qty-btn" onclick="changeQty(${prod.id}, -1)">-</button>
+                            </div>
+                        </div>
+                        <button class="sell-btn" onclick="sellOneUnit(${prod.id})">
+                            <i class="fa-solid fa-cart-shopping"></i> بيع واحدة
+                        </button>
+                    </div>
+                `;
+            });
+
+            // 2. عرض جدول المبيعات المحولة
+            ordersList.innerHTML = '';
+            if(orders.length === 0) {
+                ordersList.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #a1a1aa;">لا توجد طلبات محولة بعد.</td></tr>`;
+            }
+
+            orders.forEach(order => {
+                ordersList.innerHTML += `
+                    <tr>
+                        <td style="color: #fff; font-weight: bold;">${order.buyer}</td>
+                        <td style="color: #bf953f;">${order.productTitle}</td>
+                        <td style="color: #38ef7d; font-weight: bold;">${order.price}</td>
+                        <td style="color: #949ba4;">${order.time}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        // تشغيل البناء الأولي عند فتح الصفحة لقراءة الكاش المحفوظ بجهازك
+        renderDashboard();
     </script>
 </body>
 </html>
