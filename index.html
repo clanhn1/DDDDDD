@@ -3,355 +3,478 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خزانة المنتجات | إدارة مخزون الساعات</title>
+    <title>خزانة الساعات الذكية | نظام إدارة المخزن الاحترافي</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
         
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
 
         body {
-            background-color: #050508; color: #fff; min-height: 100vh;
-            padding: 2rem;
+            background-color: #050508; color: #fff; min-height: 100vh; padding: 2rem 1rem;
             background-image: radial-gradient(circle at 50% 0%, #1a150b 0%, #050508 80%);
         }
 
-        .dashboard-container {
-            display: flex; gap: 2rem; width: 100%; max-width: 1400px;
-            margin: 0 auto; flex-wrap: wrap; align-items: flex-start;
-        }
+        .container { max-width: 1500px; margin: 0 auto; width: 100%; }
 
-        /* اللوحات الجانبية */
-        .admin-panel, .preview-panel {
+        /* الهيدر الرئيسي */
+        .main-header { text-align: center; margin-bottom: 2.5rem; position: relative; }
+        .main-header h1 { color: #bf953f; font-size: 2.5rem; font-weight: 900; text-shadow: 0 0 30px rgba(191, 149, 63, 0.3); }
+        .main-header p { color: #a1a1aa; font-size: 1.1rem; margin-top: 5px; }
+
+        /* لوحة الإحصائيات السريعة */
+        .stats-bar {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;
+            margin-bottom: 2rem; background: rgba(15, 15, 20, 0.5); border: 1px solid rgba(191, 149, 63, 0.2);
+            border-radius: 15px; padding: 1.2rem; backdrop-filter: blur(10px);
+        }
+        .stat-card { text-align: center; }
+        .stat-card h3 { color: #a1a1aa; font-size: 0.9rem; font-weight: 600; }
+        .stat-card p { color: #bf953f; font-size: 1.8rem; font-weight: 900; }
+
+        /* توزيع الشاشة الرئيسي */
+        .layout-grid { display: grid; grid-template-columns: 400px 1fr; gap: 2rem; }
+        @media (max-width: 1024px) { .layout-grid { grid-template-columns: 1fr; } }
+
+        /* كتل الزجاج الفخم */
+        .glass-box {
             background: rgba(15, 15, 20, 0.7); border: 1px solid #bf953f;
-            border-radius: 20px; padding: 2rem; flex: 1; min-width: 400px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(191, 149, 63, 0.15);
+            border-radius: 20px; padding: 2rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(191, 149, 63, 0.1);
             backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            height: fit-content;
         }
 
-        .header { text-align: center; margin-bottom: 2rem; border-bottom: 1px solid rgba(191, 149, 63, 0.2); padding-bottom: 1rem; }
-        .header h1 { color: #bf953f; font-size: 2.2rem; text-shadow: 0 0 20px rgba(191, 149, 63, 0.4); margin-bottom: 5px; font-weight: 900; }
-        .header p { color: #a1a1aa; font-size: 1rem; }
+        .section-title { color: #bf953f; font-size: 1.2rem; font-weight: 700; border-bottom: 1px dashed rgba(191, 149, 63, 0.3); padding-bottom: 8px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
 
-        .section-title { color: #bf953f; font-size: 1.1rem; border-bottom: 1px dashed #bf953f; padding-bottom: 5px; margin-bottom: 15px; margin-top: 20px; font-weight: bold;}
-
+        /* استايلات المدخلات والقوائم */
         .form-group { margin-bottom: 1.2rem; }
-        .form-group label { display: block; color: #e2e8f0; margin-bottom: 8px; font-weight: bold; font-size: 0.9rem; }
+        .form-group label { display: block; color: #e2e8f0; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
         
         .admin-input {
             width: 100%; padding: 12px; background: rgba(0,0,0,0.6);
             border: 1px solid #333; color: #fff; border-radius: 10px;
             font-family: 'Cairo'; outline: none; transition: 0.3s; font-size: 0.95rem;
         }
-        .admin-input:focus { border-color: #bf953f; box-shadow: 0 0 15px rgba(191, 149, 63, 0.3); background: rgba(0,0,0,0.8); }
+        .admin-input:focus { border-color: #bf953f; box-shadow: 0 0 15px rgba(191, 149, 63, 0.25); background: rgba(0,0,0,0.8); }
 
         .file-upload-wrapper { position: relative; width: 100%; height: 45px; }
         .file-upload-input { opacity: 0; position: absolute; width: 100%; height: 100%; cursor: pointer; z-index: 2; }
         .file-upload-btn {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(191, 149, 63, 0.1); border: 2px dashed #bf953f;
+            background: rgba(191, 149, 63, 0.08); border: 2px dashed #bf953f;
             color: #bf953f; border-radius: 10px; display: flex; justify-content: center; align-items: center;
             font-weight: bold; transition: 0.3s; z-index: 1; gap: 10px;
         }
-        .file-upload-wrapper:hover .file-upload-btn { background: rgba(191, 149, 63, 0.2); }
         .file-name-display { display: block; margin-top: 5px; font-size: 0.8rem; color: #38ef7d; text-align: center; }
 
-        .send-btn {
+        .action-btn {
             background: linear-gradient(45deg, #bf953f, #b38728); color: #fff;
             width: 100%; padding: 14px; border: none; border-radius: 12px;
             font-weight: 900; font-size: 1.1rem; cursor: pointer; transition: 0.3s;
-            display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 1rem;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
         }
-        .send-btn:hover { box-shadow: 0 0 25px rgba(191, 149, 63, 0.5); transform: translateY(-3px); }
+        .action-btn:hover { box-shadow: 0 0 25px rgba(191, 149, 63, 0.4); transform: translateY(-2px); }
 
-        /* كروت المنتجات المنتجة */
-        .products-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; margin-top: 1rem; }
-        .product-card {
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(191, 149, 63, 0.2);
-            border-radius: 15px; padding: 1rem; display: flex; gap: 15px; align-items: center;
-            position: relative; transition: 0.3s;
+        /* شريط البحث والتصفية المتطور */
+        .filter-wrapper {
+            background: rgba(20, 20, 25, 0.6); border: 1px solid rgba(191, 149, 63, 0.3);
+            padding: 1.5rem; border-radius: 15px; margin-bottom: 1.5rem;
+            display: flex; gap: 15px; flex-wrap: wrap; align-items: center;
         }
-        .product-card:hover { border-color: #bf953f; background: rgba(255, 255, 255, 0.05); }
-        .product-img { width: 90px; height: 90px; border-radius: 10px; object-fit: cover; border: 1px solid #333; }
-        .product-info { flex: 1; }
-        .product-title { color: #bf953f; font-weight: bold; font-size: 1.2rem; }
-        .product-desc { color: #a1a1aa; font-size: 0.85rem; margin-bottom: 5px; }
+        .search-box { flex: 2; min-width: 250px; position: relative; }
+        .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #bf953f; }
+        .search-box .admin-input { padding-left: 40px; padding-right: 15px; }
+        .filter-box { flex: 1; min-width: 180px; }
+
+        /* شبكة عرض كروت المخزن */
+        .inventory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
         
-        /* شارات التوفر */
-        .status-badge { display: inline-block; padding: 2px 8px; border-radius: 5px; font-size: 0.8rem; font-weight: bold; }
-        .status-instock { background: rgba(56, 239, 125, 0.2); color: #38ef7d; }
-        .status-outofstock { background: rgba(239, 83, 80, 0.2); color: #ef5350; }
+        .product-card {
+            background: rgba(20, 20, 25, 0.7); border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 18px; padding: 1.2rem; display: flex; flex-direction: column;
+            position: relative; transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .product-card:hover { border-color: #bf953f; transform: translateY(-5px); box-shadow: 0 15px 35px rgba(191, 149, 63, 0.15); }
+        
+        .card-top { display: flex; gap: 15px; align-items: flex-start; margin-bottom: 1rem; }
+        .product-img { width: 90px; height: 90px; border-radius: 12px; object-fit: cover; border: 1px solid rgba(191, 149, 63, 0.3); background: #000; }
+        .product-details { flex: 1; }
+        
+        .type-badge { background: rgba(191, 149, 63, 0.15); color: #bf953f; font-size: 0.75rem; padding: 2px 8px; border-radius: 5px; font-weight: bold; display: inline-block; margin-bottom: 5px; border: 1px solid rgba(191, 149, 63, 0.2); }
+        .product-title { color: #fff; font-weight: 700; font-size: 1.15rem; line-height: 1.4; }
+        .product-desc { color: #a1a1aa; font-size: 0.85rem; margin-top: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-        /* التحكم بالكمية والبيع */
-        .qty-controls { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
-        .qty-btn { background: #1a150b; border: 1px solid #bf953f; color: #bf953f; width: 28px; height: 28px; border-radius: 5px; cursor: pointer; display: flex; justify-content: center; align-items: center; font-weight: bold; }
+        /* حالة التوفر والكميات */
+        .stock-row { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto; }
+        .status-tag { font-size: 0.8rem; font-weight: bold; padding: 3px 8px; border-radius: 5px; }
+        .in-stock { background: rgba(56, 239, 125, 0.15); color: #38ef7d; }
+        .out-of-stock { background: rgba(239, 83, 80, 0.15); color: #ef5350; }
+
+        .qty-control { display: flex; align-items: center; gap: 8px; }
+        .qty-btn { background: rgba(191, 149, 63, 0.1); border: 1px solid #bf953f; color: #bf953f; width: 30px; height: 30px; border-radius: 8px; cursor: pointer; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 1.1rem; transition: 0.2s; }
         .qty-btn:hover { background: #bf953f; color: #000; }
-        .qty-val { font-weight: bold; font-size: 1rem; min-width: 20px; text-align: center; }
+        .qty-val { font-weight: 900; font-size: 1.1rem; min-width: 25px; text-align: center; color: #fff; }
 
-        .sell-btn { background: #bf953f; color: #050508; border: none; padding: 6px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 0.85rem; margin-right: auto; transition: 0.2s;}
-        .sell-btn:hover { background: #fff; box-shadow: 0 0 10px #fff; }
-        .delete-product-btn { position: absolute; top: 10px; left: 10px; color: #ef5350; cursor: pointer; background: transparent; border: none; font-size: 0.9rem; }
+        /* صندوق الملاحظات داخل الكارت */
+        .note-group { margin-top: 12px; border-top: 1px dashed rgba(255,255,255,0.05); padding-top: 10px; }
+        .note-group label { display: block; font-size: 0.75rem; color: #bf953f; margin-bottom: 4px; font-weight: bold; }
+        .note-input { width: 100%; background: rgba(0, 0, 0, 0.4); border: 1px solid #222; border-radius: 6px; color: #dbdee1; padding: 6px 10px; font-size: 0.8rem; font-family: 'Cairo'; outline: none; resize: none; transition: 0.3s; }
+        .note-input:focus { border-color: #bf953f; background: rgba(0,0,0,0.6); }
 
-        /* جدول الطلبات */
-        .orders-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
-        .orders-table th, .orders-table td { padding: 10px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .orders-table th { color: #bf953f; font-weight: bold; }
-        .orders-table tr:hover { background: rgba(191, 149, 63, 0.03); }
+        /* أزرار التحكم بالكارت */
+        .card-actions { display: flex; gap: 10px; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; }
+        .card-actions button { flex: 1; padding: 6px; border: none; border-radius: 6px; font-size: 0.8rem; font-weight: bold; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 5px; }
+        .edit-btn { background: rgba(191, 149, 63, 0.15); color: #bf953f; border: 1px solid rgba(191, 149, 63, 0.3) !important; }
+        .edit-btn:hover { background: #bf953f; color: #000; }
+        .delete-btn { background: rgba(239, 83, 80, 0.1); color: #ef5350; }
+        .delete-btn:hover { background: #ef5350; color: #fff; }
     </style>
 </head>
 <body>
 
-    <div class="dashboard-container">
+    <div class="container">
         
-        <div class="admin-panel">
-            <div class="header">
-                <h1><i class="fa-solid fa-box-archive"></i> خزانة المنتجات</h1>
-                <p>إدارة مخزون الساعات والمبيعات الذكية</p>
-            </div>
+        <!-- الهيدر الرئسي -->
+        <header class="main-header">
+            <h1><i class="fa-solid fa-vault"></i> نظام إدارة خزانة الساعات</h1>
+            <p>المخزن المركزي الذكي لتتبع الكميات والأنواع والملاحظات التلقائية</p>
+        </header>
 
-            <div class="section-title"><i class="fa-solid fa-plus"></i> إضافة عنصر جديد للمخزن</div>
+        <!-- بار الإحصائيات -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <h3><i class="fa-solid fa-clock"></i> إجمالي موديلات الساعات</h3>
+                <p id="stat-total-types">0</p>
+            </div>
+            <div class="stat-card">
+                <h3><i class="fa-solid fa-boxes-stacked"></i> إجمالي عدد القطع بالمخزن</h3>
+                <p id="stat-total-qty">0</p>
+            </div>
+            <div class="stat-card">
+                <h3><i class="fa-solid fa-circle-check" style="color: #38ef7d;"></i> موديلات متوفرة</h3>
+                <p id="stat-instock" style="color: #38ef7d;">0</p>
+            </div>
+            <div class="stat-card">
+                <h3><i class="fa-solid fa-circle-xmark" style="color: #ef5350;"></i> موديلات نافذة (0 قطعة)</h3>
+                <p id="stat-outstock" style="color: #ef5350;">0</p>
+            </div>
+        </div>
+
+        <!-- التوزيع الأساسي للوحة -->
+        <div class="layout-grid">
             
-            <div class="form-group">
-                <label>اسم الساعة / المنتج:</label>
-                <input type="text" id="prod-title" class="admin-input" placeholder="مثال: ساعة رولكس كلاسيك ذهبية">
-            </div>
+            <!-- نموذج الإضافة والتعديل (اليمين) -->
+            <div class="glass-box">
+                <div class="section-title" id="form-mode-title"><i class="fa-solid fa-square-plus"></i> إضافة ساعة جديدة للمخزن</div>
+                
+                <input type="hidden" id="edit-product-id" value="">
 
-            <div class="form-group">
-                <label>الوصف والمواصفات:</label>
-                <textarea id="prod-desc" class="admin-input" rows="2" placeholder="اكتب وصفاً مختصراً هنا..."></textarea>
-            </div>
-
-            <div style="display: flex; gap: 15px;">
-                <div class="form-group" style="flex: 1;">
-                    <label>الكمية المتوفرة حالياً:</label>
-                    <input type="number" id="prod-qty" class="admin-input" value="5" min="0">
+                <div class="form-group">
+                    <label>اسم موديل الساعة:</label>
+                    <input type="text" id="prod-title" class="admin-input" placeholder="مثال: رولكس ديت جست 41">
                 </div>
-                <div class="form-group" style="flex: 1;">
-                    <label>صورة الساعة:</label>
-                    <div class="file-upload-wrapper">
-                        <input type="file" id="prod-img-file" class="file-upload-input" accept="image/*" onchange="handleFileLabel()">
-                        <div class="file-upload-btn">
-                            <i class="fa-solid fa-image"></i> اختر صورة
-                        </div>
+
+                <div class="form-group">
+                    <label>نوع وهيكل الساعة (الفئة والتصفية):</label>
+                    <select id="prod-type" class="admin-input">
+                        <option value="كتان">كتان</option>
+                        <option value="ربر">ربر</option>
+                        <option value="حديد">حديد</option>
+                        <option value="حديد ملون">حديد ملون</option>
+                        <option value="جلد">جلد</option>
+                        <option value="أوتوماتيك">أوتوماتيك</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>الوصف والمواصفات:</label>
+                    <textarea id="prod-desc" class="admin-input" rows="2" placeholder="اللون، الماكينة، تفاصيل إضافية..."></textarea>
+                </div>
+
+                <div style="display: flex; gap: 15px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>الكمية الحالية:</label>
+                        <input type="number" id="prod-qty" class="admin-input" value="1" min="0">
                     </div>
-                    <span id="file-name" class="file-name-display">لم يتم تحديد صورة</span>
+                    <div class="form-group" style="flex: 1;">
+                        <label>صورة الساعة:</label>
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="prod-img-file" class="file-upload-input" accept="image/*" onchange="handleFileLabel()">
+                            <div class="file-upload-btn">
+                                <i class="fa-solid fa-camera"></i> رفع صورة
+                            </div>
+                        </div>
+                        <span id="file-name" class="file-name-display">لم يتم رفع صورة</span>
+                    </div>
+                </div>
+
+                <button class="action-btn" id="submit-btn" onclick="saveProduct()">
+                    <i class="fa-solid fa-download"></i> حفظ في المخزن
+                </button>
+                <button class="action-btn" id="cancel-edit-btn" onclick="resetForm()" style="background: #333; margin-top: 10px; display: none;">
+                    إلغاء التعديل
+                </button>
+            </div>
+
+            <!-- ساحة العرض والفلاتر والتصفية (اليسار) -->
+            <div>
+                <!-- شريط الفلاتر والبحث المتطور -->
+                <div class="filter-wrapper">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-input" class="admin-input" placeholder="ابحث باسم الساعة، الوصف، أو الملاحظة المكتوبة..." oninput="renderInventory()">
+                    </div>
+                    <div class="filter-box">
+                        <select id="filter-type" class="admin-input" onchange="renderInventory()">
+                            <option value="الجميع">جميع أنواع الساعات 🔎</option>
+                            <option value="كتان">كتان</option>
+                            <option value="ربر">ربر</option>
+                            <option value="حديد">حديد</option>
+                            <option value="حديد ملون">حديد ملون</option>
+                            <option value="جلد">جلد</option>
+                            <option value="أوتوماتيك">أوتوماتيك</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- شبكة كروت الساعات -->
+                <div class="inventory-grid" id="inventory-container">
+                    <!-- الكروت تولد هنا بشكل تلقائي وذكي -->
                 </div>
             </div>
 
-            <button class="send-btn" onclick="addNewProduct()">
-                <i class="fa-solid fa-square-plus"></i> إضافة الساعة إلى الخزانة
-            </button>
         </div>
-
-        <div class="preview-panel">
-            <div class="section-title" style="margin-top: 0;"><i class="fa-solid fa-layer-group"></i> غرف العرض والمخزون الحالي</div>
-            
-            <div class="products-grid" id="products-list">
-                </div>
-
-            <div class="section-title" style="margin-top: 30px;"><i class="fa-solid fa-receipt"></i> قائمة الطلبات والمبيعات المُحولة</div>
-            
-            <div style="overflow-x: auto; max-height: 250px;">
-                <table class="orders-table">
-                    <thead>
-                        <tr>
-                            <th>المشتري</th>
-                            <th>المنتج</th>
-                            <th>سعر البيع</th>
-                            <th>التوقيت</th>
-                        </tr>
-                    </thead>
-                    <tbody id="orders-list">
-                        </tbody>
-                </table>
-            </div>
-        </div>
-
     </div>
 
     <script>
-        // مصفوفات حفظ البيانات محلياً
-        let products = JSON.parse(localStorage.getItem('my_inventory_products')) || [];
-        let orders = JSON.parse(localStorage.getItem('my_inventory_orders')) || [];
+        // مصفوفة جلب البيانات المحفوظة بجهاز المستخدم
+        let inventory = JSON.parse(localStorage.getItem('hassan_watch_vault')) || [];
 
-        // لتحديث اسم الملف المرفوع في الواجهة
         function handleFileLabel() {
             const input = document.getElementById('prod-img-file');
             const display = document.getElementById('file-name');
-            if(input.files && input.files[0]) {
-                display.innerHTML = `<i class="fa-solid fa-check"></i> ${input.files[0].name}`;
-            } else {
-                display.innerText = "لم يتم تحديد صورة";
-            }
+            if(input.files && input.files[0]) display.innerHTML = `<i class="fa-solid fa-check"></i> تم التجهيز`;
+            else display.innerText = "لم يتم رفع صورة";
         }
 
-        // إضافة منتج جديد
-        function addNewProduct() {
+        // حفظ الساعة (سواء كانت إضافة جديدة أو تعديل ساعة قائمة)
+        function saveProduct() {
+            const idInput = document.getElementById('edit-product-id').value;
             const title = document.getElementById('prod-title').value.trim();
+            const type = document.getElementById('prod-type').value;
             const desc = document.getElementById('prod-desc').value.trim();
             const qty = parseInt(document.getElementById('prod-qty').value) || 0;
             const imgInput = document.getElementById('prod-img-file');
 
-            if(!title || !desc) {
-                alert("⚠️ يرجى ملء اسم الساعة والوصف أولاً!");
-                return;
-            }
+            if(!title) { alert("⚠️ أكتب اسم موديل الساعة أولاً!"); return; }
 
-            let imgUrl = "https://cdn-icons-png.flaticon.com/512/3592/3592869.png"; // صورة افتراضية
+            let defaultImg = "https://cdn-icons-png.flaticon.com/512/2888/2888636.png";
 
             if(imgInput.files && imgInput.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    imgUrl = e.target.result;
-                    saveProductToArray(title, desc, qty, imgUrl);
-                }
+                    executeSave(idInput, title, type, desc, qty, e.target.result);
+                };
                 reader.readAsDataURL(imgInput.files[0]);
             } else {
-                saveProductToArray(title, desc, qty, imgUrl);
+                // إذا كنا في وضع التعديل ولم يرفع صورة جديدة، نحتفظ بالقديمة
+                if(idInput) {
+                    const currentProd = inventory.find(p => p.id == idInput);
+                    executeSave(idInput, title, type, desc, qty, currentProd ? currentProd.image : defaultImg);
+                } else {
+                    executeSave(idInput, title, type, desc, qty, defaultImg);
+                }
             }
         }
 
-        function saveProductToArray(title, desc, qty, imgUrl) {
-            const newProduct = {
-                id: Date.now(),
-                title: title,
-                desc: desc,
-                qty: qty,
-                image: imgUrl
-            };
+        function executeSave(id, title, type, desc, qty, imgUrl) {
+            if(id) {
+                // وضع التعديل (Edit Mode)
+                const prod = inventory.find(p => p.id == id);
+                if(prod) {
+                    prod.title = title;
+                    prod.type = type;
+                    prod.desc = desc;
+                    prod.qty = qty;
+                    prod.image = imgUrl;
+                }
+            } else {
+                // وضع إضافة عنصر جديد (Add Mode)
+                const newWatch = {
+                    id: Date.now(),
+                    title: title,
+                    type: type,
+                    desc: desc,
+                    qty: qty,
+                    image: imgUrl,
+                    note: "" // ملاحظة فارغة مسبقاً لكل عنصر لتعدلها براحتك
+                };
+                inventory.push(newWatch);
+            }
 
-            products.push(newProduct);
-            updateLocalStorage();
-            renderDashboard();
-
-            // تنظيف المدخلات بعد الإضافة نجاح
-            document.getElementById('prod-title').value = '';
-            document.getElementById('prod-desc').value = '';
-            document.getElementById('prod-qty').value = '5';
-            document.getElementById('prod-img-file').value = '';
-            document.getElementById('file-name').innerText = "لم يتم تحديد صورة";
+            syncStorageAndRefresh();
+            resetForm();
         }
 
-        // التحكم بالكمية (+ و -) زري الإضافة السريعة
+        // زيادة ونقصان الكمية (+ / -) داخل الكارت
         function changeQty(id, amount) {
-            const prod = products.find(p => p.id === id);
+            const prod = inventory.find(p => p.id === id);
             if(prod) {
                 prod.qty = Math.max(0, prod.qty + amount);
-                updateLocalStorage();
-                renderDashboard();
+                syncStorageAndRefresh();
             }
         }
 
-        // تحويل الساعة إلى قائمة الطلبات (بيع قطعة واحدة)
-        function sellOneUnit(id) {
-            const prod = products.find(p => p.id === id);
+        // حفظ الملاحظات أثناء الكتابة بشكل تلقائي فوري دون الضغط على أي زر
+        function saveNote(id, noteValue) {
+            const prod = inventory.find(p => p.id === id);
+            if(prod) {
+                prod.note = noteValue;
+                localStorage.setItem('hassan_watch_vault', JSON.stringify(inventory));
+                calculateStats(); // تحديث سريع للإحصاءات إن تطلب الأمر دون إعادة بناء الكروت لتجنب فقدان الفوكس أثناء الكتابة
+            }
+        }
+
+        // نقل بيانات الكارت إلى فورم الإدخال لتعديله
+        function startEdit(id) {
+            const prod = inventory.find(p => p.id === id);
             if(!prod) return;
 
-            if(prod.qty <= 0) {
-                alert("⚠️ هذا المنتج نفذ من المخزن! أضف كمية أولاً لتتمكن من البيع.");
+            document.getElementById('edit-product-id').value = prod.id;
+            document.getElementById('prod-title').value = prod.title;
+            document.getElementById('prod-type').value = prod.type;
+            document.getElementById('prod-desc').value = prod.desc;
+            document.getElementById('prod-qty').value = prod.qty;
+            
+            document.getElementById('form-mode-title').innerHTML = `<i class="fa-solid fa-pen-to-square"></i> تعديل بيانات: ${prod.title}`;
+            document.getElementById('submit-btn').innerHTML = `<i class="fa-solid fa-circle-check"></i> تحديث البيانات`;
+            document.getElementById('cancel-edit-btn').style.display = 'block';
+            
+            // سحب الشاشة إلى الفوق بسلاسة في الموبايل ليرى المستخدم لوحة التعديل
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // إلغاء وضع التعديل وتصفير الحقول
+        function resetForm() {
+            document.getElementById('edit-product-id').value = '';
+            document.getElementById('prod-title').value = '';
+            document.getElementById('prod-desc').value = '';
+            document.getElementById('prod-qty').value = '1';
+            document.getElementById('prod-img-file').value = '';
+            document.getElementById('file-name').innerText = "لم يتم رفع صورة";
+            
+            document.getElementById('form-mode-title').innerHTML = `<i class="fa-solid fa-square-plus"></i> إضافة ساعة جديدة للمخزن`;
+            document.getElementById('submit-btn').innerHTML = `<i class="fa-solid fa-download"></i> حفظ في المخزن`;
+            document.getElementById('cancel-edit-btn').style.display = 'none';
+        }
+
+        // حذف ساعة نهائياً من المخزن
+        function deleteProduct(id) {
+            if(confirm("❌ هل أنت متأكد من مسح هذا الموديل من الخزانة؟")) {
+                inventory = inventory.filter(p => p.id !== id);
+                syncStorageAndRefresh();
+            }
+        }
+
+        // مزامنة المخزن المحلي وإعادة بناء الواجهات
+        function syncStorageAndRefresh() {
+            localStorage.setItem('hassan_watch_vault', JSON.stringify(inventory));
+            renderInventory();
+        }
+
+        // حساب لوحة الإحصائيات العلوية
+        function calculateStats() {
+            document.getElementById('stat-total-types').innerText = inventory.length;
+            
+            let totalQty = 0;
+            let inStockCount = 0;
+            let outStockCount = 0;
+
+            inventory.forEach(p => {
+                totalQty += p.qty;
+                if(p.qty > 0) inStockCount++;
+                else outStockCount++;
+            });
+
+            document.getElementById('stat-total-qty').innerText = totalQty;
+            document.getElementById('stat-instock').innerText = inStockCount;
+            document.getElementById('stat-outstock').innerText = outStockCount;
+        }
+
+        // المحرك الأساسي لتصفية وعرض الساعات بناءً على التصفية والبحث
+        function renderInventory() {
+            calculateStats();
+            
+            const container = document.getElementById('inventory-container');
+            const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
+            const filterType = document.getElementById('filter-type').value;
+
+            container.innerHTML = '';
+
+            // تصفية المصفوفة بناءً على نوع الساعة وبوكس البحث
+            const filteredData = inventory.filter(prod => {
+                const matchesType = (filterType === 'الجميع' || prod.type === filterType);
+                const matchesSearch = (
+                    prod.title.toLowerCase().includes(searchQuery) || 
+                    prod.desc.toLowerCase().includes(searchQuery) ||
+                    (prod.note && prod.note.toLowerCase().includes(searchQuery))
+                );
+                return matchesType && matchesSearch;
+            });
+
+            if(filteredData.length === 0) {
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #a1a1aa; padding: 3rem; font-size: 1rem;"><i class="fa-solid fa-magnifying-glass" style="font-size: 2rem; margin-bottom: 10px; color: #bf953f;"></i><br>لم يتم العثور على أي ساعات تطابق الفلاتر الحالية.</div>`;
                 return;
             }
 
-            const buyerName = prompt("أدخل اسم المشتري المحترم:");
-            if(!buyerName) return; // تم الإلغاء
-
-            const sellPrice = prompt("أدخل السعر المتفق عليه للبيع:", "0$");
-            if(!sellPrice) return; // تم الإلغاء
-
-            // خصم قطعة واحدة تلقائياً من الخزانة
-            prod.qty -= 1;
-
-            // إضافة الفاتورة لجدول المبيعات والطلبات
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
-
-            const newOrder = {
-                buyer: buyerName,
-                productTitle: prod.title,
-                price: sellPrice,
-                time: timeStr
-            };
-
-            orders.unshift(newOrder); // إضافة لقمة الجدول
-            updateLocalStorage();
-            renderDashboard();
-        }
-
-        // حذف منتج بالكامل
-        function deleteProduct(id) {
-            if(confirm("هل أنت متأكد من حذف هذا المنتج نهائياً من خزانتك؟")) {
-                products = products.filter(p => p.id !== id);
-                updateLocalStorage();
-                renderDashboard();
-            }
-        }
-
-        // حفظ البيانات في جهازك الحالي
-        function updateLocalStorage() {
-            localStorage.setItem('my_inventory_products', JSON.stringify(products));
-            localStorage.setItem('my_inventory_orders', JSON.stringify(orders));
-        }
-
-        // بناء وعرض القوائم مجدداً في الصفحة
-        function renderDashboard() {
-            const productsList = document.getElementById('products-list');
-            const ordersList = document.getElementById('orders-list');
-
-            // 1. عرض المنتجات في المخزن
-            productsList.innerHTML = '';
-            if(products.length === 0) {
-                productsList.innerHTML = `<p style="color: #a1a1aa; font-size: 0.9rem; text-align: center; padding: 2rem;">الخزانة فارغة حالياً.. أضف ساعاتك لتبدأ المتابعة!</p>`;
-            }
-
-            products.forEach(prod => {
+            // بناء كروت الساعات ديناميكياً
+            filteredData.forEach(prod => {
                 const isAvailable = prod.qty > 0;
-                const badgeClass = isAvailable ? 'status-instock' : 'status-outofstock';
-                const badgeText = isAvailable ? `متوفر (${prod.qty} قطعة) ✅` : 'غير متوفر ❌';
+                const statusClass = isAvailable ? 'in-stock' : 'out-of-stock';
+                const statusText = isAvailable ? `متوفر بالمخزن` : 'غير متوفر / نافذ';
 
-                productsList.innerHTML += `
+                container.innerHTML += `
                     <div class="product-card">
-                        <button class="delete-product-btn" onclick="deleteProduct(${prod.id})"><i class="fa-solid fa-trash"></i></button>
-                        <img src="${prod.image}" class="product-img" alt="product">
-                        <div class="product-info">
-                            <div class="product-title">${prod.title}</div>
-                            <div class="product-desc">${prod.desc}</div>
-                            <span class="status-badge ${badgeClass}">${badgeText}</span>
-                            
-                            <div class="qty-controls">
-                                <span style="font-size: 0.8rem; color: #a1a1aa;">تعديل الكمية:</span>
-                                <button class="qty-btn" onclick="changeQty(${prod.id}, 1)">+</button>
-                                <span class="qty-val">${prod.qty}</span>
-                                <button class="qty-btn" onclick="changeQty(${prod.id}, -1)">-</button>
+                        <div class="card-top">
+                            <img src="${prod.image}" class="product-img" alt="Watch Image">
+                            <div class="product-details">
+                                <span class="type-badge"><i class="fa-solid fa-tags"></i> ${prod.type}</span>
+                                <div class="product-title">${prod.title}</div>
+                                <div class="product-desc">${prod.desc || 'لا يوجد وصف مضاف لهذا الموديل.'}</div>
                             </div>
                         </div>
-                        <button class="sell-btn" onclick="sellOneUnit(${prod.id})">
-                            <i class="fa-solid fa-cart-shopping"></i> بيع واحدة
-                        </button>
+
+                        <!-- السطر المخصص بالكمية المتوفرة وتحديثها والتوفر -->
+                        <div class="stock-row">
+                            <span class="status-tag ${statusClass}">${statusText}</span>
+                            <div class="qty-control">
+                                <button class="qty-btn" onclick="changeQty(${prod.id}, -1)">-</button>
+                                <span class="qty-val">${prod.qty}</span>
+                                <button class="qty-btn" onclick="changeQty(${prod.id}, 1)">+</button>
+                            </div>
+                        </div>
+
+                        <!-- خانة الملاحظات الذكية المطلوبة أسفل العداد -->
+                        <div class="note-group">
+                            <label><i class="fa-solid fa-clipboard-question"></i> ملاحظات المخزن والعيوب:</label>
+                            <textarea class="note-input" rows="2" placeholder="اكتب هنا لحفظ أي عطل، لون، أو حجز تلقائياً..." oninput="saveNote(${prod.id}, this.value)">${prod.note || ''}</textarea>
+                        </div>
+
+                        <!-- أزرار التعديل والحذف الجانبية -->
+                        <div class="card-actions">
+                            <button class="edit-btn" onclick="startEdit(${prod.id})"><i class="fa-solid fa-user-gear"></i> تعديل البيانات</button>
+                            <button class="delete-btn" onclick="deleteProduct(${prod.id})"><i class="fa-solid fa-trash-can"></i> إزالة</button>
+                        </div>
                     </div>
                 `;
             });
-
-            // 2. عرض جدول المبيعات المحولة
-            ordersList.innerHTML = '';
-            if(orders.length === 0) {
-                ordersList.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #a1a1aa;">لا توجد طلبات محولة بعد.</td></tr>`;
-            }
-
-            orders.forEach(order => {
-                ordersList.innerHTML += `
-                    <tr>
-                        <td style="color: #fff; font-weight: bold;">${order.buyer}</td>
-                        <td style="color: #bf953f;">${order.productTitle}</td>
-                        <td style="color: #38ef7d; font-weight: bold;">${order.price}</td>
-                        <td style="color: #949ba4;">${order.time}</td>
-                    </tr>
-                `;
-            });
         }
 
-        // تشغيل البناء الأولي عند فتح الصفحة لقراءة الكاش المحفوظ بجهازك
-        renderDashboard();
+        // تشغيل البناء الأول للموقع عند التحميل لقراءة ذاكرة جهازك
+        renderInventory();
     </script>
 </body>
 </html>
