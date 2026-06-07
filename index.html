@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مخزن الساعات المتطور | الإدارة الذكية والمبيعات</title>
+    <title>خزانة الساعات الذكية | نظام إدارة المخزن المطور</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -76,24 +76,27 @@
         }
         .action-btn:hover { box-shadow: 0 0 25px rgba(191, 149, 63, 0.4); transform: translateY(-2px); }
 
-        /* شريط التصفية والبحث وعامود الإعدادات */
+        /* شريط الفلاتر والبحث المتطور والمجموعات */
         .filter-wrapper {
             background: rgba(20, 20, 25, 0.6); border: 1px solid rgba(191, 149, 63, 0.3);
             padding: 1.2rem; border-radius: 15px; margin-bottom: 1.5rem;
-            display: flex; gap: 15px; flex-wrap: wrap; align-items: center;
+            display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
         }
-        .search-box { flex: 2; min-width: 250px; position: relative; }
+        .search-box { flex: 2; min-width: 230px; position: relative; }
         .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #bf953f; }
         .search-box .admin-input { padding-left: 40px; }
-        .filter-box { flex: 1; min-width: 180px; }
+        .filter-box { flex: 1; min-width: 150px; }
 
-        /* زر الإعدادات / التحرير العلوي */
-        .edit-toggle-btn {
+        /* أزرار الإعدادات والمبيعات العلوية */
+        .top-ctrl-btn {
             background: #15151a; border: 1px solid #bf953f; color: #bf953f;
-            padding: 11px 20px; border-radius: 10px; font-weight: bold; cursor: pointer;
-            display: flex; align-items: center; gap: 8px; transition: 0.3s;
+            padding: 11px 16px; border-radius: 10px; font-weight: bold; cursor: pointer;
+            display: flex; align-items: center; gap: 8px; transition: 0.3s; font-size: 0.9rem;
         }
-        .edit-toggle-btn.active { background: #bf953f; color: #000; box-shadow: 0 0 15px #bf953f; }
+        .top-ctrl-btn:hover { background: rgba(191, 149, 63, 0.1); }
+        .top-ctrl-btn.active { background: #bf953f; color: #000; box-shadow: 0 0 15px #bf953f; }
+        .sales-view-btn { border-color: #38ef7d; color: #38ef7d; }
+        .sales-view-btn:hover { background: rgba(56, 239, 125, 0.1); }
 
         /* شبكة عرض كروت المخزن */
         .inventory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
@@ -127,7 +130,7 @@
 
         .delete-card-btn { display: none; position: absolute; top: 10px; left: 10px; color: #ef5350; background: none; border: none; cursor: pointer; font-size: 0.9rem; }
 
-        /* صندوق البيع والملاحظات الفوري للوضع العادي */
+        /* صندوق البيع والملاحظات */
         .sell-action-box { margin-top: 12px; border-top: 1px dashed rgba(255,255,255,0.08); padding-top: 12px; display: flex; flex-direction: column; gap: 8px; }
         .sell-inputs-row { display: flex; gap: 8px; }
         .sell-qty-input { width: 75px; text-align: center; }
@@ -136,12 +139,27 @@
         .sell-submit-btn { background: #bf953f; color: #050508; border: none; padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.85rem; display: flex; justify-content: center; align-items: center; gap: 5px; }
         .sell-submit-btn:hover { background: #fff; }
 
-        /* جدول المبيعات المحولة */
-        .orders-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
-        .orders-table th, .orders-table td { padding: 10px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .orders-table th { color: #bf953f; font-weight: bold; }
-        .orders-table tr:hover { background: rgba(191, 149, 63, 0.03); }
-        .delete-sale-btn { color: #ef5350; background: none; border: none; cursor: pointer; margin-right: 5px; }
+        /* النافذة المنبثقة لسجل المبيعات والكميات المحولة (Modal) */
+        .sales-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
+            z-index: 9999; justify-content: center; align-items: center; padding: 1rem;
+        }
+        .modal-content {
+            background: #0f0f14; border: 1px solid #38ef7d; border-radius: 20px;
+            width: 100%; max-width: 900px; padding: 2rem; box-shadow: 0 0 50px rgba(56, 239, 125, 0.2);
+            position: relative; animation: fadeIn 0.3s ease-out;
+        }
+        .close-modal-btn { position: absolute; top: 15px; left: 15px; background: none; border: none; color: #a1a1aa; font-size: 1.5rem; cursor: pointer; transition: 0.2s; }
+        .close-modal-btn:hover { color: #ef5350; }
+
+        .orders-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
+        .orders-table th, .orders-table td { padding: 12px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .orders-table th { color: #38ef7d; font-weight: bold; background: rgba(56, 239, 125, 0.02); }
+        .orders-table tr:hover { background: rgba(255,255,255,0.02); }
+        .delete-sale-btn { color: #ef5350; background: none; border: none; cursor: pointer; font-size: 0.95rem; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
@@ -151,7 +169,7 @@
         <!-- الهيدر الرئسي -->
         <header class="main-header">
             <h1><i class="fa-solid fa-vault"></i> خزانة الساعات الذكية والمبيعات</h1>
-            <p>مخزن مركزي متكامل مع تحكم بالتحرير والبيع المباشر</p>
+            <p>مخزن مركزي متكامل مع فرز متطور وعزل تام لسجلات البيع</p>
         </header>
 
         <!-- بار الإحصائيات -->
@@ -226,16 +244,27 @@
 
             <!-- ساحة العرض والفلاتر (اليسار) -->
             <div>
-                <!-- شريط الفلاتر والبحث المتطور وزر التحرير الفوق -->
+                <!-- شريط الفلاتر والبحث المتطور والتحكم العلوي الجديد -->
                 <div class="filter-wrapper">
+                    <!-- حقل البحث السريع -->
                     <div class="search-box">
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="text" id="search-input" class="admin-input" placeholder="ابحث باسم الساعة، أو الوصف..." oninput="renderInventory()">
                     </div>
+                    
+                    <!-- فلتر حالة التوفر الجديد والمطلوب بدقة (الكل / متوفر / غير متوفر) -->
+                    <div class="filter-box">
+                        <select id="filter-stock-status" class="admin-input" onchange="renderInventory()">
+                            <option value="الكل">جميع الحالات 🔎</option>
+                            <option value="متوفر">المتوفر فقط (جاهز للبيع) ✅</option>
+                            <option value="غير_متوفر">الغير متوفر / النافذ 🚨</option>
+                        </select>
+                    </div>
+
+                    <!-- فلتر نوع خامة وهيكل الساعة -->
                     <div class="filter-box">
                         <select id="filter-type" class="admin-input" onchange="renderInventory()">
-                            <option value="الجميع">جميع الساعات 🔎</option>
-                            <option value="نافذ">المنتجات النافذة (0 قطعة) 🚨</option>
+                            <option value="الجميع">كل الخامات 🏷️</option>
                             <option value="كتان">كتان</option>
                             <option value="ربر">ربر</option>
                             <option value="حديد">حديد</option>
@@ -244,48 +273,59 @@
                             <option value="أوتوماتيك">أوتوماتيك</option>
                         </select>
                     </div>
-                    <!-- زر الإعدادات / التحرير العلوي المطلوب -->
-                    <button id="edit-mode-toggle" class="edit-toggle-btn" onclick="toggleEditMode()">
-                        <i class="fa-solid fa-sliders"></i> وضع التحرير (تعطيل/تفعيل)
+
+                    <!-- زر وضع التحرير -->
+                    <button id="edit-mode-toggle" class="top-ctrl-btn" onclick="toggleEditMode()">
+                        <i class="fa-solid fa-sliders"></i> وضع التحرير
+                    </button>
+
+                    <!-- زر فتح سجل المبيعات والكميات المحولة العازل المطلب -->
+                    <button class="top-ctrl-btn sales-view-btn" onclick="toggleSalesModal(true)">
+                        <i class="fa-solid fa-receipt"></i> سجل المبيعات والطلبات 📋
                     </button>
                 </div>
 
                 <!-- شبكة كروت الساعات (المخزن الرئيسي) -->
                 <div class="inventory-grid" id="inventory-container">
-                    <!-- الكروت تولد هنا -->
+                    <!-- الكروت تولد هنا تلقائياً -->
                 </div>
-
-                <!-- مخزن المبيعات والطلبات المحولة (الأسفل) -->
-                <div class="glass-box" style="margin-top: 2rem; width: 100%;">
-                    <div class="section-title"><i class="fa-solid fa-receipt"></i> مخزن البيع وقائمة الكميات المحولة</div>
-                    <div style="overflow-x: auto; max-height: 300px;">
-                        <table class="orders-table">
-                            <thead>
-                                <tr>
-                                    <th>اسم الساعة</th>
-                                    <th>الكمية المباعة</th>
-                                    <th>ملاحظة البيع</th>
-                                    <th>التوقيت</th>
-                                    <th>إجراء</th>
-                                </tr>
-                            </thead>
-                            <tbody id="sales-container">
-                                <!-- المبيعات المحولة تظهر هنا -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
             </div>
 
         </div>
     </div>
 
+    <!-- النافذة العازلة والمنبثقة لعرض مبيعات المخزن والكميات المحولة -->
+    <div id="sales-modal-wrapper" class="sales-modal">
+        <div class="modal-content">
+            <button class="close-modal-btn" onclick="toggleSalesModal(false)"><i class="fa-solid fa-circle-xmark"></i></button>
+            <div class="section-title" style="color: #38ef7d; border-color: rgba(56, 239, 125, 0.3);">
+                <i class="fa-solid fa-receipt"></i> مخزن المبيعات وقائمة الكميات المحولة بالكامل
+            </div>
+            
+            <div style="overflow-x: auto; max-height: 450px; margin-top: 15px;">
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>اسم موديل الساعة</th>
+                            <th>الكمية المباعة</th>
+                            <th>ملاحظة البيع المسجلة</th>
+                            <th>التوقيت</th>
+                            <th>إجراء الحذف</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sales-container">
+                        <!-- تظهر المبيعات هنا -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // قواعد البيانات محلياً على المتصفح
+        // قواعد البيانات المحلية
         let inventory = JSON.parse(localStorage.getItem('hassan_vault_main')) || [];
         let salesLog = JSON.parse(localStorage.getItem('hassan_vault_sales')) || [];
-        let isEditModeActive = false; // حالة وضع التحرير الافتراضية مغلق
+        let isEditModeActive = false; 
 
         function handleFileLabel() {
             const input = document.getElementById('prod-img-file');
@@ -329,7 +369,6 @@
             inventory.push(newWatch);
             syncAndRefresh();
 
-            // تنظيف الحقول
             document.getElementById('prod-title').value = '';
             document.getElementById('prod-desc').value = '';
             document.getElementById('prod-qty').value = '5';
@@ -337,19 +376,22 @@
             document.getElementById('file-name').innerText = "لم يتم رفع صورة";
         }
 
-        // تفعيل وإلغاء وضع التحرير من الزر الفوق
+        // فتح وإغلاق قائمة مخزن المبيعات
+        function toggleSalesModal(show) {
+            const modal = document.getElementById('sales-modal-wrapper');
+            modal.style.display = show ? 'flex' : 'none';
+        }
+
+        // تفعيل وضع التحرير لتعديل كميات المخزن الأصلي
         function toggleEditMode() {
             isEditModeActive = !isEditModeActive;
             const btn = document.getElementById('edit-mode-toggle');
             
             if(isEditModeActive) {
                 btn.classList.add('active');
-                alert("⚙️ تم تفعيل وضع التحرير! يمكنك الآن تعديل الكمية المضافة (+ / -) أو حذف الساعة.");
             } else {
                 btn.classList.remove('active');
             }
-            
-            // تحديث العرض لتظهر الأزرار أو تختفي
             applyEditModeVisibility();
         }
 
@@ -360,12 +402,9 @@
 
             qtyControls.forEach(el => el.style.display = isEditModeActive ? 'flex' : 'none');
             deleteBtns.forEach(el => el.style.display = isEditModeActive ? 'block' : 'none');
-            
-            // إخفاء صناديق البيع في وضع التحرير لإعطاء مساحة للتعديل
             sellBoxes.forEach(el => el.style.display = isEditModeActive ? 'none' : 'flex');
         }
 
-        // تعديل الكميات (+ / -) المتاحة فقط في وضع التحرير
         function changeQty(id, amount) {
             const prod = inventory.find(p => p.id === id);
             if(prod) {
@@ -374,7 +413,6 @@
             }
         }
 
-        // حذف ساعة نهائياً من المخزن
         function deleteProduct(id) {
             if(confirm("❌ هل أنت متأكد من مسح هذا الموديل نهائياً؟")) {
                 inventory = inventory.filter(p => p.id !== id);
@@ -382,7 +420,7 @@
             }
         }
 
-        // عملية البيع ونقل الكمية والملاحظة إلى مخزن البيع
+        // تحويل المبيعات والخصم الآلي والترحيل للمخزن الثاني المخصص
         function transferToSales(id) {
             const prod = inventory.find(p => p.id === id);
             if(!prod) return;
@@ -393,25 +431,12 @@
             const sellQty = parseInt(sellQtyInput.value) || 0;
             const sellNote = sellNoteInput.value.trim();
 
-            if(sellQty <= 0) {
-                alert("⚠️ يرجى كتابة كمية صحيحة (أكبر من 0) لبيعها!");
-                return;
-            }
+            if(sellQty <= 0) { alert("⚠️ يرجى تحديد كمية صحيحة لبيعها!"); return; }
+            if(sellQty > prod.qty) { alert(`⚠️ لا تملك هذه الكمية، المتاح حالياً بالمخزن هو (${prod.qty} قطعة) فقط!`); return; }
+            if(!sellNote) { alert("⚠️ يرجى إضافة ملاحظة على عملية البيع لتوثيقها بشكل سليم!"); return; }
 
-            if(sellQty > prod.qty) {
-                alert(`⚠️ الكمية المتاحة في المخزن حالياً هي (${prod.qty} قطعة) فقط! لا يمكنك بيع كمية أكبر.`);
-                return;
-            }
-
-            if(!sellNote) {
-                alert("⚠️ يرجى إضافة ملاحظة على عملية البيع (مثال: تم البيع لفلان أو رقم الفاتورة)!");
-                return;
-            }
-
-            // 1. خصم الكمية من المخزن الرئيسي تلقائياً
             prod.qty -= sellQty;
 
-            // 2. ترحيل البيانات إلى مخزن البيع
             const now = new Date();
             const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
 
@@ -423,25 +448,22 @@
                 time: timeStr
             };
 
-            salesLog.unshift(saleItem); // الإضافة في أعلى قائمة المبيعات
+            salesLog.unshift(saleItem);
             
-            // إعادة تصفير حقول البيع بالكارت
             sellQtyInput.value = '1';
             sellNoteInput.value = '';
 
             syncAndRefresh();
-            alert("💰 تم خصم الكمية من المخزن بنجاح وتحويلها إلى مخزن البيع!");
+            alert("💰 تم الخصم بنجاح وترحيل القطع إلى سجل المبيعات المخفي!");
         }
 
-        // مسح عملية بيع من الجدول
         function deleteSale(id) {
-            if(confirm("هل تريد حذف سجل البيع هذا؟ (لن تعود الكمية للمخزن الرئيسي)")) {
+            if(confirm("هل تريد حذف سجل البيع هذا؟")) {
                 salesLog = salesLog.filter(s => s.id !== id);
                 syncAndRefresh();
             }
         }
 
-        // المزامنة والحسابات
         function syncAndRefresh() {
             localStorage.setItem('hassan_vault_main', JSON.stringify(inventory));
             localStorage.setItem('hassan_vault_sales', JSON.stringify(salesLog));
@@ -460,35 +482,43 @@
             document.getElementById('stat-total-qty').innerText = totalQty;
             document.getElementById('stat-outstock').innerText = outStockCount;
 
-            // حساب إجمالي القطع المباعة
             let totalSold = salesLog.reduce((acc, curr) => acc + curr.qtySold, 0);
             document.getElementById('stat-total-sold').innerText = totalSold;
         }
 
-        // بناء وعرض الكروت والبيانات
+        // محرك الواجهات والفرز المركب الجديد بالكامل
         function renderInventory() {
             calculateStats();
             
             const container = document.getElementById('inventory-container');
             const salesContainer = document.getElementById('sales-container');
             const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
-            const filterType = document.getElementById('filter-type').value;
+            
+            // جلب قيم التصفية الجديدة والمركبة
+            const filterStockStatus = document.getElementById('filter-stock-status').value; // (الكل / متوفر / غير_متوفر)
+            const filterType = document.getElementById('filter-type').value; // (كتان / ربر / حديد ...)
 
             container.innerHTML = '';
 
-            // الفلترة والبحث المركب (مع دعم فلتر "نافذ")
+            // تصفية مركبة فائقة الدقة والذكاء تغطي كل شروطك وبحثك
             const filteredData = inventory.filter(prod => {
-                let matchesType = false;
-                if(filterType === 'الجميع') matchesType = true;
-                else if(filterType === 'نافذ') matchesType = (prod.qty === 0);
-                else matchesType = (prod.type === filterType);
+                // 1. فرز خامة ونوع الساعة
+                const matchesType = (filterType === 'الجميع' || prod.type === filterType);
+                
+                // 2. فرز حالة المخزن (متوفر أو غير متوفر) المطلوبة حالياً
+                let matchesStock = false;
+                if(filterStockStatus === 'الكل') matchesStock = true;
+                else if(filterStockStatus === 'متوفر') matchesStock = (prod.qty > 0);
+                else if(filterStockStatus === 'غير_متوفر') matchesStock = (prod.qty === 0);
 
+                // 3. فرز تطابق صندوق البحث الفوري
                 const matchesSearch = prod.title.toLowerCase().includes(searchQuery) || prod.desc.toLowerCase().includes(searchQuery);
-                return matchesType && matchesSearch;
+                
+                return matchesType && matchesStock && matchesSearch;
             });
 
             if(filteredData.length === 0) {
-                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #a1a1aa; padding: 3rem;"><i class="fa-solid fa-magnifying-glass" style="font-size: 2rem; margin-bottom: 10px; color: #bf953f;"></i><br>لا توجد ساعات تطابق خيارات العرض الحالية.</div>`;
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #a1a1aa; padding: 3rem;"><i class="fa-solid fa-magnifying-glass" style="font-size: 2rem; margin-bottom: 10px; color: #bf953f;"></i><br>لا توجد ساعات تطابق خيارات التصفية الحالية.</div>`;
             } else {
                 filteredData.forEach(prod => {
                     const isAvailable = prod.qty > 0;
@@ -497,7 +527,6 @@
 
                     container.innerHTML += `
                         <div class="product-card">
-                            <!-- زر مسح الساعة يظهر في وضع التحرير فقط -->
                             <button class="delete-card-btn" onclick="deleteProduct(${prod.id})"><i class="fa-solid fa-trash"></i></button>
                             
                             <div class="card-top">
@@ -505,14 +534,13 @@
                                 <div class="product-details">
                                     <span class="type-badge"><i class="fa-solid fa-tags"></i> ${prod.type}</span>
                                     <div class="product-title">${prod.title}</div>
-                                    <div class="product-desc">${prod.desc || 'لا يوجد وصف.'}</div>
+                                    <div class="product-desc">${prod.desc || 'لا يوجد وصف مضاف.'}</div>
                                 </div>
                             </div>
 
                             <div class="stock-row">
                                 <span class="status-tag ${statusClass}">${statusText}</span>
                                 
-                                <!-- أزرار الـ + والـ - تظهر فقط في وضع التحرير -->
                                 <div class="qty-edit-control" id="qty-ctrl-${prod.id}">
                                     <button class="qty-btn" onclick="changeQty(${prod.id}, -1)">-</button>
                                     <span class="qty-val">${prod.qty}</span>
@@ -520,11 +548,10 @@
                                 </div>
                             </div>
 
-                            <!-- نظام تحويل الكمية المبيعة وكتابة الملاحظة (يختفي في وضع التحرير) -->
                             <div class="sell-action-box" id="sell-box-${prod.id}">
                                 <div class="sell-inputs-row">
                                     <input type="number" id="sell-qty-${prod.id}" class="admin-input sell-qty-input" value="1" min="1" placeholder="الكمية">
-                                    <input type="text" id="sell-note-${prod.id}" class="admin-input sell-note-input" placeholder="اكتب ملاحظة البيع (اسم الشخص أو تفاصيل)...">
+                                    <input type="text" id="sell-note-${prod.id}" class="admin-input sell-note-input" placeholder="اكتب ملاحظة البيع واسم المشتري...">
                                 </div>
                                 <button class="sell-submit-btn" onclick="transferToSales(${prod.id})">
                                     <i class="fa-solid fa-cart-arrow-down"></i> تحويل للمبيعات 💰
@@ -535,19 +562,18 @@
                 });
             }
 
-            // تطبيق حالة تفعيل وضع التحرير فوراً بعد إعادة بناء الكروت
             applyEditModeVisibility();
 
-            // عرض جدول مخزن البيع بالأسفل
+            // ملء جدول المبيعات المحولة داخل النافذة المنبثقة
             salesContainer.innerHTML = '';
             if(salesLog.length === 0) {
-                salesContainer.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #a1a1aa; padding: 15px;">لا توجد مبيعات محولة حتى الآن.</td></tr>`;
+                salesContainer.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #a1a1aa; padding: 20px;">لا توجد عمليات مبيعات مسجلة حتى الآن.</td></tr>`;
             } else {
                 salesLog.forEach(sale => {
                     salesContainer.innerHTML += `
                         <tr>
                             <td style="color: #bf953f; font-weight: bold;">${sale.title}</td>
-                            <td style="color: #fff; font-weight: bold; text-align:center;">${sale.qtySold} قطعة</td>
+                            <td style="color: #38ef7d; font-weight: bold;">${sale.qtySold} قطعة</td>
                             <td style="color: #dbdee1;">${sale.note}</td>
                             <td style="color: #949ba4;">${sale.time}</td>
                             <td><button class="delete-sale-btn" onclick="deleteSale(${sale.id})"><i class="fa-solid fa-trash-can"></i></button></td>
@@ -557,7 +583,6 @@
             }
         }
 
-        // تشغيل المخزن تلقائياً
         renderInventory();
     </script>
 </body>
