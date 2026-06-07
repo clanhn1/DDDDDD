@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خزانة الساعات الذكية | نظام إدارة المخزن المطور</title>
+    <title>خزانة الساعات الذكية | نظام إدارة المخزن والمبيعات المطور</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -16,28 +16,57 @@
             background-image: radial-gradient(circle at 50% 0%, #1a150b 0%, #050508 80%);
         }
 
-        .container { max-width: 1500px; margin: 0 auto; width: 100%; }
+        .container { max-width: 1550px; margin: 0 auto; width: 100%; }
 
         /* الهيدر الرئيسي */
         .main-header { text-align: center; margin-bottom: 2.5rem; }
-        .main-header h1 { color: #bf953f; font-size: 2.5rem; font-weight: 900; text-shadow: 0 0 30px rgba(191, 149, 63, 0.3); }
-        .main-header p { color: #a1a1aa; font-size: 1.1rem; margin-top: 5px; }
+        .main-header h1 { color: #bf953f; font-size: 2.6rem; font-weight: 900; text-shadow: 0 0 30px rgba(191, 149, 63, 0.3); }
+        .main-header p { color: #a1a1aa; font-size: 1.15rem; margin-top: 5px; }
 
         /* لوحة الإحصائيات */
         .stats-bar {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;
-            margin-bottom: 2rem; background: rgba(15, 15, 20, 0.5); border: 1px solid rgba(191, 149, 63, 0.2);
-            border-radius: 15px; padding: 1.2rem; backdrop-filter: blur(10px);
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;
+            margin-bottom: 2.5rem; background: rgba(15, 15, 20, 0.5); border: 1px solid rgba(191, 149, 63, 0.2);
+            border-radius: 15px; padding: 1.5rem; backdrop-filter: blur(10px);
         }
         .stat-card { text-align: center; }
-        .stat-card h3 { color: #a1a1aa; font-size: 0.9rem; font-weight: 600; }
-        .stat-card p { color: #bf953f; font-size: 1.8rem; font-weight: 900; }
+        .stat-card h3 { color: #a1a1aa; font-size: 0.95rem; font-weight: 600; margin-bottom: 5px; }
+        .stat-card p { color: #bf953f; font-size: 2rem; font-weight: 900; }
 
-        /* التوزيع الرئيسي للواجهة */
-        .layout-grid { display: grid; grid-template-columns: 400px 1fr; gap: 2rem; }
+        /* أزرار التنقل الرئيسية بين الصفحات (Tabs) */
+        .page-navigation {
+            display: flex; justify-content: center; gap: 15px; margin-bottom: 2rem;
+        }
+        .nav-tab-btn {
+            background: #0f0f14; border: 1px solid rgba(191, 149, 63, 0.4); color: #bf953f;
+            padding: 14px 28px; border-radius: 12px; font-weight: 900; font-size: 1.1rem;
+            cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .nav-tab-btn:hover { background: rgba(191, 149, 63, 0.1); transform: translateY(-2px); }
+        .nav-tab-btn.active-tab {
+            background: linear-gradient(45deg, #bf953f, #b38728); color: #050508;
+            border-color: #bf953f; box-shadow: 0 0 25px rgba(191, 149, 63, 0.35);
+        }
+
+        /* الصفحات والتأثير السلس والجذاب (Slow Motion Effect) */
+        .page-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .page-content.active-view {
+            display: grid;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* التوزيع الرئيسي لواجهة المخزن */
+        .layout-grid { grid-template-columns: 400px 1fr; gap: 2rem; }
         @media (max-width: 1024px) { .layout-grid { grid-template-columns: 1fr; } }
 
-        /* كتل التصميم الفخم */
+        /* الكتل الزجاجية الفخمة */
         .glass-box {
             background: rgba(15, 15, 20, 0.7); border: 1px solid #bf953f;
             border-radius: 20px; padding: 2rem;
@@ -45,20 +74,20 @@
             backdrop-filter: blur(20px); height: fit-content;
         }
 
-        .section-title { color: #bf953f; font-size: 1.2rem; font-weight: 700; border-bottom: 1px dashed rgba(191, 149, 63, 0.3); padding-bottom: 8px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .section-title { color: #bf953f; font-size: 1.3rem; font-weight: 700; border-bottom: 1px dashed rgba(191, 149, 63, 0.3); padding-bottom: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
 
         /* استايلات المدخلات */
         .form-group { margin-bottom: 1.2rem; }
-        .form-group label { display: block; color: #e2e8f0; margin-bottom: 8px; font-weight: 600; font-size: 0.9rem; }
+        .form-group label { display: block; color: #e2e8f0; margin-bottom: 8px; font-weight: 600; font-size: 0.95rem; }
         
         .admin-input {
-            width: 100%; padding: 11px; background: rgba(0,0,0,0.6);
+            width: 100%; padding: 12px; background: rgba(0,0,0,0.6);
             border: 1px solid #333; color: #fff; border-radius: 10px;
-            font-family: 'Cairo'; outline: none; transition: 0.3s; font-size: 0.95rem;
+            font-family: 'Cairo'; outline: none; transition: 0.3s; font-size: 1rem;
         }
         .admin-input:focus { border-color: #bf953f; box-shadow: 0 0 15px rgba(191, 149, 63, 0.25); background: rgba(0,0,0,0.8); }
 
-        .file-upload-wrapper { position: relative; width: 100%; height: 45px; }
+        .file-upload-wrapper { position: relative; width: 100%; height: 48px; }
         .file-upload-input { opacity: 0; position: absolute; width: 100%; height: 100%; cursor: pointer; z-index: 2; }
         .file-upload-btn {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -66,10 +95,10 @@
             color: #bf953f; border-radius: 10px; display: flex; justify-content: center; align-items: center;
             font-weight: bold; transition: 0.3s; z-index: 1; gap: 10px;
         }
-        .file-name-display { display: block; margin-top: 5px; font-size: 0.8rem; color: #38ef7d; text-align: center; }
+        .file-name-display { display: block; margin-top: 6px; font-size: 0.85rem; color: #38ef7d; text-align: center; }
 
         .action-btn {
-            background: linear-gradient(45deg, #bf953f, #b38728); color: #fff;
+            background: linear-gradient(45deg, #bf953f, #b38728); color: #050508;
             width: 100%; padding: 14px; border: none; border-radius: 12px;
             font-weight: 900; font-size: 1.1rem; cursor: pointer; transition: 0.3s;
             display: flex; justify-content: center; align-items: center; gap: 10px;
@@ -82,21 +111,19 @@
             padding: 1.2rem; border-radius: 15px; margin-bottom: 1.5rem;
             display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
         }
-        .search-box { flex: 2; min-width: 230px; position: relative; }
+        .search-box { flex: 2; min-width: 250px; position: relative; }
         .search-box i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #bf953f; }
         .search-box .admin-input { padding-left: 40px; }
-        .filter-box { flex: 1; min-width: 150px; }
+        .filter-box { flex: 1; min-width: 160px; }
 
-        /* أزرار الإعدادات والمبيعات العلوية */
+        /* أزرار الإعدادات العلوية */
         .top-ctrl-btn {
             background: #15151a; border: 1px solid #bf953f; color: #bf953f;
-            padding: 11px 16px; border-radius: 10px; font-weight: bold; cursor: pointer;
-            display: flex; align-items: center; gap: 8px; transition: 0.3s; font-size: 0.9rem;
+            padding: 12px 18px; border-radius: 10px; font-weight: bold; cursor: pointer;
+            display: flex; align-items: center; gap: 8px; transition: 0.3s; font-size: 0.95rem;
         }
         .top-ctrl-btn:hover { background: rgba(191, 149, 63, 0.1); }
         .top-ctrl-btn.active { background: #bf953f; color: #000; box-shadow: 0 0 15px #bf953f; }
-        .sales-view-btn { border-color: #38ef7d; color: #38ef7d; }
-        .sales-view-btn:hover { background: rgba(56, 239, 125, 0.1); }
 
         /* شبكة عرض كروت المخزن */
         .inventory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
@@ -104,75 +131,73 @@
         .product-card {
             background: rgba(20, 20, 25, 0.7); border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 18px; padding: 1.2rem; display: flex; flex-direction: column;
-            position: relative; transition: 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative; transition: all 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .product-card:hover { border-color: #bf953f; }
+        .product-card:hover { border-color: #bf953f; transform: translateY(-3px); }
         
         .card-top { display: flex; gap: 15px; align-items: flex-start; margin-bottom: 1rem; }
-        .product-img { width: 85px; height: 85px; border-radius: 12px; object-fit: cover; border: 1px solid rgba(191, 149, 63, 0.3); background: #000; }
+        .product-img { width: 90px; height: 90px; border-radius: 12px; object-fit: cover; border: 1px solid rgba(191, 149, 63, 0.3); background: #000; }
         .product-details { flex: 1; }
         
-        .type-badge { background: rgba(191, 149, 63, 0.15); color: #bf953f; font-size: 0.75rem; padding: 2px 8px; border-radius: 5px; font-weight: bold; display: inline-block; margin-bottom: 5px; }
-        .product-title { color: #fff; font-weight: 700; font-size: 1.15rem; }
-        .product-desc { color: #a1a1aa; font-size: 0.85rem; margin-top: 4px; }
+        .type-badge { background: rgba(191, 149, 63, 0.15); color: #bf953f; font-size: 0.8rem; padding: 3px 10px; border-radius: 5px; font-weight: bold; display: inline-block; margin-bottom: 6px; }
+        .product-title { color: #fff; font-weight: 700; font-size: 1.2rem; }
+        .product-desc { color: #a1a1aa; font-size: 0.9rem; margin-top: 4px; line-height: 1.4; }
 
         /* السطر المخصص بالكمية المتوفرة وتحديثها والتوفر */
-        .stock-row { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: auto; }
-        .status-tag { font-size: 0.8rem; font-weight: bold; padding: 3px 8px; border-radius: 5px; }
+        .stock-row { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; margin-top: auto; }
+        .status-tag { font-size: 0.85rem; font-weight: bold; padding: 4px 10px; border-radius: 5px; }
         .in-stock { background: rgba(56, 239, 125, 0.15); color: #38ef7d; }
         .out-of-stock { background: rgba(239, 83, 80, 0.15); color: #ef5350; }
 
         /* أزرار التحرير المخفية والظاهرة */
         .qty-edit-control { display: none; align-items: center; gap: 8px; background: rgba(191, 149, 63, 0.05); padding: 4px 8px; border-radius: 8px; border: 1px dashed #bf953f; }
-        .qty-btn { background: rgba(191, 149, 63, 0.1); border: 1px solid #bf953f; color: #bf953f; width: 28px; height: 28px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1rem; }
+        .qty-btn { background: rgba(191, 149, 63, 0.1); border: 1px solid #bf953f; color: #bf953f; width: 30px; height: 30px; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 1.1rem; }
         .qty-btn:hover { background: #bf953f; color: #000; }
-        .qty-val { font-weight: 900; font-size: 1.1rem; min-width: 20px; text-align: center; color: #fff; }
+        .qty-val { font-weight: 900; font-size: 1.2rem; min-width: 22px; text-align: center; color: #fff; }
 
-        .delete-card-btn { display: none; position: absolute; top: 10px; left: 10px; color: #ef5350; background: none; border: none; cursor: pointer; font-size: 0.9rem; }
+        .delete-card-btn { display: none; position: absolute; top: 10px; left: 10px; color: #ef5350; background: none; border: none; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+        .delete-card-btn:hover { color: #fff; transform: scale(1.1); }
 
         /* صندوق البيع والملاحظات */
         .sell-action-box { margin-top: 12px; border-top: 1px dashed rgba(255,255,255,0.08); padding-top: 12px; display: flex; flex-direction: column; gap: 8px; }
         .sell-inputs-row { display: flex; gap: 8px; }
-        .sell-qty-input { width: 75px; text-align: center; }
+        .sell-qty-input { width: 80px; text-align: center; }
         .sell-note-input { flex: 1; }
         
-        .sell-submit-btn { background: #bf953f; color: #050508; border: none; padding: 8px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.85rem; display: flex; justify-content: center; align-items: center; gap: 5px; }
-        .sell-submit-btn:hover { background: #fff; }
+        .sell-submit-btn { background: rgba(191, 149, 63, 0.15); color: #bf953f; border: 1px solid #bf953f; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.95rem; display: flex; justify-content: center; align-items: center; gap: 6px; }
+        .sell-submit-btn:hover { background: #bf953f; color: #050508; box-shadow: 0 4px 12px rgba(191,149,63,0.2); }
 
-        /* النافذة المنبثقة لسجل المبيعات والكميات المحولة (Modal) */
-        .sales-modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px);
-            z-index: 9999; justify-content: center; align-items: center; padding: 1rem;
+        /* 📋 استايلات صفحة المبيعات المرتّبة والواضحة بالكامل */
+        .sales-page-container {
+            width: 100%; background: rgba(15, 15, 20, 0.7); border: 1px solid #38ef7d;
+            border-radius: 20px; padding: 2rem; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
         }
-        .modal-content {
-            background: #0f0f14; border: 1px solid #38ef7d; border-radius: 20px;
-            width: 100%; max-width: 900px; padding: 2rem; box-shadow: 0 0 50px rgba(56, 239, 125, 0.2);
-            position: relative; animation: fadeIn 0.3s ease-out;
-        }
-        .close-modal-btn { position: absolute; top: 15px; left: 15px; background: none; border: none; color: #a1a1aa; font-size: 1.5rem; cursor: pointer; transition: 0.2s; }
-        .close-modal-btn:hover { color: #ef5350; }
+        .table-responsive { overflow-x: auto; margin-top: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); }
+        
+        .orders-table { width: 100%; border-collapse: collapse; font-size: 1rem; min-width: 800px; text-align: right; }
+        .orders-table th, .orders-table td { padding: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
+        .orders-table th { color: #38ef7d; font-weight: 700; background: rgba(56, 239, 125, 0.04); font-size: 1.05rem; }
+        .orders-table tr:hover { background: rgba(255, 255, 255, 0.02); }
+        
+        /* الصورة داخل جدول المبيعات */
+        .table-product-img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; border: 1px solid rgba(56, 239, 125, 0.3); background: #000; }
+        .table-flex-item { display: flex; align-items: center; gap: 12px; }
 
-        .orders-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9rem; }
-        .orders-table th, .orders-table td { padding: 12px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .orders-table th { color: #38ef7d; font-weight: bold; background: rgba(56, 239, 125, 0.02); }
-        .orders-table tr:hover { background: rgba(255,255,255,0.02); }
-        .delete-sale-btn { color: #ef5350; background: none; border: none; cursor: pointer; font-size: 0.95rem; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .delete-sale-btn { color: #ef5350; background: none; border: none; cursor: pointer; font-size: 1.1rem; transition: 0.2s; padding: 5px; }
+        .delete-sale-btn:hover { color: #fff; transform: scale(1.1); }
     </style>
 </head>
 <body>
 
     <div class="container">
         
-        <!-- الهيدر الرئسي -->
+        <!-- الهيدر الرئيسي -->
         <header class="main-header">
-            <h1><i class="fa-solid fa-vault"></i> خزانة الساعات الذكية والمبيعات</h1>
-            <p>مخزن مركزي متكامل مع فرز متطور وعزل تام لسجلات البيع</p>
+            <h1><i class="fa-solid fa-vault"></i> خزانة الساعات الذكية والنظام المالي</h1>
+            <p>إدارة مخزنية متكاملة ومؤرشفة بالكامل مع ميزة التصفية المتقدمة</p>
         </header>
 
-        <!-- بار الإحصائيات -->
+        <!-- بار الإحصائيات الثابت والمشترك -->
         <div class="stats-bar">
             <div class="stat-card">
                 <h3><i class="fa-solid fa-clock"></i> إجمالي موديلات الساعات</h3>
@@ -183,7 +208,7 @@
                 <p id="stat-total-qty">0</p>
             </div>
             <div class="stat-card">
-                <h3><i class="fa-solid fa-circle-xmark" style="color: #ef5350;"></i> موديلات نافذة (0 قطعة)</h3>
+                <h3><i class="fa-solid fa-circle-xmark" style="color: #ef5350;"></i> موديلات نافذة (0 قطع)</h3>
                 <p id="stat-outstock" style="color: #ef5350;">0</p>
             </div>
             <div class="stat-card">
@@ -192,7 +217,18 @@
             </div>
         </div>
 
-        <div class="layout-grid">
+        <!-- 🧭 أزرار التبديل الفخمة والسلسة بين الصفحات -->
+        <div class="page-navigation">
+            <button id="tab-inventory" class="nav-tab-btn active-tab" onclick="switchPage('inventory')">
+                <i class="fa-solid fa-boxes-padded"></i> مخزن الساعات الرئيسي
+            </button>
+            <button id="tab-sales" class="nav-tab-btn" onclick="switchPage('sales')">
+                <i class="fa-solid fa-receipt"></i> سجل المبيعات والكميات المحولة 📋
+            </button>
+        </div>
+
+        <!-- ==================== الصفحة الأولى: المخزن الرئيسي ==================== -->
+        <div id="page-inventory-view" class="page-content layout-grid active-view">
             
             <!-- نموذج الإضافة (اليمين) -->
             <div class="glass-box">
@@ -242,17 +278,16 @@
                 </button>
             </div>
 
-            <!-- ساحة العرض والفلاتر (اليسار) -->
+            <!-- ساحة العرض والفلاتر الذكية (اليسار) -->
             <div>
-                <!-- شريط الفلاتر والبحث المتطور والتحكم العلوي الجديد -->
                 <div class="filter-wrapper">
-                    <!-- حقل البحث السريع -->
+                    <!-- حقل البحث السريع الفوري -->
                     <div class="search-box">
                         <i class="fa-solid fa-magnifying-glass"></i>
                         <input type="text" id="search-input" class="admin-input" placeholder="ابحث باسم الساعة، أو الوصف..." oninput="renderInventory()">
                     </div>
                     
-                    <!-- فلتر حالة التوفر الجديد والمطلوب بدقة (الكل / متوفر / غير متوفر) -->
+                    <!-- تصفية التوفر (متوفر / غير متوفر) -->
                     <div class="filter-box">
                         <select id="filter-stock-status" class="admin-input" onchange="renderInventory()">
                             <option value="الكل">جميع الحالات 🔎</option>
@@ -261,7 +296,7 @@
                         </select>
                     </div>
 
-                    <!-- فلتر نوع خامة وهيكل الساعة -->
+                    <!-- تصفية نوع خامة الساعة -->
                     <div class="filter-box">
                         <select id="filter-type" class="admin-input" onchange="renderInventory()">
                             <option value="الجميع">كل الخامات 🏷️</option>
@@ -274,67 +309,94 @@
                         </select>
                     </div>
 
-                    <!-- زر وضع التحرير -->
+                    <!-- زر وضع التحرير السريع لتعديل أرقام المخزن -->
                     <button id="edit-mode-toggle" class="top-ctrl-btn" onclick="toggleEditMode()">
                         <i class="fa-solid fa-sliders"></i> وضع التحرير
-                    </button>
-
-                    <!-- زر فتح سجل المبيعات والكميات المحولة العازل المطلب -->
-                    <button class="top-ctrl-btn sales-view-btn" onclick="toggleSalesModal(true)">
-                        <i class="fa-solid fa-receipt"></i> سجل المبيعات والطلبات 📋
                     </button>
                 </div>
 
                 <!-- شبكة كروت الساعات (المخزن الرئيسي) -->
                 <div class="inventory-grid" id="inventory-container">
-                    <!-- الكروت تولد هنا تلقائياً -->
+                    <!-- كروت الساعات تولد تلقائياً -->
                 </div>
             </div>
 
         </div>
-    </div>
 
-    <!-- النافذة العازلة والمنبثقة لعرض مبيعات المخزن والكميات المحولة -->
-    <div id="sales-modal-wrapper" class="sales-modal">
-        <div class="modal-content">
-            <button class="close-modal-btn" onclick="toggleSalesModal(false)"><i class="fa-solid fa-circle-xmark"></i></button>
-            <div class="section-title" style="color: #38ef7d; border-color: rgba(56, 239, 125, 0.3);">
-                <i class="fa-solid fa-receipt"></i> مخزن المبيعات وقائمة الكميات المحولة بالكامل
-            </div>
-            
-            <div style="overflow-x: auto; max-height: 450px; margin-top: 15px;">
-                <table class="orders-table">
-                    <thead>
-                        <tr>
-                            <th>اسم موديل الساعة</th>
-                            <th>الكمية المباعة</th>
-                            <th>ملاحظة البيع المسجلة</th>
-                            <th>التوقيت</th>
-                            <th>إجراء الحذف</th>
-                        </tr>
-                    </thead>
-                    <tbody id="sales-container">
-                        <!-- تظهر المبيعات هنا -->
-                    </tbody>
-                </table>
+
+        <!-- ==================== الصفحة الثانية: سجل المبيعات المرتب والواضح ==================== -->
+        <div id="page-sales-view" class="page-content">
+            <div class="sales-page-container">
+                <div class="section-title" style="color: #38ef7d; border-color: rgba(56, 239, 125, 0.3);">
+                    <i class="fa-solid fa-file-invoice-dollar"></i> أرشيف المبيعات المفصل والكميات المحولة
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>صورة الساعة</th>
+                                <th>اسم موديل الساعة</th>
+                                <th>الكمية المباعة</th>
+                                <th>ملاحظة البيع المسجلة والعميل</th>
+                                <th>توقيت العملية</th>
+                                <th>إجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sales-container">
+                            <!-- تظهر المبيعات مع الصور هنا -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
+
     </div>
 
     <script>
-        // قواعد البيانات المحلية
+        // قواعد البيانات المحلية واسترجاعها تلقائياً
         let inventory = JSON.parse(localStorage.getItem('hassan_vault_main')) || [];
         let salesLog = JSON.parse(localStorage.getItem('hassan_vault_sales')) || [];
         let isEditModeActive = false; 
 
+        // التحكم في إظهار اسم الصورة بعد اختيارها
         function handleFileLabel() {
             const input = document.getElementById('prod-img-file');
             const display = document.getElementById('file-name');
-            if(input.files && input.files[0]) display.innerHTML = `<i class="fa-solid fa-check"></i> تم التجهيز`;
+            if(input.files && input.files[0]) display.innerHTML = `<i class="fa-solid fa-check"></i> جاهز للحفظ`;
             else display.innerText = "لم يتم رفع صورة";
         }
 
-        // إضافة ساعة جديدة للمخزن
+        // 🧭 التبديل بين الصفحات بإنيميشن سلو موشن
+        function switchPage(pageName) {
+            const invView = document.getElementById('page-inventory-view');
+            const salesView = document.getElementById('page-sales-view');
+            const invTab = document.getElementById('tab-inventory');
+            const salesTab = document.getElementById('tab-sales');
+
+            // إزالة الكلاسات النشطة لإعادة التشغيل بسلاسة
+            invView.classList.remove('active-view');
+            salesView.classList.remove('active-view');
+            invTab.classList.remove('active-tab');
+            salesTab.classList.remove('active-tab');
+
+            // تأخير خفيف جداً لتهيئة حركة الـ CSS السلو موشن
+            setTimeout(() => {
+                if (pageName === 'inventory') {
+                    invView.style.display = 'grid';
+                    salesView.style.display = 'none';
+                    invView.classList.add('active-view');
+                    invTab.classList.add('active-tab');
+                } else {
+                    invView.style.display = 'none';
+                    salesView.style.display = 'block';
+                    salesView.classList.add('active-view');
+                    salesTab.classList.add('active-tab');
+                }
+            }, 50);
+        }
+
+        // إضافة منتج جديد للمخزن الرئيسي
         function addNewProduct() {
             const title = document.getElementById('prod-title').value.trim();
             const type = document.getElementById('prod-type').value;
@@ -344,6 +406,7 @@
 
             if(!title) { alert("⚠️ أكتب اسم موديل الساعة أولاً!"); return; }
 
+            // أيقونة افتراضية كلاسيكية في حال عدم رفع صورة
             let defaultImg = "https://cdn-icons-png.flaticon.com/512/2888/2888636.png";
 
             if(imgInput.files && imgInput.files[0]) {
@@ -369,6 +432,7 @@
             inventory.push(newWatch);
             syncAndRefresh();
 
+            // تصغير وتصفير الحقول بعد الإضافة الناجحة
             document.getElementById('prod-title').value = '';
             document.getElementById('prod-desc').value = '';
             document.getElementById('prod-qty').value = '5';
@@ -376,22 +440,12 @@
             document.getElementById('file-name').innerText = "لم يتم رفع صورة";
         }
 
-        // فتح وإغلاق قائمة مخزن المبيعات
-        function toggleSalesModal(show) {
-            const modal = document.getElementById('sales-modal-wrapper');
-            modal.style.display = show ? 'flex' : 'none';
-        }
-
-        // تفعيل وضع التحرير لتعديل كميات المخزن الأصلي
+        // تفعيل وإلغاء وضع التحرير
         function toggleEditMode() {
             isEditModeActive = !isEditModeActive;
             const btn = document.getElementById('edit-mode-toggle');
-            
-            if(isEditModeActive) {
-                btn.classList.add('active');
-            } else {
-                btn.classList.remove('active');
-            }
+            if(isEditModeActive) btn.classList.add('active');
+            else btn.classList.remove('active');
             applyEditModeVisibility();
         }
 
@@ -420,7 +474,7 @@
             }
         }
 
-        // تحويل المبيعات والخصم الآلي والترحيل للمخزن الثاني المخصص
+        // ترحيل الكميات وخصمها من المخزن الأصلي للمبيعات وحفظ الصورة معها
         function transferToSales(id) {
             const prod = inventory.find(p => p.id === id);
             if(!prod) return;
@@ -438,11 +492,12 @@
             prod.qty -= sellQty;
 
             const now = new Date();
-            const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' });
+            const timeStr = now.toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }) + " - " + now.toLocaleDateString('ar-EG');
 
             const saleItem = {
                 id: Date.now(),
                 title: prod.title,
+                image: prod.image, // حفظ الصورة الحالية في السجل لضمان ظهورها حتى لو حُذف الأصل
                 qtySold: sellQty,
                 note: sellNote,
                 time: timeStr
@@ -454,7 +509,6 @@
             sellNoteInput.value = '';
 
             syncAndRefresh();
-            alert("💰 تم الخصم بنجاح وترحيل القطع إلى سجل المبيعات المخفي!");
         }
 
         function deleteSale(id) {
@@ -486,7 +540,7 @@
             document.getElementById('stat-total-sold').innerText = totalSold;
         }
 
-        // محرك الواجهات والفرز المركب الجديد بالكامل
+        // محرك الواجهات وصناعة الكروت والجداول تلقائياً
         function renderInventory() {
             calculateStats();
             
@@ -494,31 +548,27 @@
             const salesContainer = document.getElementById('sales-container');
             const searchQuery = document.getElementById('search-input').value.toLowerCase().trim();
             
-            // جلب قيم التصفية الجديدة والمركبة
-            const filterStockStatus = document.getElementById('filter-stock-status').value; // (الكل / متوفر / غير_متوفر)
-            const filterType = document.getElementById('filter-type').value; // (كتان / ربر / حديد ...)
+            const filterStockStatus = document.getElementById('filter-stock-status').value;
+            const filterType = document.getElementById('filter-type').value;
 
             container.innerHTML = '';
 
-            // تصفية مركبة فائقة الدقة والذكاء تغطي كل شروطك وبحثك
+            // تصفية الفلاتر المركبة والبحث الفوري
             const filteredData = inventory.filter(prod => {
-                // 1. فرز خامة ونوع الساعة
                 const matchesType = (filterType === 'الجميع' || prod.type === filterType);
                 
-                // 2. فرز حالة المخزن (متوفر أو غير متوفر) المطلوبة حالياً
                 let matchesStock = false;
                 if(filterStockStatus === 'الكل') matchesStock = true;
-                else if(filterStockStatus === 'متوفر') matchesStock = (prod.qty > 0);
+                else if(filterStockStatus === 'metوفر' || filterStockStatus === 'متوفر') matchesStock = (prod.qty > 0);
                 else if(filterStockStatus === 'غير_متوفر') matchesStock = (prod.qty === 0);
 
-                // 3. فرز تطابق صندوق البحث الفوري
                 const matchesSearch = prod.title.toLowerCase().includes(searchQuery) || prod.desc.toLowerCase().includes(searchQuery);
                 
                 return matchesType && matchesStock && matchesSearch;
             });
 
             if(filteredData.length === 0) {
-                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #a1a1aa; padding: 3rem;"><i class="fa-solid fa-magnifying-glass" style="font-size: 2rem; margin-bottom: 10px; color: #bf953f;"></i><br>لا توجد ساعات تطابق خيارات التصفية الحالية.</div>`;
+                container.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #a1a1aa; padding: 4rem;"><i class="fa-solid fa-magnifying-glass" style="font-size: 2.5rem; margin-bottom: 12px; color: #bf953f;"></i><br>لا توجد ساعات تطابق خيارات البحث الحالية بالمخزن.</div>`;
             } else {
                 filteredData.forEach(prod => {
                     const isAvailable = prod.qty > 0;
@@ -550,11 +600,11 @@
 
                             <div class="sell-action-box" id="sell-box-${prod.id}">
                                 <div class="sell-inputs-row">
-                                    <input type="number" id="sell-qty-${prod.id}" class="admin-input sell-qty-input" value="1" min="1" placeholder="الكمية">
-                                    <input type="text" id="sell-note-${prod.id}" class="admin-input sell-note-input" placeholder="اكتب ملاحظة البيع واسم المشتري...">
+                                    <input type="number" id="sell-qty-${prod.id}" class="admin-input sell-qty-input" value="1" min="1">
+                                    <input type="text" id="sell-note-${prod.id}" class="admin-input sell-note-input" placeholder="اسم المشتري أو الملاحظة...">
                                 </div>
                                 <button class="sell-submit-btn" onclick="transferToSales(${prod.id})">
-                                    <i class="fa-solid fa-cart-arrow-down"></i> تحويل للمبيعات 💰
+                                    <i class="fa-solid fa-cart-arrow-down"></i> خصم وتحويل للمبيعات 💰
                                 </button>
                             </div>
                         </div>
@@ -564,25 +614,33 @@
 
             applyEditModeVisibility();
 
-            // ملء جدول المبيعات المحولة داخل النافذة المنبثقة
+            // ملء جدول المبيعات المحولة المنظم والجديد بالكامل مع الصورة الواضحة والخطوط الممتازة
             salesContainer.innerHTML = '';
             if(salesLog.length === 0) {
-                salesContainer.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #a1a1aa; padding: 20px;">لا توجد عمليات مبيعات مسجلة حتى الآن.</td></tr>`;
+                salesContainer.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #a1a1aa; padding: 40px; font-weight: 600;">📋 لا توجد عمليات مبيعات أو تحويلات مسجلة في الأرشيف حالياً.</td></tr>`;
             } else {
                 salesLog.forEach(sale => {
                     salesContainer.innerHTML += `
                         <tr>
-                            <td style="color: #bf953f; font-weight: bold;">${sale.title}</td>
-                            <td style="color: #38ef7d; font-weight: bold;">${sale.qtySold} قطعة</td>
-                            <td style="color: #dbdee1;">${sale.note}</td>
-                            <td style="color: #949ba4;">${sale.time}</td>
-                            <td><button class="delete-sale-btn" onclick="deleteSale(${sale.id})"><i class="fa-solid fa-trash-can"></i></button></td>
+                            <td>
+                                <img src="${sale.image}" class="table-product-img">
+                            </td>
+                            <td style="color: #fff; font-weight: 700; font-size: 1.05rem;">${sale.title}</td>
+                            <td style="color: #38ef7d; font-weight: 900; font-size: 1.1rem;">${sale.qtySold} قطع</td>
+                            <td style="color: #e4e4e7; font-weight: 600;">${sale.note}</td>
+                            <td style="color: #a1a1aa; font-size: 0.9rem;"><i class="fa-regular fa-clock"></i> ${sale.time}</td>
+                            <td>
+                                <button class="delete-sale-btn" onclick="deleteSale(${sale.id})" title="حذف السجل نهائياً">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </td>
                         </tr>
                     `;
                 });
             }
         }
 
+        // تشغيل البناء الأولي للمخزن عند فتح النظام لأول مرة
         renderInventory();
     </script>
 </body>
