@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -245,10 +244,16 @@
                     <input type="text" id="webhook-finance" class="admin-input" placeholder="https://discord.com/api/webhooks/...">
                 </div>
                 
+                <div class="settings-input-group" style="margin-top: 15px; border-top: 1px dashed rgba(191,149,63,0.3); padding-top: 15px;">
+                    <label><i class="fa-brands fa-discord" style="color:#5865F2;"></i> رابط ديسكورد لتصدير قاعدة البيانات (نسخة احتياطية):</label>
+                    <input type="text" id="webhook-export" class="admin-input" placeholder="https://discord.com/api/webhooks/..." style="border-color: rgba(88, 101, 242, 0.5);">
+                </div>
+                
                 <button class="action-btn" style="margin-top: 10px;" onclick="saveWebhooks()"><i class="fa-solid fa-floppy-disk"></i> حفظ الإعدادات</button>
 
                 <hr style="border-color: rgba(191,149,63,0.2); margin: 25px 0 15px 0;">
                 <h4 style="color: #bf953f; margin-bottom: 15px; font-size: 1rem;"><i class="fa-solid fa-hard-drive"></i> قاعدة البيانات (للنقل على الفلاش/الهارد)</h4>
+                
                 <div style="display: flex; gap: 10px;">
                     <button class="action-btn" style="background: rgba(56, 239, 125, 0.1); border: 1px solid #38ef7d; color: #38ef7d; font-size: 0.95rem; padding: 10px;" onclick="exportData()">
                         <i class="fa-solid fa-download"></i> تصدير البيانات
@@ -260,7 +265,12 @@
                         </button>
                     </div>
                 </div>
-                <p style="font-size: 0.75rem; color: #a1a1aa; margin-top: 8px; text-align: center;">قم بتصدير البيانات كملف وضعها مع النظام في الفلاش لتحديثها دائماً.</p>
+                
+                <button class="action-btn" style="background: rgba(88, 101, 242, 0.1); border: 1px solid #5865F2; color: #5865F2; font-size: 0.95rem; padding: 10px; width: 100%; margin-top: 10px;" onclick="exportDataToDiscord()">
+                    <i class="fa-brands fa-discord"></i> تصدير البيانات إلى الديسكورد
+                </button>
+                
+                <p style="font-size: 0.75rem; color: #a1a1aa; margin-top: 8px; text-align: center;">قم بتصدير البيانات كملف أو أرسلها للديسكورد لتحديثها دائماً.</p>
 
             </div>
         </div>
@@ -511,7 +521,7 @@
         let isEditModeActive = false; 
 
         // إعدادات Webhooks
-        let webhooks = JSON.parse(localStorage.getItem('hassan_vault_webhooks')) || { outOfStock: "", backInStock: "", dailyReset: "", financialReset: "" };
+        let webhooks = JSON.parse(localStorage.getItem('hassan_vault_webhooks')) || { outOfStock: "", backInStock: "", dailyReset: "", financialReset: "", exportData: "" };
 
         // قائمة الأنواع والألوان
         let watchTypes = JSON.parse(localStorage.getItem('hassan_vault_types')) || ["كتان", "ربر", "حديد", "حديد ملون", "جلد", "أوتوماتيك"];
@@ -551,6 +561,7 @@
             document.getElementById('webhook-in').value = webhooks.backInStock || "";
             document.getElementById('webhook-daily').value = webhooks.dailyReset || "";
             document.getElementById('webhook-finance').value = webhooks.financialReset || "";
+            document.getElementById('webhook-export').value = webhooks.exportData || "";
             document.getElementById('settings-modal').style.display = 'flex';
         }
         function closeSettingsModal() { document.getElementById('settings-modal').style.display = 'none'; }
@@ -560,6 +571,7 @@
             webhooks.backInStock = document.getElementById('webhook-in').value.trim();
             webhooks.dailyReset = document.getElementById('webhook-daily').value.trim();
             webhooks.financialReset = document.getElementById('webhook-finance').value.trim();
+            webhooks.exportData = document.getElementById('webhook-export').value.trim();
             localStorage.setItem('hassan_vault_webhooks', JSON.stringify(webhooks));
             alert("✅ تم حفظ الإعدادات بنجاح!");
             closeSettingsModal();
@@ -582,6 +594,54 @@
             document.body.appendChild(downloadAnchorNode);
             downloadAnchorNode.click();
             downloadAnchorNode.remove();
+        }
+
+        // الدالة الجديدة الخاصة بتصدير البيانات كملف إلى سيرفر ديسكورد مباشرة
+        function exportDataToDiscord() {
+            const url = webhooks.exportData;
+            if (!url) {
+                alert("⚠️ يرجى إدخال رابط ديسكورد المخصص لتصدير البيانات في الإعدادات وحفظه أولاً!");
+                return;
+            }
+
+            const allData = {
+                inventory: inventory,
+                salesLog: salesLog,
+                archivedSalesLog: archivedSalesLog,
+                watchTypes: watchTypes,
+                watchColors: watchColors,
+                webhooks: webhooks
+            };
+            
+            // تحويل البيانات لملف
+            const dataStr = JSON.stringify(allData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const dateStr = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
+            const fileName = "Vault_Database_" + dateStr + ".json";
+
+            // تجهيز البيانات للإرسال بصيغة ملف
+            const formData = new FormData();
+            formData.append('file', blob, fileName);
+            formData.append('payload_json', JSON.stringify({
+                content: "@everyone\n📥 **نسخة احتياطية سحابية جديدة!**\nتم تصدير قاعدة البيانات بنجاح من نظام المخزن ويمكنكم تحميل الملف المُرفق واسترجاعه في أي وقت."
+            }));
+
+            // إرسال الملف إلى ويب هوك ديسكورد
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("✅ تم إرسال ملف قاعدة البيانات إلى الديسكورد بنجاح!");
+                } else {
+                    alert("❌ حدث خطأ أثناء الإرسال، يرجى التأكد من صلاحية رابط الديسكورد.");
+                }
+            })
+            .catch(e => {
+                console.error("Webhook Error:", e);
+                alert("❌ حدث خطأ في الاتصال بسيرفر الديسكورد.");
+            });
         }
 
         function importData(event) {
@@ -1289,5 +1349,3 @@
     </script>
 </body>
 </html>
-
-```
